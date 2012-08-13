@@ -33,6 +33,7 @@ group :assets do
   gem 'uglifier', '1.2.3'
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer'
+  gem 'jquery-ui-rails'
 end
 
 group :test do

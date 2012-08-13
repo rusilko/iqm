@@ -261,6 +261,7 @@ DEPENDENCIES
   guard-rspec (= 0.5.5)
   guard-spork (= 0.3.2)
   jquery-rails (= 2.0.2)
+  jquery-ui-rails
   libnotify (= 0.5.9)
   pg (= 0.12.2)
   pry-rails
