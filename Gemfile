@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.3'
+gem 'rails', '3.2.8'
 gem 'bootstrap-sass', '2.0.3'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'pg', '0.12.2'
@@ -11,6 +11,7 @@ gem 'friendly_id', '~> 4.0.7'
 gem 'rails_admin'
 gem 'rich'
 gem 'devise'
+gem 'jquery-rails', '2.0.2'
 #gem 'awesome_nested_set'
 
 # Bundle edge Rails instead:
@@ -33,8 +34,6 @@ group :assets do
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer'
 end
-
-gem 'jquery-rails', '2.0.0'
 
 group :test do
   # Pretty printed test output
