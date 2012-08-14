@@ -23,6 +23,7 @@ group :development, :test do
   gem 'annotate', '~> 2.4.1.beta'
   gem 'guard-livereload'
   gem 'pry-rails'
+  gem 'nifty-generators'
 end
 
 # Gems used only for assets and not required
@@ -66,3 +67,5 @@ end
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+
+gem "mocha", :group => :test

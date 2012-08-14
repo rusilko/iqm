@@ -1,14 +1,62 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Iqm</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <title><%= content_for?(:title) ? yield(:title) : "Untitled" %></title>
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tag %>
+    <%= yield(:head) %>
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">IQM v1</a>
+          <div class="btn-group pull-right">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="icon-user"></i> Username
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Profile</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Sign Out</a></li>
+            </ul>
+          </div>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#offers">Offers</a></li>
+              <li><a href="#offers">Customers</a></li>
+              <li><a href="#offers">Quotes</a></li>
+              <li><a href="#contact">Help</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
 
-<%= yield %>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span12">
+            <% flash.each do |name, msg| %>
+              <%= content_tag :div, msg, :id => "flash_#{name}" %>
+            <% end %>
+            <%= content_tag :h1, yield(:title) if show_title? %>
+            <%= yield %>
+        </div><!--/span-->
+      </div><!--/row-->
 
-</body>
-</html>
+      <hr>
+
+      <footer>
+        <p>&copy; Inprogress 2012</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+  </body>
