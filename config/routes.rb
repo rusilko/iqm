@@ -1,6 +1,4 @@
 Iqm::Application.routes.draw do
-  resources :offers
-
   root to: 'offers#index'
 
   # The priority is based upon order of creation:

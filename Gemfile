@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.8'
-gem 'bootstrap-sass', '2.0.3'
+gem 'bootstrap-sass'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'pg', '0.12.2'
 gem 'faker', '1.0.1'
@@ -47,6 +47,7 @@ group :test do
   gem 'rb-inotify', '0.8.8'
   gem 'libnotify', '0.5.9'
   gem 'factory_girl_rails', '1.4.0'
+  gem 'mocha'
 end
 
 group :production do
@@ -67,5 +68,3 @@ end
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
-
-gem "mocha", :group => :test
