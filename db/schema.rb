@@ -11,12 +11,40 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120813230046) do
+ActiveRecord::Schema.define(:version => 20120831212649) do
+
+  create_table "cost_items", :force => true do |t|
+    t.integer  "quote_id"
+    t.string   "name"
+    t.integer  "single_cost"
+    t.string   "factor_type"
+    t.integer  "total_cost"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "income_variants", :force => true do |t|
+    t.integer  "quote_id"
+    t.integer  "number_of_participants"
+    t.integer  "price_per_participant"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.boolean  "currently_chosen"
+  end
 
   create_table "offers", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "quotes", :force => true do |t|
+    t.integer  "offer_id"
+    t.string   "name"
+    t.string   "event_type"
+    t.integer  "number_of_days"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
 end

@@ -19,4 +19,9 @@ module LayoutHelper
   def javascript(*args)
     content_for(:head) { javascript_include_tag(*args) }
   end
+
+  def menu_item(name, options)
+    klass = current_page?(options) ? "active" : nil
+    content_tag(:li, link_to_unless_current(name, options) { content_tag(:a, name) }, class: klass)
+  end  
 end

@@ -1,11 +1,71 @@
+@import "bootstrap";
+
 body {
   padding-top: 60px;
-  padding-bottom: 40px;
-}
-.sidebar-nav {
-  padding: 9px 0;
 }
 
-@import "bootstrap";
-//Include responsive Bootstrap styles
+.hidden{
+  display: none;
+  float: left;
+  height: 0px;
+}
+
+.nav-tabs {
+  margin-bottom: 0px;
+}
+
+.tab-content {
+  border: 1px solid $tableBorder;
+  border-top: 0px;
+  padding: 0px 10px;
+}
+
+.quote_field {  // minor style adjustments to default_simple form layout
+  width: 95px;
+  float: left;
+  .controls {
+    margin-left: 0px;
+  }
+  label {
+    text-align: left !important;
+    float: none !important;
+    width: inherit !important;
+  }
+}
+
+.add_quote { // hide the button, click is generated from tab bar
+  display: none;
+}
+
+.add_variant { // button!
+  //margin-top: 65px;
+}
+
+.income_variant_fieldset {
+  margin-right: 5px;
+  @extend .well;
+  @extend .well-small;
+  background-color: white;
+  padding-bottom: 5px;
+  &.chosen {
+    background-color: whiteSmoke;
+  }
+}
+
+.income_variant_field {
+  margin: 0px 0px 4px 0px !important;
+  .controls {
+    margin-left: 0px;
+  }
+}
+
+.remove_variant {
+  @extend .close;
+  font-size: 15px;
+  line-height: 10px;
+}
+
+
+
 @import "bootstrap-responsive";
+

@@ -1,0 +1,33 @@
+<h1>Offers</h1>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Quotes</th>
+      <th>Created at</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @offers.each do |offer| %>
+      <tr>
+        <td><%= offer.id %></td>
+        <td><%= link_to offer.name, offer_path(offer) %></td>
+        <td><%= quotes_number_badge(offer.quotes.size) %></td>
+        <td><%= offer.created_at %></td>
+        <td>
+          <%# link_to 'Show', offer , class: 'btn btn-mini' %>
+          <%= link_to 'Edit', edit_offer_path(offer), class: 'btn btn-mini btn-info' %>
+          <%= link_to 'Destroy', offer, method: :delete, data: { confirm: 'Are you sure?'}, class: 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'New Offer', new_offer_path, class: 'btn btn-primary' %>

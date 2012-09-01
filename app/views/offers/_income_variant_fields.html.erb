@@ -1,0 +1,13 @@
+<fieldset class="income_variant_fieldset pull-left <%= "chosen" if f.object.currently_chosen %>">
+
+  <%= f.input :number_of_participants, :wrapper => :prepend, label: false do %>
+    <%= content_tag(:span, '#', class: 'add-on') %><%= f.input_field :number_of_participants, class:'input-mini' %>
+  <% end %>
+  <%= f.input :price_per_participant, :wrapper => :prepend, label: false do %>
+    <%= content_tag(:span, 'zł', class: 'add-on') %><%= f.input_field :price_per_participant, class:'input-mini' %>
+  <% end %>
+  <%= f.hidden_field :_destroy %>
+  <%= f.input :currently_chosen, as: :boolean, wrapper_html: { class: "hidden" } %> 
+
+  <%= link_to "x", '#', class: "remove_variant" %>
+</fieldset>

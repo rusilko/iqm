@@ -1,0 +1,19 @@
+<div class="tab-pane <%= "active" if i==0 %>" id="quote<%= f.object.id %>">
+  <fieldset>
+    <%= f.input :name %>
+    <%= f.input :event_type, collection: %w(P2F P2P ITIL MoR) %>
+    <%= f.input :number_of_days %>
+    <div class="clearfix"></div>
+
+    <%= f.simple_fields_for :income_variants, defaults: { label: false, wrapper_html: { class: 'income_variant_field' }, input_html: { class:'input-mini' } } do |builder| %>
+      <%= render 'income_variant_fields', f: builder %>
+    <% end %>
+
+    <%= link_to_add_variant " + Add Variant", f, :income_variants %>
+    <div class="clearfix"></div>
+    <div class="control-group">
+      <%= f.hidden_field :_destroy %>
+      <%= link_to "Remove Quote", '#', class: "btn remove_quote", id: "q_#{f.object.id}" %>
+    </div>
+  </fieldset>
+</div>

@@ -1,4 +1,10 @@
 Iqm::Application.routes.draw do
+  resources :offers, shallow: true do
+    resources :quotes do
+      resources :income_variants,:cost_items
+    end
+  end
+
   root to: 'offers#index'
 
   # The priority is based upon order of creation:

@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.8'
 gem 'bootstrap-sass'
+#gem "bootstrap-sass", :git => 'git://github.com/dszczyt/bootstrap-sass.git'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'pg', '0.12.2'
 gem 'faker', '1.0.1'
@@ -12,6 +13,7 @@ gem 'rails_admin'
 gem 'rich'
 gem 'devise'
 gem 'jquery-rails', '2.0.2'
+gem 'simple_form'
 #gem 'awesome_nested_set'
 
 # Bundle edge Rails instead:
@@ -47,7 +49,7 @@ group :test do
   gem 'rb-inotify', '0.8.8'
   gem 'libnotify', '0.5.9'
   gem 'factory_girl_rails', '1.4.0'
-  gem 'mocha'
+  #gem 'mocha'
 end
 
 group :production do

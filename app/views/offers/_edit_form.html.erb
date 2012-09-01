@@ -1,0 +1,49 @@
+<%= simple_form_for @offer, html: { class: 'form-horizontal' } do |f| %>
+
+  <% if @offer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@offer.errors.count, "error") %> prohibited this offer from being saved:</h2>
+
+      <ul>
+      <% @offer.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <fieldset>
+    <legend><%= controller.action_name.capitalize %> Offer</legend>
+    <br/>
+    <div class="tabbable">
+      <ul class="nav nav-tabs" id="quote_tabs">
+        <% @offer.quotes.each_with_index do |quote,index| %>
+          <% klass = (index == 0) ? 'active' : '' 
+             name = quote.name.blank? ? "brak nazwy" : quote.name
+          %>
+          <%= content_tag(:li, content_tag(:a, "#{name}", href: "#quote#{quote.id}", data: { toggle: "tab" }, id: "q_#{quote.id}_tab"), class: klass) %>
+        <% end %>
+        <%= content_tag(:li, link_to("+ Add quote", '#', class: "add_quote_from_tab_bar")) %>
+      </ul>
+
+      <%# f.input :name %>
+
+      <div class="tab-content">
+        <% index=0 %>
+        <%= f.simple_fields_for :quotes, defaults: { wrapper_html: {class: 'quote_field'}, input_html: { class:'input-mini' } }  do |builder| %>
+          <%= render 'quote_fields', f: builder, i: index %>
+        <% index+=1; end %>
+        <%= link_to_add_quote "Add Quote", f, :quotes, index %>
+      </div>
+
+      
+
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to 'Cancel', offers_path, :class => 'btn' %>
+    </div>
+  </fieldset>
+<% end %>
