@@ -1,0 +1,9 @@
+<ul class="nav nav-tabs" id="quote_tabs">
+  <% @offer.quotes.each_with_index do |quote,index| %>
+    <% klass = (index == 0) ? 'active' : " "
+       name = quote.name.blank? ? "quote #{index+1}" : quote.name
+    %>
+    <%= content_tag(:li, content_tag(:a, "#{name}", href: "#quote#{quote.id}", data: { toggle: "tab" }, id: "q_#{quote.id}_tab"), class: klass) %>
+  <% end %>
+  <%= link_to raw('<i class="icon-plus-sign icon-white"></i> Add Quote'), '#', class: "btn btn-success add_quote_top_btn" %>
+</ul>

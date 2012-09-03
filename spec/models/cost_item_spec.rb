@@ -49,15 +49,15 @@ describe CostItem do
 
   #Validations
 
-  describe "when name is not present" do
-    before { ci.name = " " }
-    it { should_not be_valid }
-  end
+  # describe "when name is not present" do
+  #   before { ci.name = " " }
+  #   it { should_not be_valid }
+  # end
 
-  describe "when single_cost is not present" do
-    before { ci.single_cost = nil }
-    it { should_not be_valid }
-  end
+  # describe "when single_cost is not present" do
+  #   before { ci.single_cost = nil }
+  #   it { should_not be_valid }
+  # end
 
   describe "when single_cost is not a number" do
     before { ci.single_cost = "a"}
@@ -82,9 +82,9 @@ describe CostItem do
   end
    
   #Associations
-  describe "when quote_id is not present" do
-    before { ci.quote_id = nil }
-    it { should_not be_valid }
-  end
+  # describe "when quote_id is not present" do
+  #   before { ci.quote_id = nil }
+  #   it { should_not be_valid }
+  # end
 
 end

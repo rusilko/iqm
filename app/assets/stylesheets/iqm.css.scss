@@ -1,27 +1,67 @@
 @import "bootstrap";
 
+@mixin btn-round-top {
+  border-radius:                    0px;
+  -webkit-border-radius:            0px;
+  -moz-border-radius:               0px;
+  
+  border-top-left-radius:           5px; 
+  border-top-right-radius:          5px;
+  -webkit-border-top-left-radius:   5px;
+  
+  -webkit-border-top-right-radius:  5px;
+  -moz-border-radius-topright:      5px;
+  -moz-border-radius-topleft:       5px;
+}
+
 body {
   padding-top: 60px;
 }
 
 .hidden{
   display: none;
-  float: left;
   height: 0px;
+}
+
+.input-micro {
+  width: 50px;
+}
+
+.offer_field {
+  margin-bottom: 10px !important;
+  .controls {
+    margin-left: 0px;
+  }
+  .add-on {
+    margin-left: 0px;
+  }
 }
 
 .nav-tabs {
   margin-bottom: 0px;
+  border-bottom: 0px;
+}
+
+.nav-tabs > a.add_quote_top_btn { // button!
+  @include btn-round-top;
+  margin-top: 8px;
+  border-bottom: none;
+  float: left;
+  // &:hover {
+  //   margin-top: 0px;
+  //   padding-bottom: 12px;
+  // }
 }
 
 .tab-content {
   border: 1px solid $tableBorder;
-  border-top: 0px;
   padding: 0px 10px;
 }
 
 .quote_field {  // minor style adjustments to default_simple form layout
-  width: 95px;
+  margin-right: 10px;
+  margin-bottom: 10px !important;
+  margin-top: 10px;
   float: left;
   .controls {
     margin-left: 0px;
@@ -31,41 +71,48 @@ body {
     float: none !important;
     width: inherit !important;
   }
+  .add-on {
+    margin-left: 0px;
+  }
 }
 
 .add_quote { // hide the button, click is generated from tab bar
-  display: none;
+  @extend .hidden;
+}
+
+.remove_quote {
+  float: right;
+  margin-top: 10px;
 }
 
 .add_variant { // button!
-  //margin-top: 65px;
+  margin-bottom: 10px;
 }
 
 .income_variant_fieldset {
-  margin-right: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
   @extend .well;
   @extend .well-small;
+  width: 101px;
   background-color: white;
-  padding-bottom: 5px;
+  padding: 10px 15px 5px 15px;
   &.chosen {
     background-color: whiteSmoke;
   }
 }
 
-.income_variant_field {
+.income_variant_field, .cost_item_field {
   margin: 0px 0px 4px 0px !important;
   .controls {
     margin-left: 0px;
   }
 }
 
-.remove_variant {
+.remove_variant { // button!
   @extend .close;
   font-size: 15px;
   line-height: 10px;
 }
 
-
-
 @import "bootstrap-responsive";
-

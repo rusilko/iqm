@@ -1,19 +1,51 @@
 <div class="tab-pane <%= "active" if i==0 %>" id="quote<%= f.object.id %>">
   <fieldset>
-    <%= f.input :name %>
-    <%= f.input :event_type, collection: %w(P2F P2P ITIL MoR) %>
-    <%= f.input :number_of_days %>
+
+    <%= field_with_prepend f, name: :event_type, wrapper_html_class: "quote_field", input_html_class: "input-small",
+                              prepend_text: "type", collection: %w(P2F P2P ITIL MoR) %>
+    <%= field_with_prepend f, name: :number_of_days, wrapper_html_class: "quote_field", input_html_class: "input-micro", 
+                              prepend_text: "# of days" %>
+    <%= field_with_prepend f, name: :name, wrapper_html_class: "quote_field", input_html_class: "input-small" %>
+
+    <%= f.hidden_field :_destroy %>
+    <%= link_to raw('<i class="icon-trash icon-white"></i> Remove Quote'), '#', class: "btn btn-danger remove_quote", id: "q_#{f.object.id}" %>
+
     <div class="clearfix"></div>
 
-    <%= f.simple_fields_for :income_variants, defaults: { label: false, wrapper_html: { class: 'income_variant_field' }, input_html: { class:'input-mini' } } do |builder| %>
+    <%= f.simple_fields_for :income_variants, defaults: { label: false, wrapper_html: { class: 'income_variant_field' }, 
+                                              input_html: { class:'input-mini' } } do |builder| %>
       <%= render 'income_variant_fields', f: builder %>
     <% end %>
-
-    <%= link_to_add_variant " + Add Variant", f, :income_variants %>
+    <%= link_to_add_variant raw('<i class="icon-plus-sign icon-white"></i> Add Variant'), f, :income_variants %>
     <div class="clearfix"></div>
-    <div class="control-group">
-      <%= f.hidden_field :_destroy %>
-      <%= link_to "Remove Quote", '#', class: "btn remove_quote", id: "q_#{f.object.id}" %>
-    </div>
+
+
+    <table class="table table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Factor</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <%= f.simple_fields_for :cost_items, defaults: { label: false, wrapper_html: { class: 'cost_item_field' }, 
+                                              input_html: { class:'input-mini' } } do |builder| %>
+        <tr>
+          <td><%= builder.object.id %></td>
+          <td><%= builder.input :name %></td>
+          <td><%= builder.input :single_cost %></td>
+          <td><%= builder.input :factor_type, collection: builder.object.factor_types %></td>
+          <td><%= builder.object.total_cost %></td>
+        </tr>
+          
+        <% end %>
+
+      </tbody>
+    </table>
+    <%# link_to_add_variant raw('<i class="icon-plus-sign icon-white"></i> Add Cost Item'), f, :income_variants %>  
   </fieldset>
 </div>

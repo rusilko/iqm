@@ -20,13 +20,13 @@ class Quote < ActiveRecord::Base
 
   attr_accessible :name, :number_of_days, :event_type, :income_variants_attributes, :cost_items_attributes
 
-  validates :name, presence: true,
-                   length:   { within: 3..15 }
+  # validates :name, presence: true,
+                   # length:   { within: 3..15 }
 
   validates :number_of_days, numericality: { greater_than: 0, less_than: 11},
                              allow_nil:    true
 
-  validates :offer_id, presence: true
+  #validates :offer_id, presence: true
 
-   default_scope order: 'id'
+  default_scope order: 'id'
 end 

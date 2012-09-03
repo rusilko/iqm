@@ -10,7 +10,7 @@ module OffersHelper
     fields = f.simple_fields_for(association, new_object, child_index: id, defaults: { label: false, wrapper_html: { class: 'income_variant_field' }, input_html: { class:'input-mini' } } ) do |builder|
       render(association.to_s.singularize + "_fields", f: builder)
     end
-    link_to(name, '#', class: "btn btn-info add_variant", data: {id: id, fields: fields.gsub("\n", "")})
+    link_to(name, '#', class: "btn btn-success add_variant", data: {id: id, fields: fields.gsub("\n", "")})
   end
 
   def link_to_add_quote(name, f, association, index) 
@@ -21,6 +21,25 @@ module OffersHelper
       render(association.to_s.singularize + "_fields", f: builder, i: index)
     end
     new_tab = content_tag(:li, content_tag(:a, "New Quote", href: "#quote#{id}", data: { toggle: "tab" }, id: "q_#{id}_tab"))
-    link_to(name, '#', class: "btn add_quote", data: {id: id, fields: fields.gsub("\n", ""), tab: new_tab.gsub("\n", "")} )
+    link_to(name, '#', class: "btn btn-success add_quote", data: {id: id, fields: fields.gsub("\n", ""), tab: new_tab.gsub("\n", "")} )
+  end
+
+  def link_to_add_cost_item(name, f, association, index) 
+
+  end
+
+  def field_with_prepend(builder, params_hash)
+    p = params_hash
+    text = p[:prepend_text] || p[:name]
+    ct = content_tag(:span, text.capitalize, class: 'add-on')+builder.input_field(p[:name], class: p[:input_html_class], collection: p[:collection])
+    if p[:wrapper_html_class] 
+      builder.input p[:name], label: false, wrapper: :prepend, wrapper_html: { class: p[:wrapper_html_class] } do
+        ct
+      end
+    else
+      builder.input p[:name], label: false, wrapper: :prepend  do
+        ct
+      end
+    end
   end
 end

@@ -41,20 +41,20 @@ describe Quote do
   end
 
   #Validations
-  describe "when name is not present" do
-    before { quote1.name = " " }
-    it { should_not be_valid }
-  end
+  # describe "when name is not present" do
+  #   before { quote1.name = " " }
+  #   it { should_not be_valid }
+  # end
 
-  describe "when name is too long" do
-    before { quote1.name = "a" * 16 }
-    it { should_not be_valid } 
-  end
+  # describe "when name is too long" do
+  #   before { quote1.name = "a" * 16 }
+  #   it { should_not be_valid } 
+  # end
 
-  describe "when name is too short" do
-    before { quote1.name = "a" * 2 }
-    it { should_not be_valid }
-  end
+  # describe "when name is too short" do
+  #   before { quote1.name = "a" * 2 }
+  #   it { should_not be_valid }
+  # end
 
   describe "when number of days is too small" do
     before { quote1.number_of_days = 0 }
@@ -72,9 +72,9 @@ describe Quote do
 
   #Associations
 
-  describe "when offer_id is not present" do
-    before { quote1.offer_id = nil }
-    it { should_not be_valid}
-  end
+  # describe "when offer_id is not present" do
+  #   before { quote1.offer_id = nil }
+  #   it { should_not be_valid}
+  # end
 
 end

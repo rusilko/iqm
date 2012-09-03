@@ -1,0 +1,28 @@
+<%= simple_form_for @offer, html: { class: 'form-horizontal' } do |f| %>
+
+  <% if @offer.errors.any? %>
+    <%= render 'offer_errors' %>
+  <% end %>
+
+  <fieldset>
+    <legend><%= controller.action_name.capitalize %> Offer</legend>
+    <%= field_with_prepend f, name: :name, wrapper_html_class: "offer_field" %>
+
+    <div class="tabbable">
+      <%= render 'quote_tabs' %>      
+      <div class="tab-content" >
+        <% index=0 %>
+        <%= f.simple_fields_for :quotes, defaults: { wrapper_html: {class: 'quote_field'}, input_html: { class:'input-mini' } }  do |builder| %>
+          <%= render 'quote_fields', f: builder, i: index %>
+        <% index+=1; end %>
+        <%= link_to_add_quote "+ Add Quote", f, :quotes, index %>
+      </div> 
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to 'Cancel', offers_path, :class => 'btn' %>
+    </div>
+  </fieldset>
+  
+<% end %>

@@ -1,13 +1,7 @@
 <fieldset class="income_variant_fieldset pull-left <%= "chosen" if f.object.currently_chosen %>">
-
-  <%= f.input :number_of_participants, :wrapper => :prepend, label: false do %>
-    <%= content_tag(:span, '#', class: 'add-on') %><%= f.input_field :number_of_participants, class:'input-mini' %>
-  <% end %>
-  <%= f.input :price_per_participant, :wrapper => :prepend, label: false do %>
-    <%= content_tag(:span, 'zł', class: 'add-on') %><%= f.input_field :price_per_participant, class:'input-mini' %>
-  <% end %>
+  <%= field_with_prepend f, name: :number_of_participants, input_html_class: 'input-mini',  prepend_text: "#" %>
+  <%= field_with_prepend f, name: :price_per_participant,  input_html_class: 'input-mini',  prepend_text: "$" %>
+  <%= f.input :currently_chosen, as: :boolean, wrapper_html: { class: "hidden" } %>
   <%= f.hidden_field :_destroy %>
-  <%= f.input :currently_chosen, as: :boolean, wrapper_html: { class: "hidden" } %> 
-
-  <%= link_to "x", '#', class: "remove_variant" %>
+  <%= link_to raw('<i class="icon-trash"></i>'), '#', class: "remove_variant" %>
 </fieldset>
