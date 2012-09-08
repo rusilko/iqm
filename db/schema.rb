@@ -11,14 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120831212649) do
+ActiveRecord::Schema.define(:version => 20120904215127) do
 
   create_table "cost_items", :force => true do |t|
     t.integer  "quote_id"
     t.string   "name"
     t.integer  "single_cost"
     t.string   "factor_type"
-    t.integer  "total_cost"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end

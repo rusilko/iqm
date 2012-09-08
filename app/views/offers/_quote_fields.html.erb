@@ -4,48 +4,64 @@
     <%= field_with_prepend f, name: :event_type, wrapper_html_class: "quote_field", input_html_class: "input-small",
                               prepend_text: "type", collection: %w(P2F P2P ITIL MoR) %>
     <%= field_with_prepend f, name: :number_of_days, wrapper_html_class: "quote_field", input_html_class: "input-micro", 
-                              prepend_text: "# of days" %>
+                              prepend_text: "# of days", type: "number", step: 1 %>
     <%= field_with_prepend f, name: :name, wrapper_html_class: "quote_field", input_html_class: "input-small" %>
 
-    <%= f.hidden_field :_destroy %>
-    <%= link_to raw('<i class="icon-trash icon-white"></i> Remove Quote'), '#', class: "btn btn-danger remove_quote", id: "q_#{f.object.id}" %>
 
+    <%= f.hidden_field :_destroy %>
+    <%= link_to raw('<i class="icon-trash"></i>'), '#', class: "remove_quote", id: "q_#{f.object.id}" %>
+    
     <div class="clearfix"></div>
 
     <%= f.simple_fields_for :income_variants, defaults: { label: false, wrapper_html: { class: 'income_variant_field' }, 
                                               input_html: { class:'input-mini' } } do |builder| %>
       <%= render 'income_variant_fields', f: builder %>
     <% end %>
-    <%= link_to_add_variant raw('<i class="icon-plus-sign icon-white"></i> Add Variant'), f, :income_variants %>
+    <%= link_to_add_variant raw('<i class="icon-plus-sign icon-white"></i>'), f, :income_variants %>
+    
+    <table class="table table-striped table-bordered table-hover pull-right totals">
+      <tbody>
+        <tr class="total_income">
+          <td>Income:</td>
+          <td><%= f.object.total_income %></td>
+        </tr>
+        <tr class="total_cost">
+          <td>Cost:</td>
+          <td><%= f.object.total_cost %></td>
+        </tr>
+        <tr class="total_gain">
+          <td>Gain:</td>
+          <td><%= f.object.total_income - f.object.total_cost %></td>
+        </tr>
+      </tbody>
+    </table>
+
     <div class="clearfix"></div>
 
 
-    <table class="table table-striped table-bordered table-hover">
+    <table class="table table-striped table-bordered table-hover cost_items_table">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Factor</th>
-          <th>Total</th>
+          <th class="no">#</th>
+          <th class="name">Name</th>
+          <th class="single_cost">Price</th>
+          <th class="factor_type">Factor</th>
+          <th class="total_label">Total</th>
+          <th class="trashbin"><i class="icon-trash"></i></th>
         </tr>
       </thead>
       <tbody>
-
-        <%= f.simple_fields_for :cost_items, defaults: { label: false, wrapper_html: { class: 'cost_item_field' }, 
-                                              input_html: { class:'input-mini' } } do |builder| %>
+        <% index=1 %>
+        <%= f.simple_fields_for :cost_items, defaults:   { label: false, wrapper_html: { class: 'cost_item_field' }, 
+                                             input_html: { class:'input_cost_item' } } do |builder| %>
+          <%= render 'cost_item_fields', f: builder, i: index %>
+        <% index+=1; end %>
         <tr>
-          <td><%= builder.object.id %></td>
-          <td><%= builder.input :name %></td>
-          <td><%= builder.input :single_cost %></td>
-          <td><%= builder.input :factor_type, collection: builder.object.factor_types %></td>
-          <td><%= builder.object.total_cost %></td>
+          <td colspan=4 class="quote_total_label">Total costs:</td>
+          <td class="quote_total_value" colspan=2><%= f.object.total_cost %></td>
         </tr>
-          
-        <% end %>
-
       </tbody>
     </table>
-    <%# link_to_add_variant raw('<i class="icon-plus-sign icon-white"></i> Add Cost Item'), f, :income_variants %>  
+    <%= link_to_add_cost_item raw('<i class="icon-plus-sign icon-white"></i> Add Cost Item'), f, :cost_items %>
   </fieldset>
 </div>

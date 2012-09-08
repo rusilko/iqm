@@ -29,4 +29,14 @@ class Quote < ActiveRecord::Base
   #validates :offer_id, presence: true
 
   default_scope order: 'id'
+
+  def total_cost
+    self.cost_items.map { |n| n.cost_item_total }.inject(0) { |acc,n| acc+n }
+  end
+
+  def total_income
+    current_income_variant = self.income_variants.find_by_currently_chosen(true)
+    (current_income_variant.try(:number_of_participants) || 0) * (current_income_variant.try(:price_per_participant) || 0)
+  end
+  
 end 

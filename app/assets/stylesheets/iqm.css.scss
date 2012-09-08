@@ -7,11 +7,42 @@
   
   border-top-left-radius:           5px; 
   border-top-right-radius:          5px;
+
   -webkit-border-top-left-radius:   5px;
-  
   -webkit-border-top-right-radius:  5px;
+  
   -moz-border-radius-topright:      5px;
   -moz-border-radius-topleft:       5px;
+}
+
+@mixin btn-round-bottom {
+  border-radius:                       0px;
+  -webkit-border-radius:               0px;
+  -moz-border-radius:                  0px;
+  
+  border-bottom-left-radius:           5px; 
+  border-bottom-right-radius:          5px;
+
+  -webkit-border-bottom-left-radius:   5px;
+  -webkit-border-bottom-right-radius:  5px;
+  
+  -moz-border-radius-bottomright:      5px;
+  -moz-border-radius-bottomleft:       5px;
+}
+
+@mixin btn-round-right {
+  border-radius:                       0px;
+  -webkit-border-radius:               0px;
+  -moz-border-radius:                  0px;
+  
+  border-top-right-radius:             5px; 
+  border-bottom-right-radius:          5px;
+
+  -webkit-border-top-right-radius:     5px;
+  -webkit-border-bottom-right-radius:  5px;
+
+  -moz-border-radius-topright:         5px;  
+  -moz-border-radius-bottomright:      5px;
 }
 
 body {
@@ -81,12 +112,34 @@ body {
 }
 
 .remove_quote {
-  float: right;
+  @extend .close;
   margin-top: 10px;
 }
 
+.totals {
+  width: 150px;
+  font-weight: bold;
+  tr {
+    td {
+      text-align: right;
+      &:last-child{
+        width: 100px;
+      }
+    }
+    &.total_gain{
+      td:last-child {
+        color: red;
+      }
+    }
+  }
+}
+
 .add_variant { // button!
-  margin-bottom: 10px;
+  margin-top: 65px;
+  margin-left: -10px;
+  @include btn-round-right;
+  padding-left: 4px;
+  width: 6px;
 }
 
 .income_variant_fieldset {
@@ -102,8 +155,15 @@ body {
   }
 }
 
-.income_variant_field, .cost_item_field {
+.income_variant_field {
   margin: 0px 0px 4px 0px !important;
+  .controls {
+    margin-left: 0px;
+  }
+}
+
+.cost_item_field {
+  margin: 0px 0px 0px 0px !important;
   .controls {
     margin-left: 0px;
   }
@@ -114,5 +174,88 @@ body {
   font-size: 15px;
   line-height: 10px;
 }
+
+
+.cost_items_table {
+  margin-bottom: 0px;
+  th {
+    text-align: center;
+  }
+  td, th { 
+    vertical-align: middle; 
+    padding: 4px;  
+    &.name { 
+      
+    }
+    &.no {
+      width: 20px;
+      text-align: center;
+    }
+    &.single_cost {
+      width: 64px;
+      input { text-align:right; }
+    }
+    &.factor_type {
+      width: 80px;
+      select { text-align:right; }
+    }
+    &.total_label, &.total {
+      width: 64px;
+    }
+    &.total{
+      input { text-align:right; }      
+    }
+    &.trashbin{
+      width: 20px;
+      text-align: center;
+    }
+
+    .input_cost_item {
+      border: 0px !important;
+      background-color: transparent !important;
+      -webkit-box-shadow: none !important;
+      -moz-box-shadow: none !important;
+      box-shadow: none !important;
+      -webkit-transition: none !important;
+      -moz-transition: none !important;
+      -o-transition: none !important;
+      transition: none !important;
+      &:focus{
+        border-color: transparent !important;
+        outline: 0 !important;
+        outline: 0 !important;
+        -webkit-box-shadow: 0 !important;
+        -moz-box-shadow: 0 !important;
+        box-shadow: 0 !important;
+      }
+    }
+    .remove_cost_item { //trashbin
+      @extend .close;
+      float: none;
+      font-size: inherit;
+    }
+  }
+  td.quote_total_label, td.quote_total_value {
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  td.quote_total_value {
+    padding-right: 40px;
+  }
+}
+
+.new_row_star {
+  margin-left: -3px;
+}
+
+.add_cost_item {
+  @include btn-round-bottom;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  border-top: none;
+}
+
 
 @import "bootstrap-responsive";

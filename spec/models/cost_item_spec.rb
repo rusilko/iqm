@@ -7,7 +7,6 @@
 #  name        :string(255)
 #  single_cost :integer
 #  factor_type :string(255)
-#  total_cost  :integer
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #
