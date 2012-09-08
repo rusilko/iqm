@@ -110,7 +110,7 @@ jQuery(function() {
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
     //console.log($(this).siblings('table:last').find('tbody:last'));
-    $(this).siblings('table:last').find('tr:last').prev().after($(this).data('fields').replace(regexp, time));
+    $(this).siblings('table:last').find('tr:last').before($(this).data('fields').replace(regexp, time));
     event.preventDefault();
   });
 
