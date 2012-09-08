@@ -50,7 +50,7 @@ jQuery(function() {
     if (event.type == "click") {
       hidden_checkbox = $(this).find('input[type="checkbox"]');
       // uncheck currently checked checkbox and remove greyish class
-      $(this).siblings().find('input[type="checkbox"][checked="checked"]').prop('checked', false);
+      $(this).siblings().find('input[type="checkbox"]').prop('checked', false);
       $(this).siblings('.income_variant_fieldset').removeClass("chosen");
       // check new checkbox (the one in the clicked fieldset)
       hidden_checkbox.prop('checked', true);
