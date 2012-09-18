@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120904215127) do
+ActiveRecord::Schema.define(:version => 20120917182758) do
 
   create_table "cost_items", :force => true do |t|
     t.integer  "quote_id"
@@ -26,9 +26,9 @@ ActiveRecord::Schema.define(:version => 20120904215127) do
     t.integer  "quote_id"
     t.integer  "number_of_participants"
     t.integer  "price_per_participant"
-    t.datetime "created_at",             :null => false
-    t.datetime "updated_at",             :null => false
-    t.boolean  "currently_chosen"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+    t.boolean  "currently_chosen",       :default => false
   end
 
   create_table "offers", :force => true do |t|

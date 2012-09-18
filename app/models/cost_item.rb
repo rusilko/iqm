@@ -18,10 +18,8 @@ class CostItem < ActiveRecord::Base
 
   attr_accessible :name, :single_cost, :factor_type
 
-  #validates :name, presence: true
-  validates :single_cost, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
+  validates :single_cost, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :factor_type, inclusion: { in: FACTOR_TYPES.keys.map {|k| k.to_s}, message: "%{value} is not a valid factor_type" }, allow_blank: true
-  #validates :quote_id, presence: true
 
   default_scope :order => 'id'
 
@@ -30,15 +28,18 @@ class CostItem < ActiveRecord::Base
   end
 
   def cost_item_total
+    sc = single_cost || 0
     factor = case factor_type
-    when "per_day"
-      self.quote.number_of_days
-    when "per_person"
-      self.quote.income_variants.find_by_currently_chosen(true).try(:number_of_participants)
-    when "per_event"
-      1
+      when "per_day"
+        quote.try(:number_of_days) || 0
+      when "per_person"
+        quote.current_income_variant.try(:number_of_participants) || 0
+      when "per_event"
+        1
+      else
+        0
     end
-    factor && single_cost ? single_cost*factor : 0
+    sc * factor
   end
 
 end

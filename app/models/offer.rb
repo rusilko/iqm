@@ -17,5 +17,4 @@ class Offer < ActiveRecord::Base
   validates :name,  presence: true,
                     length: { within: 3..50 }
 
-
 end
