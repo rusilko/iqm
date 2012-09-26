@@ -15,7 +15,7 @@ FactoryGirl.define do
   end
 
   factory :cost_item do
-    sequence(:name) { "Cost item #{n}" }
+    sequence(:name) { |n| "Cost item #{n}" }
     single_cost 100
     factor_type "per_day"
     quote

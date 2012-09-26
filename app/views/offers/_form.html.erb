@@ -14,13 +14,13 @@
         <% index=0 %>
         <%= f.simple_fields_for :quotes, defaults: { wrapper_html: {class: 'quote_field'}, input_html: { class:'input-mini' } }  do |builder| %>
           <%= render 'quote_fields', f: builder, i: index %>
-        <% index+=1; end %>
-        <%= link_to_add_quote "+ Add Quote", f, :quotes, index %>
+        <% index+=1; end %>        
       </div> 
     </div>
 
     <div class="form-actions">
-      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to_add_quote "+ Add Quote", f, :quotes, index %>
+      <%= f.submit nil, :class => 'btn btn-primary', id: 'create_or_update_offer_btn' %>
       <%= link_to 'Cancel', offers_path, :class => 'btn' %>
     </div>
   </fieldset>

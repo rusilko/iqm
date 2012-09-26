@@ -6,7 +6,7 @@ gem 'bootstrap-sass', git: 'git://github.com/thomas-mcdonald/bootstrap-sass', br
 #gem "bootstrap-sass", :git => 'git://github.com/dszczyt/bootstrap-sass.git'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'pg', '0.12.2'
-#gem 'faker', '1.0.1'
+gem 'faker', '1.0.1'
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.6'
 #gem 'friendly_id', '~> 4.0.7'
@@ -23,11 +23,13 @@ gem 'heroku'
 
 group :development, :test do
   gem 'rspec-rails', '2.8.1'
+  gem 'capybara', '1.1.2'
   gem 'guard-rspec', '0.5.5'
   gem 'annotate', '~> 2.4.1.beta'
   gem 'guard-livereload'
   gem 'pry-rails'
   gem 'nifty-generators'
+  gem 'database_cleaner'
 end
 
 # Gems used only for assets and not required
@@ -44,9 +46,9 @@ end
 group :test do
   # Pretty printed test output
   gem 'turn', '0.8.2', :require => false
-  gem 'capybara', '1.1.2'
   gem 'guard-spork', '0.3.2'
   gem 'spork', '0.9.0'
+  gem 'launchy'
   # System-dependent gems
   gem 'rb-inotify', '0.8.8'
   gem 'libnotify', '0.5.9'

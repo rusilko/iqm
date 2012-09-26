@@ -1,14 +1,51 @@
 jQuery(function() {
-  
-  // Remove Income Variant box
-  $('form').on('click', '.remove_variant', function(event) {
-    //set _destroy field value, so variant is permanently removed on form submit
+
+// Adding and removing Quote tabs and quote tab-panes
+
+  // Add a Quote tab and a Quote tab-pane
+  $('#add_quote_btn').click( function(event) {
+    var regexp, time;
+    time = new Date().getTime();
+    regexp = new RegExp($(this).data('id'), 'g');
+    // add tab-pane
+    $('.tab-content').append($(this).data('fields').replace(regexp, time));
+    // add tab 
+    $('#quote_tabs a:last').before($(this).data('tab').replace(regexp, time));
+    // show freshly added tab-pane
+    $('#quote_tabs').find('a[id="q_'+time+'_tab"]').tab('show');
+    event.preventDefault();
+  });
+
+  // Simulate "+ Add Quote" button click
+  $('#add_quote_top_btn').click( function() {
+    $("#add_quote_btn").click();
+  });
+
+  // Remove Quote tab and a Quote tab-pane
+  $('form').on('click', '.remove_quote_btn', function(event) {
+    // set hidden field so quote is removed from db after offer update
     $(this).prev('input[type=hidden]').val('1');
-    //hide the entire variant box
+    // hide tab-pane
+    $(this).closest('.tab-pane').hide();
+    // hide tab
+    var tab_id = $(this).prop('id')+'_tab';
+    $('#'+tab_id).hide();
+    // show first nothidden tab
+    $('#quote_tabs').find('a[style!="display: none; "]:first').tab('show');
+    event.preventDefault();
+  });
+
+// Adding, removing and toggling Income Variants
+  
+  // Remove an Income Variant box
+  $('form').on('click', '.remove_variant_btn', function(event) {
+    // set _destroy field value, so variant is removed from db on form submit
+    $(this).prev('input[type=hidden]').val('1');
+    // hide the entire variant box
     $(this).closest('fieldset').hide();
-    //uncheck checkbox
+    // uncheck checkbox
     $(this).siblings('.hidden').find('input[type="checkbox"]').prop('checked', false);
-    //remove "chosen" class so update_cost_item_total function may recalculate properly
+    // remove "chosen" class so update_cost_item_total function may recalculate properly
     $(this).closest('fieldset').removeClass("chosen");
         
     //Update per_person item_costs totals (to 0)
@@ -36,26 +73,35 @@ jQuery(function() {
   });  
 
   // Add an Income Variant box
-  $('form').on('click', '.add_variant', function(event) {
+  $('form').on('click', '.add_variant_btn', function(event) {
     var regexp, time;
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
+    // Add iv box
     $(this).before($(this).data('fields').replace(regexp, time));
     event.preventDefault();
   });
 
   // Income Variants toggling
   $('body').on('click change', '.income_variant_fieldset', function(event) {
-    //Toggle income variant fieldset only on click
+    // Toggle income variant fieldset only on click
     if (event.type == "click") {
       hidden_checkbox = $(this).find('input[type="checkbox"]');
-      // uncheck currently checked checkbox and remove greyish class
+      // uncheck all currently checked checboxes (should be 1)
       $(this).siblings().find('input[type="checkbox"]').prop('checked', false);
+      // remove greyish class
       $(this).siblings('.income_variant_fieldset').removeClass("chosen");
       // check new checkbox (the one in the clicked fieldset)
       hidden_checkbox.prop('checked', true);
+      // add greyish class if checking was succesful
       if(hidden_checkbox.is(':checked')) { $(this).addClass("chosen"); }
     }
+
+    // Find and update QUOTE TOTAL income value
+    number_of_participants = $(this).find('input[name*="number_of_participants"]').prop('value'); 
+    price_per_participant  = $(this).find('input[name*="price_per_participant"]').prop('value'); 
+    quote_total_income =     $(this).siblings('table').find('tr.total_income td:last');
+    quote_total_income.text(number_of_participants*price_per_participant);
 
     //Update per_person item_costs totals on click or on input change
     $(this).siblings('table').find('td.factor_type select').each(function(){
@@ -64,12 +110,6 @@ jQuery(function() {
       }
     });
 
-    // find and update QUOTE TOTAL income cell
-    number_of_participants = $(this).find('input[name*="number_of_participants"]').prop('value'); 
-    price_per_participant  = $(this).find('input[name*="price_per_participant"]').prop('value'); 
-    quote_total_income = $(this).siblings('table').find('tr.total_income td:last');
-    quote_total_income.text(number_of_participants*price_per_participant);
-
     // find and update QUOTE TOTAL gain cell
     income = $(this).siblings('table').find('tr.total_income td:last').text();
     quote_total_gain = $(this).siblings('table').find('tr.total_gain td:last');
@@ -77,46 +117,22 @@ jQuery(function() {
     quote_total_gain.text(income - cost_sum);
   });
 
-
-  // Remove Quote tab
-  $('form').on('click', '.remove_quote', function(event) {
-    $(this).prev('input[type=hidden]').val('1');
-    $(this).closest('.tab-pane').hide();
-    var tab_id = $(this).prop('id')+'_tab';
-    $('#'+tab_id).hide();
-    $('#quote_tabs').find('a[style!="display: none; "][class!="add_quote_from_tab_bar"]').first().tab('show');
-    event.preventDefault();
-  });
-
-  // Add a Quote tab
-  $('form').on('click', '.add_quote', function(event) {
-    var regexp, time;
-    time = new Date().getTime();
-    regexp = new RegExp($(this).data('id'), 'g');
-    $(this).before($(this).data('fields').replace(regexp, time));
-    $('#quote_tabs a:last').before($(this).data('tab').replace(regexp, time));
-    var new_tab_id = 'q_'+time+'_tab';
-    $('#quote_tabs').find('a[id="'+new_tab_id+'"]').tab('show');
-    event.preventDefault();
-  });
-
-  // Simulate real "+ Add Quote" button click
-  $('.add_quote_top_btn').click( function() {
-      $(".add_quote").click();
-    });
+// Adding, removing and toggling Cost Items
 
   // Add Cost Item row
-  $('form').on('click', '.add_cost_item', function(event) {
+  $('form').on('click', '.add_cost_item_btn', function(event) {
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
-    //console.log($(this).siblings('table:last').find('tbody:last'));
+    // Add ci row
     $(this).siblings('table:last').find('tr:last').before($(this).data('fields').replace(regexp, time));
     event.preventDefault();
   });
 
   // Remove Cost Item row
-  $('form').on('click', '.remove_cost_item', function(event) {
+  $('form').on('click', '.remove_cost_item_btn', function(event) {
+    // mark destroy field as 1
     $(this).prev('input[type=hidden]').val('1');
+    // hide ci row
     $(this).closest('tr').hide();
     event.preventDefault();
   }); 
@@ -184,5 +200,7 @@ jQuery(function() {
       }
     });
   });
+
+
 
 });
