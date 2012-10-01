@@ -35,10 +35,10 @@ module OffersHelper
 
   def field_with_prepend(builder, params_hash)
     p = params_hash
-    text = p[:prepend_text] || p[:name]
+    prepend = p[:prepend_text] || p[:name]
     type = p[:type] || "text"
     as = p[:as]
-    ct = content_tag(:span, raw(text.capitalize), class: 'add-on')+builder.input_field(p[:name], as: p[:as], class: p[:input_html_class], collection: p[:collection], type: type, step: p[:step])
+    ct = content_tag(:span, raw(prepend), class: 'add-on')+builder.input_field(p[:name], as: p[:as], class: p[:input_html_class], collection: p[:collection], type: type, step: p[:step])
     if p[:wrapper_html_class] 
       builder.input p[:name], label: false, wrapper: :prepend, wrapper_html: { class: p[:wrapper_html_class] } do
         ct
