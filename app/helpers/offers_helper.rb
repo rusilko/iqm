@@ -37,7 +37,8 @@ module OffersHelper
     p = params_hash
     text = p[:prepend_text] || p[:name]
     type = p[:type] || "text"
-    ct = content_tag(:span, text.capitalize, class: 'add-on')+builder.input_field(p[:name], class: p[:input_html_class], collection: p[:collection], type: type, step: p[:step])
+    as = p[:as]
+    ct = content_tag(:span, raw(text.capitalize), class: 'add-on')+builder.input_field(p[:name], as: p[:as], class: p[:input_html_class], collection: p[:collection], type: type, step: p[:step])
     if p[:wrapper_html_class] 
       builder.input p[:name], label: false, wrapper: :prepend, wrapper_html: { class: p[:wrapper_html_class] } do
         ct
@@ -50,7 +51,11 @@ module OffersHelper
   end
 
   def iconize(string,white=false)
-    icon-white = "icon-white" if white
-    content_tag(:i, "", class: "icon-#{string} #{icon-white}")
+    icon_white = "icon-white" if white
+    content_tag(:i, "", class: "icon-#{string} #{icon_white}")
+  end
+
+  def n_to_pln(n)
+    number_to_currency(n, locale: 'pl', delimiter: '', separator: '.', precision: 2, unit: '')
   end
 end

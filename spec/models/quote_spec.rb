@@ -9,6 +9,8 @@
 #  number_of_days :integer
 #  created_at     :datetime        not null
 #  updated_at     :datetime        not null
+#  event_date     :date
+#  vat            :string(255)
 #
 
 require 'spec_helper'
@@ -41,13 +43,20 @@ describe Quote do
   it { should respond_to(:income_variants) }
   it { should respond_to(:cost_items) }
   it { should respond_to(:total_cost) }
+  it { should respond_to(:total_cost_brutto) }
   it { should respond_to(:total_income) }
+  it { should respond_to(:total_income_brutto) }
+  it { should respond_to(:event_date) }
+  it { should respond_to(:vat) }
 
-  its(:offer)           { should == offer }
-  its(:income_variants) { should == [iv1, iv2, iv3] }
-  its(:cost_items)      { should == [ci1, ci2, ci3] }
-  its(:total_income)    { should == 10 * 1500 } # this is also tested more thoroughly down below
-  its(:total_cost)      { should == 10 * 100 + 200 * 10 + 300 } # this is also tested more thoroughly down below
+  its(:offer)               { should == offer }
+  its(:income_variants)     { should == [iv1, iv2, iv3] }
+  its(:cost_items)          { should == [ci1, ci2, ci3] }
+  its(:total_income)        { should == 10 * 1500 } # this is also tested more thoroughly down below
+  its(:total_income_brutto) { should == 10 * 1500 * 1.23 }
+  its(:total_cost)          { should == 10 * 100 + 200 * 10 + 300 } # this is also tested more thoroughly down below
+  its(:total_cost_brutto)   { should == (10 * 100 + 200 * 10 + 300) * 1.23 } # to test
+  its(:vat)                 { should == "23" }
 
   it { should be_valid }
 
@@ -64,6 +73,18 @@ describe Quote do
   describe "when number of days is too small" do
     before { quote.number_of_days = 0 }
     it { should_not be_valid }
+  end
+
+  describe "when vat is not in allowed enum values" do
+    before { ci1.vat = "(0...2).map{65.+(rand(25)).chr}.join" }
+    it { should_not be_valid }
+  end
+
+  %w(zw 23).each do |vat|
+    describe "when vat is in allowed enum values" do
+      before { ci1.vat = vat }
+      it { should be_valid }
+    end
   end
 
   # TO-DO

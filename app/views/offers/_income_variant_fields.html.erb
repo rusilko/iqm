@@ -1,5 +1,5 @@
 <fieldset class="income_variant_fieldset pull-left <%= "chosen" if f.object.currently_chosen %>">
-  <%= field_with_prepend f, name: :number_of_participants, input_html_class: 'input-mini',  prepend_text: "#", type: "number", step: 1  %>
+  <%= field_with_prepend f, name: :number_of_participants, input_html_class: 'input-mini',  prepend_text: iconize("user"), type: "number", step: 1  %>
   <%= field_with_prepend f, name: :price_per_participant,  input_html_class: 'input-mini',  prepend_text: "$", type: "number", step: 50 %>
   <%= f.input :currently_chosen, as: :boolean, wrapper_html: { class: "hidden" } %>
   <%= f.hidden_field :_destroy %>

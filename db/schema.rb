@@ -11,24 +11,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120917182758) do
+ActiveRecord::Schema.define(:version => 20120930212504) do
 
   create_table "cost_items", :force => true do |t|
     t.integer  "quote_id"
     t.string   "name"
-    t.integer  "single_cost"
     t.string   "factor_type"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+    t.string   "vat"
+    t.decimal  "single_cost", :precision => 8, :scale => 2
   end
 
   create_table "income_variants", :force => true do |t|
     t.integer  "quote_id"
     t.integer  "number_of_participants"
-    t.integer  "price_per_participant"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
-    t.boolean  "currently_chosen",       :default => false
+    t.datetime "created_at",                                                              :null => false
+    t.datetime "updated_at",                                                              :null => false
+    t.boolean  "currently_chosen",                                     :default => false
+    t.decimal  "price_per_participant",  :precision => 8, :scale => 2
   end
 
   create_table "offers", :force => true do |t|
@@ -42,8 +43,10 @@ ActiveRecord::Schema.define(:version => 20120917182758) do
     t.string   "name"
     t.string   "event_type"
     t.integer  "number_of_days"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.date     "event_date"
+    t.string   "vat",            :default => "23"
   end
 
 end

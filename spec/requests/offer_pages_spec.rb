@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "OfferPages" do
-
   subject { page }
   before  { 3.times { FactoryGirl.create(:offer) } }
   
@@ -74,9 +73,20 @@ describe "OfferPages" do
     end    
   end 
 
-  describe "edit offer page" do  # or a new offer page for that matter, I will just test on edit page
-    describe "when manipulating quotes" do
-      let(:offer)   { FactoryGirl.create(:offer) }
+  describe "edit offer OfferPages" do  # or a new offer page for that matter, I will just test on edit page
+    let(:offer)   { FactoryGirl.create(:offer) }
+
+    describe "quote fields" do
+      let!(:quote) { FactoryGirl.create(:quote, name: "kalk1", offer: offer) }
+      before { visit edit_offer_path(offer) }
+
+      it { should have_select('offer_quotes_attributes_0_event_type') }
+      it { should have_field('offer_quotes_attributes_0_number_of_days') }
+      it { should have_field('offer_quotes_attributes_0_name', with: 'kalk1') }
+      it { should have_field('offer_quotes_attributes_0_event_date') }
+    end
+
+    describe "when manipulating quotes" do      
       before        { visit edit_offer_path(offer) }
       
       it { should have_selector('title', text: "Edit #{offer.name}") }
@@ -101,8 +111,8 @@ describe "OfferPages" do
           expect { click_on 'create_or_update_offer_btn' }.to change(offer.quotes, :count).by(1)
         end
 
-        it "should have name, type and # of days fields properly saved to db" do
-          pending "how to find the fields?"
+        it "should have name, type, date and # of days fields and should properly save them to db" do
+          pending
         end
 
       end
@@ -129,7 +139,6 @@ describe "OfferPages" do
     end
 
     describe "when manipulating income variants" do
-      let(:offer)       { FactoryGirl.create(:offer) }
       let!(:quote)      { FactoryGirl.create(:quote, name: "kalk1", offer: offer) }
       let(:add_iv_btn)  { page.find('.tab-content').first('.tab-pane').find('.add_variant_btn') }
       let(:rmv_iv_btn)  { page.find('.tab-content').first('.tab-pane').find('fieldset').first('.income_variant_fieldset').find('.remove_variant_btn') }
@@ -202,9 +211,10 @@ describe "OfferPages" do
         end
       end
 
-      describe "calucating total income", js: true do
+      describe "calucating total income and gain", js: true do
         let!(:iv1) { FactoryGirl.create(:income_variant, number_of_participants: 10, price_per_participant: 1000, currently_chosen: true, quote: quote) }
         let!(:iv2) { FactoryGirl.create(:income_variant, number_of_participants: 15, price_per_participant: 1000, quote: quote) }
+        let!(:ci1) { FactoryGirl.create(:cost_item, single_cost: 100, factor_type: 'per_event', quote: quote) }
         let(:iv1_box) { page.find('.tab-content').first('.tab-pane').find('fieldset').all('.income_variant_fieldset')[0] }
         let(:iv2_box) { page.find('.tab-content').first('.tab-pane').find('fieldset').all('.income_variant_fieldset')[1] }
         before do 
@@ -212,30 +222,31 @@ describe "OfferPages" do
         end
 
         it "should have value of currently checked iv" do
-          page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_income td', text: '10000')
+          page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_income td', text: '10000.00')
           iv2_box.click
-          page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_income td', text: '15000')
+          page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_income td', text: '15000.00')
         end
 
-        it "should change value upon changing values of fields inside iv box" do
-          iv1_box.fill_in('offer[quotes_attributes][0][income_variants_attributes][0][number_of_participants]', with: '20')
-          iv1_box.click
-          page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_income td', text: '20000')
-          iv1_box.fill_in('offer[quotes_attributes][0][income_variants_attributes][0][price_per_participant]', with: '2000')
-          iv1_box.click
-          page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_income td', text: '40000')
-        end
+        # moved to another spec for trouble shooting
+        # it "should change value upon changing values of fields inside iv box" do
+        #   iv1_box.fill_in('offer[quotes_attributes][0][income_variants_attributes][0][number_of_participants]', with: '20')
+        #   iv1_box.click
+        #   page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_income td', text: '20000')
+        #   iv1_box.fill_in('offer[quotes_attributes][0][income_variants_attributes][0][price_per_participant]', with: '2000')
+        #   iv1_box.click
+        #   page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_income td', text: '40000')
+        # end
 
-        it "should have value of 0 when currently checked iv is removed" do
+        it "should have value of 0 when currently checked iv is removed and update total gaun" do
           iv1_box.click
           iv1_box.find('.remove_variant_btn').click
           page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_income td', text: '0')
+          page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td',   text: '-100')
         end
       end
     end
 
     describe "when manipulating cost items" do
-      let(:offer)       { FactoryGirl.create(:offer) }
       let!(:quote)      { FactoryGirl.create(:quote, number_of_days: 3, name: "kalk1", offer: offer) }
       let(:add_ci_btn)  { page.find('.tab-content').first('.tab-pane').find('.add_cost_item_btn') }
       let(:rmv_ci_btn)  { page.find('.tab-content').first('.tab-pane').first('.remove_cost_item_btn') }
@@ -280,13 +291,13 @@ describe "OfferPages" do
           let!(:ci1) { FactoryGirl.create(:cost_item, quote: quote) } # 100 per day
           it "should have proper cost item total cost" do 
             visit edit_offer_path(offer)
-            page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '300')
+            page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '300.00')
           end
 
           it "should have proper total cost" do
             visit edit_offer_path(offer)
-            page.should have_selector('td.quote_total_value', text: '300')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '300')    
+            page.should have_selector('td.quote_total_value', text: '300.00')
+            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '300.00')    
           end
         end
 
@@ -295,14 +306,14 @@ describe "OfferPages" do
           let!(:iv1) { FactoryGirl.create(:income_variant, quote: quote, currently_chosen: true) } # 10 participants per 1500
           it "should have proper cost item total cost" do 
             visit edit_offer_path(offer)
-            page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '1000')
+            page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '1000.00')
           end
 
           it "should have proper total cost and total gain" do
             visit edit_offer_path(offer)
-            page.should have_selector('td.quote_total_value', text: '1000')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '1000')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '14000')    
+            page.should have_selector('td.quote_total_value', text: '1000.00')
+            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '1000.00')
+            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '14000.00')    
           end          
         end
 
@@ -310,7 +321,7 @@ describe "OfferPages" do
           let!(:ci1) { FactoryGirl.create(:cost_item, quote: quote, single_cost: 100, factor_type: 'per_event') } # 100 per event
           it "should have proper cost item total cost" do 
             visit edit_offer_path(offer)
-            page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '100')
+            page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '100.00')
           end 
         end
 
@@ -324,50 +335,53 @@ describe "OfferPages" do
           
           it "should have proper cost item total cost and total" do 
             visit edit_offer_path(offer)
-            page.find('.tab-content').first('.tab-pane').all('.total')[0].should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '1000')
-            page.find('.tab-content').first('.tab-pane').all('.total')[1].should have_field('offer[quotes_attributes][0][cost_items_attributes][1][cost_item_total]', with: '2000')
+            page.find('.tab-content').first('.tab-pane').all('.total')[0].should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '1000.00')
+            page.find('.tab-content').first('.tab-pane').all('.total')[1].should have_field('offer[quotes_attributes][0][cost_items_attributes][1][cost_item_total]', with: '2000.00')
           end
 
           it "should have proper total cost and total gain" do
             visit edit_offer_path(offer)
-            page.should have_selector('td.quote_total_value', text: '3000')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '3000')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '12000')    
+            page.should have_selector('td.quote_total_value', text: '3000.00')
+            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '3000.00')
+            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '12000.00')    
           end
 
           describe "when changing iv number_of_participants field" do
-            it "should update both cost item totals" do
-              visit edit_offer_path(offer)
-              iv1_box.fill_in('offer[quotes_attributes][0][income_variants_attributes][0][number_of_participants]', with: '20')
-              iv1_box.click
-              page.find('.tab-content').first('.tab-pane').all('.total')[0].should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '2000')
-              page.find('.tab-content').first('.tab-pane').all('.total')[1].should have_field('offer[quotes_attributes][0][cost_items_attributes][1][cost_item_total]', with: '4000')
-            end
 
-            it "should have proper total cost and total gain" do
-              visit edit_offer_path(offer)
-              iv1_box.fill_in('offer[quotes_attributes][0][income_variants_attributes][0][number_of_participants]', with: '20')
-              iv1_box.click
-              page.should have_selector('td.quote_total_value', text: '6000')
-              page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '6000')
-              page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '24000')     
-            end
+            # moved to another spec for trouble shooting
+            # it "should update both cost item totals" do
+            #   visit edit_offer_path(offer)
+            #   iv1_box.fill_in('offer[quotes_attributes][0][income_variants_attributes][0][number_of_participants]', with: '20')
+            #   iv1_box.click
+            #   page.find('.tab-content').first('.tab-pane').all('.total')[0].should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '2000')
+            #   page.find('.tab-content').first('.tab-pane').all('.total')[1].should have_field('offer[quotes_attributes][0][cost_items_attributes][1][cost_item_total]', with: '4000')
+            # end
+
+            # it "should have proper total cost and total gain" do
+            #   visit edit_offer_path(offer)
+            #   iv1_box.fill_in('offer[quotes_attributes][0][income_variants_attributes][0][number_of_participants]', with: '20')
+            #   iv1_box.click
+            #   page.should have_selector('td.quote_total_value', text: '6000')
+            #   page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '6000')
+            #   page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '24000')     
+            # end
           end
 
           describe "when toggling income variants" do
-            it "should update both cost item totals" do
-              visit edit_offer_path(offer)
-              iv2_box.click
-              page.find('.tab-content').first('.tab-pane').all('.total')[0].should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '2000')
-              page.find('.tab-content').first('.tab-pane').all('.total')[1].should have_field('offer[quotes_attributes][0][cost_items_attributes][1][cost_item_total]', with: '4000')
-            end
+            # moved to another spec for trouble shooting
+            # it "should update both cost item totals" do
+            #   visit edit_offer_path(offer)
+            #   iv2_box.click
+            #   page.find('.tab-content').first('.tab-pane').all('.total')[0].should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '2000')
+            #   page.find('.tab-content').first('.tab-pane').all('.total')[1].should have_field('offer[quotes_attributes][0][cost_items_attributes][1][cost_item_total]', with: '4000')
+            # end
 
-            it "should have proper total cost" do
+            it "should have proper total cost and total gain" do
               visit edit_offer_path(offer)
               iv2_box.click
-              page.should have_selector('td.quote_total_value', text: '6000')
-              page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '6000')
-              page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '24000')     
+              page.should have_selector('td.quote_total_value', text: '6000.00')
+              page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '6000.00')
+              page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '24000.00')     
             end
           end
         end
@@ -376,50 +390,49 @@ describe "OfferPages" do
           let!(:ci1) { FactoryGirl.create(:cost_item, quote: quote, single_cost: 100, factor_type: 'per_day') } # 100 per day
           let!(:ci2) { FactoryGirl.create(:cost_item, quote: quote, single_cost: 200, factor_type: 'per_day') } # 100 per day
           let!(:ci3) { FactoryGirl.create(:cost_item, quote: quote, single_cost: 300, factor_type: 'per_event') } # 200 per day
-
-          it "should update two cost item totals" do
-            visit edit_offer_path(offer)
-            fill_in('offer_quotes_attributes_0_number_of_days', with: 5)
-            page.find('.tab-content').click
-            timeout(2) { page.find('.tab-content').click } 
-            page.find('.tab-content').first('.tab-pane').all('.total')[0].should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '500' )
-            page.find('.tab-content').first('.tab-pane').all('.total')[1].should have_field('offer[quotes_attributes][0][cost_items_attributes][1][cost_item_total]', with: '1000')
-            page.find('.tab-content').first('.tab-pane').all('.total')[2].should have_field('offer[quotes_attributes][0][cost_items_attributes][2][cost_item_total]', with: '300' )
-          end
+          # moved to another spec for trouble shooting
+          # it "should update two cost item totals" do
+          #   visit edit_offer_path(offer)
+          #   fill_in('offer_quotes_attributes_0_number_of_days', with: 5)
+          #   page.find('.tab-content').click
+          #   page.find('.tab-content').first('.tab-pane').all('.total')[0].should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '500' )
+          #   page.find('.tab-content').first('.tab-pane').all('.total')[1].should have_field('offer[quotes_attributes][0][cost_items_attributes][1][cost_item_total]', with: '1000')
+          #   page.find('.tab-content').first('.tab-pane').all('.total')[2].should have_field('offer[quotes_attributes][0][cost_items_attributes][2][cost_item_total]', with: '300' )
+          # end
           
-          it "should have proper total cost" do
-            visit edit_offer_path(offer)
-            fill_in('offer_quotes_attributes_0_number_of_days', with: 5)            
-            timeout(2) { page.find('.tab-content').click }
-            page.should have_selector('td.quote_total_value', text: '1800')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '1800')    
-          end
+          # it "should have proper total cost" do
+          #   visit edit_offer_path(offer)
+          #   fill_in('offer_quotes_attributes_0_number_of_days', with: 5)            
+          #   page.find('.tab-content').click
+          #   page.should have_selector('td.quote_total_value', text: '1800')
+          #   page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '1800')    
+          # end
         end
 
         describe "changing per_ factors", js: true do
           let!(:ci1) { FactoryGirl.create(:cost_item, quote: quote, single_cost: 100, factor_type: 'per_day') } # 100 per day
           let!(:iv1) { FactoryGirl.create(:income_variant, quote: quote, currently_chosen: true) } # 10 participants
+          # moved to another spec for trouble shooting
+          # it "should update cost items total and have proper total cost" do
+          #   visit edit_offer_path(offer)
+          #   page.select('daily', from: 'offer[quotes_attributes][0][cost_items_attributes][0][factor_type]')
+          #   page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '300')
+          #   page.should have_selector('td.quote_total_value', text: '300')
+          #   page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '300')
+          #   page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '14700')  
 
-          it "should update cost items total and have proper total cost" do
-            visit edit_offer_path(offer)
-            page.select('daily', from: 'offer[quotes_attributes][0][cost_items_attributes][0][factor_type]')
-            page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '300')
-            page.should have_selector('td.quote_total_value', text: '300')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '300')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '14700')  
+          #   page.select('person', from: 'offer[quotes_attributes][0][cost_items_attributes][0][factor_type]')
+          #   page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '1000')
+          #   page.should have_selector('td.quote_total_value', text: '1000')
+          #   page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '1000')
+          #   page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '14000')  
 
-            page.select('person', from: 'offer[quotes_attributes][0][cost_items_attributes][0][factor_type]')
-            page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '1000')
-            page.should have_selector('td.quote_total_value', text: '1000')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '1000')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '14000')  
-
-            page.select('globally', from: 'offer[quotes_attributes][0][cost_items_attributes][0][factor_type]')
-            page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '100')
-            page.should have_selector('td.quote_total_value', text: '100')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '100')
-            page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '14900')              
-          end
+          #   page.select('globally', from: 'offer[quotes_attributes][0][cost_items_attributes][0][factor_type]')
+          #   page.find('.tab-content').first('.tab-pane').first('.total').should have_field('offer[quotes_attributes][0][cost_items_attributes][0][cost_item_total]', with: '100')
+          #   page.should have_selector('td.quote_total_value', text: '100')
+          #   page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_cost td', text: '100')
+          #   page.find('.tab-content').first('.tab-pane').should have_selector('tr.total_gain td', text: '14900')              
+          # end
         end
       end
     end

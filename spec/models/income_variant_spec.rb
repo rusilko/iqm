@@ -5,10 +5,10 @@
 #  id                     :integer         not null, primary key
 #  quote_id               :integer
 #  number_of_participants :integer
-#  price_per_participant  :integer
 #  created_at             :datetime        not null
 #  updated_at             :datetime        not null
-#  currently_chosen       :boolean
+#  currently_chosen       :boolean         default(FALSE)
+#  price_per_participant  :decimal(8, 2)
 #
 
 require 'spec_helper'

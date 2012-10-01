@@ -1,0 +1,26 @@
+<table class="table table-striped table-bordered table-hover pull-right totals">
+  <thead>
+    <tr>
+    <th><%= iconize "globe" %></th>
+    <th>netto</th>
+    <th>brutto</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="total_income">
+      <td>Income:</td>
+      <td class="netto"><%= n_to_pln f.object.total_income %></td>
+      <td class="brutto"><%= n_to_pln f.object.total_income_brutto %></td>
+    </tr>
+    <tr class="total_cost">
+      <td>Cost:</td>
+      <td class="netto"><%= n_to_pln f.object.total_cost %></td>
+      <td class="brutto"><%= n_to_pln f.object.total_cost_brutto %></td>
+    </tr>
+    <tr class="total_gain">
+      <td>Gain:</td>
+      <td class="netto"><%= n_to_pln(f.object.total_income - f.object.total_cost) %></td>
+      <td class="brutto"><%= n_to_pln(f.object.total_income_brutto - f.object.total_cost_brutto) %></td>
+    </tr>
+  </tbody>
+</table>

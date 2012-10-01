@@ -2,8 +2,14 @@
   <td class="no"><%= i %></td>
   <td class="name"><%= f.input :name , input_html: { class:'input_cost_item input-xxlarge' } %></td>
   <td class="single_cost"><%= f.input :single_cost, input_html: { class: 'input_cost_item input-mini', step: 10 } %></td>
+  <td class="vat"><%= f.input :vat, collection: f.object.vat_values, input_html: { class: 'input_cost_item input-mini' }%></td>
   <td class="factor_type"><%= f.input :factor_type, collection: f.object.factor_types.map { |k,v| [v,k.to_s]}, input_html: { class: 'input_cost_item input-small' }%></td>
-  <td class="total"><%= f.input_field :cost_item_total, value: f.object.cost_item_total, class: 'input_cost_item input-mini', disabled: true %></td>
+  <td class="total"><%= f.input_field :cost_item_total, 
+                        value: n_to_pln(f.object.cost_item_total_netto), 
+                        class: 'input_cost_item input-small', disabled: true %></td>
+  <td class="total_brutto"><%= f.input_field :cost_item_total_brutto, 
+                               value: n_to_pln(f.object.cost_item_total_brutto), 
+                               class: 'input_cost_item input-small', disabled: true %></td>
   <td class="trashbin"><%= f.hidden_field :_destroy %><%= link_to raw('<i class="icon-trash"></i>'), '#', class: "remove_cost_item_btn" %></td>
   <%= f.hidden_field(:id) %>
 </tr>

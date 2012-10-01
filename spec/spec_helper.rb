@@ -51,6 +51,11 @@ Spork.prefork do
       DatabaseCleaner.clean
     end
   end
+
+  # Capybara.register_driver :selenium do |app|
+  #   Capybara::Selenium::Driver.new(app, :browser => :chrome)
+  # end
+
 end
 
 Spork.each_run do

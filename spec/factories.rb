@@ -5,6 +5,7 @@ FactoryGirl.define do
 
   factory :quote do
     sequence(:name) { |n| "Quote #{n}" }
+    vat "23"
     offer
   end
 
@@ -18,6 +19,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "Cost item #{n}" }
     single_cost 100
     factor_type "per_day"
+    vat "23"
     quote
   end
 end
