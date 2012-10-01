@@ -12,7 +12,8 @@ jQuery(function() {
   $('form').on('change', '.quote_field select[name*="vat"]', function(){
     var i = $(this);
     // simulate a click on current income variant
-    $('.income_variant_fieldset.chosen input[name*="number_of_participants"]').click();
+    // console.log($(this).closest('fieldset').find('.income_variant_fieldset.chosen input[name*="number_of_participants"]'));
+    $(this).closest('fieldset').find('.income_variant_fieldset.chosen input[name*="number_of_participants"]').click();
   });
 
   // Update quote total costs when any of the cost items totals changes
@@ -27,9 +28,9 @@ jQuery(function() {
     var hidden_checkbox        = $(this).closest('fieldset').find('input[type="checkbox"]');
     var number_of_participants = $(this).closest('fieldset').find('input[name*="number_of_participants"]').prop('value'); 
     var price_per_participant  = $(this).closest('fieldset').find('input[name*="price_per_participant"]' ).prop('value');
-    var vat_type = $(this).parents('fieldset').closest('fieldset').find('select[name*="vat"]').prop('value');
+    var vat_type = $(this).closest('fieldset').parent('fieldset').find('select[name*="vat"]').prop('value');
     var vat = get_vat_value_from(vat_type);
-    //console.log(vat_type);
+    console.log(vat_type);
     // update per_person item_costs totals to new value
     update_cost_item_totals( $(this).parents('fieldset').parent('fieldset'), "per_person", number_of_participants );
     // update quote total income
@@ -263,7 +264,7 @@ jQuery(function() {
 
   // Function that updates quote total income in current fieldset i.e. currently selected tab
   function update_quote_total_income(current_fieldset, income_value, vat_value){
-    // console.log("i ve been called with ("+current_fieldset+" "+income_value+")");
+    // console.log("i ve been called with ("+current_fieldset+" "+income_value+" "+vat_value+")");
     var iv_n = income_value;
     var iv_b = iv_n * vat_value;
     var quote_total_income_n_cell = current_fieldset.find('table.totals tr.total_income td.netto')    
