@@ -2,14 +2,14 @@
 #
 # Table name: cost_items
 #
-#  id          :integer         not null, primary key
-#  quote_id    :integer
-#  name        :string(255)
-#  factor_type :string(255)
-#  created_at  :datetime        not null
-#  updated_at  :datetime        not null
-#  vat         :string(255)
-#  single_cost :decimal(8, 2)
+#  id                :integer         not null, primary key
+#  quote_id          :integer
+#  factor_type       :string(255)
+#  created_at        :datetime        not null
+#  updated_at        :datetime        not null
+#  vat               :string(255)
+#  single_cost       :decimal(8, 2)
+#  cost_item_type_id :integer
 #
 
 require 'spec_helper'
@@ -18,16 +18,18 @@ describe CostItem do
 
   # Create model instances
   let(:offer) { FactoryGirl.create(:offer) }
-  let(:quote) { FactoryGirl.create(:quote, number_of_days: 10, offer: offer) }
-  let(:ci1)   { FactoryGirl.create(:cost_item, quote: quote) } # 100 perday, vat 23
-  let!(:ci2)  { FactoryGirl.create(:cost_item, quote: quote, single_cost: 200, factor_type: "per_person" ) } # 200 per person
-  let!(:ci3)  { FactoryGirl.create(:cost_item, quote: quote, single_cost: 500, factor_type: "per_event"  ) } # 500 per event
+  let(:et)    { FactoryGirl.create(:event_type) }
+  let(:cit)   { FactoryGirl.create(:cost_item_type) }
+  let(:quote) { FactoryGirl.create(:quote, number_of_days: 10, offer: offer, event_type: et) }
+  let(:ci1)   { FactoryGirl.create(:cost_item, quote: quote, cost_item_type: cit) } # 100 perday, vat 23
+  let!(:ci2)  { FactoryGirl.create(:cost_item, quote: quote, cost_item_type: cit, single_cost: 200, factor_type: "per_person" ) } # 200 per person
+  let!(:ci3)  { FactoryGirl.create(:cost_item, quote: quote, cost_item_type: cit, single_cost: 500, factor_type: "per_event"  ) } # 500 per event
   let!(:iv1)  { FactoryGirl.create(:income_variant, currently_chosen: true, quote: quote) } # 10 participants  
   # Set subject for following test cases
   subject { ci1 }
 
   # Responses to methods
-  it { should respond_to(:name) }
+  it { should respond_to(:cost_item_type_id) }
   it { should respond_to(:single_cost) }
   it { should respond_to(:vat) }
   it { should respond_to(:vat_factor) }

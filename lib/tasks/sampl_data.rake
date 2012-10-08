@@ -1,8 +1,10 @@
+# encoding: utf-8
 namespace :db do
     desc "Fill database with sample data"
     task populate: :environment do
-
       make_offers
+      make_event_types
+      make_cost_item_types
       # make_microposts
       # make_relationships
   end
@@ -12,6 +14,19 @@ def make_offers
   10.times do |n|
     name = Faker::Company.name
     Offer.create!(name: name)
+  end
+end
+
+def make_event_types
+  %w(P2F P2P ITIL MoR).each do |n|
+    EventType.create!(name: n)
+  end
+end
+
+def make_cost_item_types
+  types = ["trener", "sala", "materiały", "egzamin", "podręczniki", "przerwy kawowe",
+           "obiady", "dojazd trenera", "noclegi", "dodatkowe koszty", "budżet ryzyka"].each do |n|
+    CostItemType.create!(name: n)
   end
 end
 

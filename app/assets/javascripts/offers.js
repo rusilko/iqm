@@ -1,5 +1,9 @@
 jQuery(function() {
-
+  var EventTypes = [0,1,2,3,4];
+  EventTypes[1] = [1,2,3,4,5,6];
+  EventTypes[2] = [5,6,7,8,9,10];
+  EventTypes[3] = [4,7,9,10,12];
+  EventTypes[4] = [3,4,6,10,11];
 // Monitoring changes and update cost items totals and quote totals
 
   // Update per_day cost_items totals when number of days gets changed
@@ -30,7 +34,6 @@ jQuery(function() {
     var price_per_participant  = $(this).closest('fieldset').find('input[name*="price_per_participant"]' ).prop('value');
     var vat_type = $(this).closest('fieldset').parent('fieldset').find('select[name*="vat"]').prop('value');
     var vat = get_vat_value_from(vat_type);
-    console.log(vat_type);
     // update per_person item_costs totals to new value
     update_cost_item_totals( $(this).parents('fieldset').parent('fieldset'), "per_person", number_of_participants );
     // update quote total income
@@ -214,6 +217,33 @@ jQuery(function() {
         dateFormat: "yy-mm-dd"
     }).focus();
   });
+
+// Loading default cost items 
+$('form').on('change', 'select[name*="event_type_id"]', function(){
+  var type_id = $(this).val();  
+  var options = EventTypes[type_id];
+  var i = $(this).closest('fieldset').find('.add_cost_item_btn');
+  console.log(options.length);
+  for(k=0;k<options.length;k++) {
+    time = new Date().getTime();
+    regexp   = new RegExp(i.data('id'), 'g');
+    // Add ci row
+    i.siblings('table:last').find('tr:last').before(i.data('fields').replace(regexp, time));
+    var s = i.siblings('table').find('select[name*="'+time+'"][id*="cost_item_type_id"]')[0];
+    $('select[name*="'+time+'"][id*="cost_item_type_id"]').val(options[k]);
+    event.preventDefault();
+  }
+});
+
+
+
+
+
+
+
+
+
+
 
 // Helper functions
 

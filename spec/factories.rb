@@ -6,6 +6,7 @@ FactoryGirl.define do
   factory :quote do
     sequence(:name) { |n| "Quote #{n}" }
     vat "23"
+    event_type
     offer
   end
 
@@ -16,10 +17,18 @@ FactoryGirl.define do
   end
 
   factory :cost_item do
-    sequence(:name) { |n| "Cost item #{n}" }
     single_cost 100
     factor_type "per_day"
     vat "23"
     quote
+    cost_item_type
+  end
+
+  factory :event_type do
+    sequence(:name) { |n| "Event Type #{n}" }
+  end
+
+  factory :cost_item_type do
+    sequence(:name) { |n| "Cost Item #{n}" }
   end
 end

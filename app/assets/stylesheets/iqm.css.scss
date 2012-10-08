@@ -166,6 +166,9 @@ body {
   .controls {
     margin-left: 0px;
   }
+  &.input_select_type {
+    padding-right: 10px;
+  }
 }
 
 .remove_variant_btn { // button!
@@ -180,7 +183,7 @@ body {
   td, th { 
     vertical-align: middle; 
     padding: 4px;
-    text-align: right;  
+      
     &.name { 
       
     }
@@ -190,6 +193,7 @@ body {
     }
     &.single_cost {
       width: 84px;
+      text-align: right;
       input { text-align:right; }
     }
     &.vat {

@@ -5,12 +5,12 @@
 #  id             :integer         not null, primary key
 #  offer_id       :integer
 #  name           :string(255)
-#  event_type     :string(255)
 #  number_of_days :integer
 #  created_at     :datetime        not null
 #  updated_at     :datetime        not null
 #  event_date     :date
-#  vat            :string(255)
+#  vat            :string(255)     default("23")
+#  event_type_id  :integer
 #
 
 require 'spec_helper'
@@ -19,8 +19,9 @@ describe Quote do
   
   # Create model instances
   let(:offer)  { FactoryGirl.create(:offer) }
+  let(:et)     { FactoryGirl.create(:event_type) }
   # let(:quote1) { offer.quotes.build(name: "Quote 1") } - alternative way
-  let(:quote) { FactoryGirl.create(:quote, number_of_days: 10, offer: offer) }
+  let(:quote)  { FactoryGirl.create(:quote, number_of_days: 10, offer: offer, event_type: et) }
   let!(:iv1)   { FactoryGirl.create(:income_variant, currently_chosen: true, quote: quote) } # 10 participants, 1500 price
 
   let!(:iv2)   { FactoryGirl.create(:income_variant, number_of_participants: 12, 
@@ -38,7 +39,7 @@ describe Quote do
   # Responses to methods
   it { should respond_to(:name) }
   it { should respond_to(:number_of_days) }
-  it { should respond_to(:event_type) }
+  it { should respond_to(:event_type_id) }
   it { should respond_to(:offer_id) }
   it { should respond_to(:income_variants) }
   it { should respond_to(:cost_items) }
@@ -76,13 +77,13 @@ describe Quote do
   end
 
   describe "when vat is not in allowed enum values" do
-    before { ci1.vat = "(0...2).map{65.+(rand(25)).chr}.join" }
+    before { quote.vat = (0...2).map{65.+(rand(25)).chr}.join }
     it { should_not be_valid }
   end
 
   %w(zw 23).each do |vat|
     describe "when vat is in allowed enum values" do
-      before { ci1.vat = vat }
+      before { quote.vat = vat }
       it { should be_valid }
     end
   end

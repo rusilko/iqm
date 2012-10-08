@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe "OfferPages" do
+ 
   subject { page }
   before  { 3.times { FactoryGirl.create(:offer) } }
   
@@ -75,9 +76,9 @@ describe "OfferPages" do
 
   describe "edit offer OfferPages" do  # or a new offer page for that matter, I will just test on edit page
     let(:offer)   { FactoryGirl.create(:offer) }
-
+    let(:etype)   { FactoryGirl.create(:event_type)}
     describe "quote fields" do
-      let!(:quote) { FactoryGirl.create(:quote, name: "kalk1", offer: offer) }
+      let!(:quote) { FactoryGirl.create(:quote, name: "kalk1", offer: offer, event_type: etype) }
       before { visit edit_offer_path(offer) }
 
       it { should have_select('offer_quotes_attributes_0_event_type') }
@@ -118,7 +119,7 @@ describe "OfferPages" do
       end
 
       describe "when removing a single quote", js: true do
-        let!(:quote) { FactoryGirl.create(:quote, name: "kalk1", offer: offer) }
+        let!(:quote) { FactoryGirl.create(:quote, name: "kalk1", offer: offer, event_type: etype) }
         
         it { should have_selector('.tab-content .tab-pane .remove_quote_btn') }
         before do
@@ -212,11 +213,12 @@ describe "OfferPages" do
       end
 
       describe "calucating total income and gain", js: true do
-        let!(:iv1) { FactoryGirl.create(:income_variant, number_of_participants: 10, price_per_participant: 1000, currently_chosen: true, quote: quote) }
-        let!(:iv2) { FactoryGirl.create(:income_variant, number_of_participants: 15, price_per_participant: 1000, quote: quote) }
-        let!(:ci1) { FactoryGirl.create(:cost_item, single_cost: 100, factor_type: 'per_event', quote: quote) }
-        let(:iv1_box) { page.find('.tab-content').first('.tab-pane').find('fieldset').all('.income_variant_fieldset')[0] }
-        let(:iv2_box) { page.find('.tab-content').first('.tab-pane').find('fieldset').all('.income_variant_fieldset')[1] }
+        let!(:iv1)     { FactoryGirl.create(:income_variant, number_of_participants: 10, price_per_participant: 1000, currently_chosen: true, quote: quote) }
+        let!(:iv2)     { FactoryGirl.create(:income_variant, number_of_participants: 15, price_per_participant: 1000, quote: quote) }
+        let!(:ci_type) { FactoryGirl.create(:cost_item_type) }
+        let!(:ci1)     { FactoryGirl.create(:cost_item, single_cost: 100, factor_type: 'per_event', quote: quote, cost_item_type: ci_type) }
+        let(:iv1_box)  { page.find('.tab-content').first('.tab-pane').find('fieldset').all('.income_variant_fieldset')[0] }
+        let(:iv2_box)  { page.find('.tab-content').first('.tab-pane').find('fieldset').all('.income_variant_fieldset')[1] }
         before do 
           visit edit_offer_path(offer)
         end
@@ -247,7 +249,7 @@ describe "OfferPages" do
     end
 
     describe "when manipulating cost items" do
-      let!(:quote)      { FactoryGirl.create(:quote, number_of_days: 3, name: "kalk1", offer: offer) }
+      let!(:quote)      { FactoryGirl.create(:quote, number_of_days: 3, name: "kalk1", offer: offer, event_type: etype) }
       let(:add_ci_btn)  { page.find('.tab-content').first('.tab-pane').find('.add_cost_item_btn') }
       let(:rmv_ci_btn)  { page.find('.tab-content').first('.tab-pane').first('.remove_cost_item_btn') }
       before            { visit edit_offer_path(offer) }

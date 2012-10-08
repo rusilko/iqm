@@ -2,6 +2,7 @@
 # More info at https://github.com/guard/guard#readme
 
 guard 'rspec', :version => 2, :all_after_pass => false do
+  # browser_required: true
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
@@ -27,8 +28,6 @@ guard 'rspec', :version => 2, :all_after_pass => false do
     end
   
   watch(%r{^app/views/(.+)/}) { |m| "spec/requests/#{m[1]}_spec.rb" }
-
-
 end
 
 guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAILS_ENV' => 'test' } do

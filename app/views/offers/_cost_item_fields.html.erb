@@ -1,6 +1,11 @@
 <tr>
   <td class="no"><%= i %></td>
-  <td class="name"><%= f.input :name , input_html: { class:'input_cost_item input-xxlarge' } %></td>
+  <td class="name">
+    <%= f.association :cost_item_type, include_blank: "Select type", input_html: { class:'input_cost_item input-xlarge' }, 
+                      wrapper_html: { class: 'cost_item_field pull-left input_select_type' } %>
+    <%= f.input :new_cost_item_type, input_html: { class:'input_cost_item input-xlarge' }, 
+                wrapper_html: { class: 'cost_item_field input_add_new_type' }, placeholder: "or add new..." %>
+  </td>
   <td class="single_cost"><%= f.input :single_cost, input_html: { class: 'input_cost_item input-mini', step: 10 } %></td>
   <td class="vat"><%= f.input :vat, collection: f.object.vat_values, input_html: { class: 'input_cost_item input-mini' }%></td>
   <td class="factor_type"><%= f.input :factor_type, collection: f.object.factor_types.map { |k,v| [v,k.to_s]}, input_html: { class: 'input_cost_item input-small' }%></td>

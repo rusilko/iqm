@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe "OfferPages 2" do
+describe "OfferPages 2", browser_required: true do
+  
   subject { page }
   before  { 3.times { FactoryGirl.create(:offer) } }
 

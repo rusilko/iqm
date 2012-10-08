@@ -35,10 +35,11 @@ module OffersHelper
 
   def field_with_prepend(builder, params_hash)
     p = params_hash
+    prompt = p[:prompt]
     prepend = p[:prepend_text] || p[:name]
     type = p[:type] || "text"
     as = p[:as]
-    ct = content_tag(:span, raw(prepend), class: 'add-on')+builder.input_field(p[:name], as: p[:as], class: p[:input_html_class], collection: p[:collection], type: type, step: p[:step])
+    ct = content_tag(:span, raw(prepend), class: 'add-on')+builder.input_field(p[:name], as: p[:as], class: p[:input_html_class], collection: p[:collection], type: type, step: p[:step], prompt: prompt)
     if p[:wrapper_html_class] 
       builder.input p[:name], label: false, wrapper: :prepend, wrapper_html: { class: p[:wrapper_html_class] } do
         ct
@@ -50,9 +51,9 @@ module OffersHelper
     end
   end
 
-  def iconize(string,white=false)
+  def iconize(string, white=false, klass=nil)
     icon_white = "icon-white" if white
-    content_tag(:i, "", class: "icon-#{string} #{icon_white}")
+    content_tag(:i, "", class: "icon-#{string} #{icon_white} #{klass}")
   end
 
   def n_to_pln(n)
