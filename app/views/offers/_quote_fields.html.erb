@@ -4,8 +4,8 @@
     <%= field_with_prepend f, name: :name, wrapper_html_class: "quote_field", input_html_class: "input-small" %>
     <%= field_with_prepend f, name: :event_date, as: :string, wrapper_html_class: "quote_field", 
                               input_html_class: "input-small", prepend_text: raw(iconize("calendar")) %>
-    <%= field_with_prepend f, name: :event_type_id, prompt: "Typ...", wrapper_html_class: "quote_field", input_html_class: "input-small",
-                              prepend_text: raw(iconize("list")), collection: EventType.all %>
+    <%= field_with_prepend f, name: :event_type_id, prompt: "Typ...", wrapper_html_class: "quote_field",
+                              input_html_class: "input-small", prepend_text: raw(iconize("list")), collection: EventType.all %>
     <%= field_with_prepend f, name: :number_of_days, wrapper_html_class: "quote_field", input_html_class: "input-micro", 
                               prepend_text: "# of days", type: "number", step: 1 %>
     <%= field_with_prepend f, name: :vat, wrapper_html_class: "quote_field", input_html_class: "input-mini",

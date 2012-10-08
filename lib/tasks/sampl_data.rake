@@ -5,8 +5,6 @@ namespace :db do
       make_offers
       make_event_types
       make_cost_item_types
-      # make_microposts
-      # make_relationships
   end
 end
 
