@@ -1,9 +1,9 @@
 jQuery(function() {
   var EventTypes = [0,1,2,3,4];
-  EventTypes[1] = [1,2,3,4,5,6];
-  EventTypes[2] = [5,6,7,8,9,10];
-  EventTypes[3] = [4,7,9,10,12];
-  EventTypes[4] = [3,4,6,10,11];
+      EventTypes[1] = [1,2,3,4,5,6];
+      EventTypes[2] = [5,6,7,8,9,10];
+      EventTypes[3] = [4,7,9,10,12];
+      EventTypes[4] = [3,4,6,10,11];
 // Monitoring changes and update cost items totals and quote totals
 
   // Update per_day cost_items totals when number of days gets changed
@@ -219,11 +219,11 @@ jQuery(function() {
   });
 
 // Loading default cost items 
-$('form').on('change', 'select[name*="event_type_id"]', function(){
+$('form').on('change', 'select[name*="event_type_id"]', function(event){
   var type_id = $(this).val();  
   var options = EventTypes[type_id];
   var i = $(this).closest('fieldset').find('.add_cost_item_btn');
-  console.log(options.length);
+  //console.log(options.length);
   for(k=0;k<options.length;k++) {
     time = new Date().getTime();
     regexp   = new RegExp(i.data('id'), 'g');
@@ -234,15 +234,6 @@ $('form').on('change', 'select[name*="event_type_id"]', function(){
     event.preventDefault();
   }
 });
-
-
-
-
-
-
-
-
-
 
 
 // Helper functions
