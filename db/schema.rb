@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121004133252) do
+ActiveRecord::Schema.define(:version => 20121116215924) do
 
   create_table "cost_item_types", :force => true do |t|
     t.string   "name"
@@ -29,11 +29,36 @@ ActiveRecord::Schema.define(:version => 20121004133252) do
     t.integer  "cost_item_type_id"
   end
 
+  create_table "event_participations", :force => true do |t|
+    t.integer  "event_id"
+    t.integer  "participant_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "event_participations", ["event_id", "participant_id"], :name => "index_event_participations_on_event_id_and_participant_id", :unique => true
+  add_index "event_participations", ["event_id"], :name => "index_event_participations_on_event_id"
+  add_index "event_participations", ["participant_id"], :name => "index_event_participations_on_participant_id"
+
   create_table "event_types", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "events", :force => true do |t|
+    t.string   "name"
+    t.date     "date"
+    t.decimal  "price_per_participant", :precision => 8, :scale => 2
+    t.integer  "event_type_id"
+    t.string   "city"
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+  end
+
+  add_index "events", ["city"], :name => "index_events_on_city"
+  add_index "events", ["date"], :name => "index_events_on_date"
+  add_index "events", ["name"], :name => "index_events_on_name"
 
   create_table "income_variants", :force => true do |t|
     t.integer  "quote_id"
@@ -49,6 +74,16 @@ ActiveRecord::Schema.define(:version => 20121004133252) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "participants", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "participants", ["email"], :name => "index_participants_on_email", :unique => true
+  add_index "participants", ["name"], :name => "index_participants_on_name"
 
   create_table "quotes", :force => true do |t|
     t.integer  "offer_id"

@@ -31,4 +31,18 @@ FactoryGirl.define do
   factory :cost_item_type do
     sequence(:name) { |n| "Cost Item #{n}" }
   end
+
+  factory :event do
+    sequence(:name) { |n| "Event #{n}" }
+    date "12-12-12"
+    city "Krakow"
+    price_per_participant 1000
+    event_type
+  end
+
+  factory :participant do
+    sequence(:name)  { Faker::Name.name }
+    sequence(:email) { Faker::Internet.email }
+  end
+
 end
