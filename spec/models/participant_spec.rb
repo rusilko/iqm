@@ -30,7 +30,7 @@ describe Participant do
   end
 
   describe "when name is too long" do
-    before { p1.name = "a"*51 }
+    before { p1.name = "a"*101 }
     it { should_not be_valid }
   end
 

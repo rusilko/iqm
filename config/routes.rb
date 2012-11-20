@@ -1,4 +1,8 @@
 Iqm::Application.routes.draw do
+  resources :participants
+
+  resources :events
+
   resources :offers, shallow: true do
     resources :quotes do
       resources :income_variants,:cost_items

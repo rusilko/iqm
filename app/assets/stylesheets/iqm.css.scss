@@ -1,5 +1,7 @@
 @import "bootstrap";
 
+// Mixins
+
 @mixin btn-round-top {
   border-radius:                    0px;
   -webkit-border-radius:            0px;
@@ -47,13 +49,21 @@
   height: 0px;
 }
 
+// General site-wide styling
+
 body {
   padding-top: 60px;
+  //
 }
+
+// Form elements  
 
 .input-micro {
   width: 50px;
+  //
 }
+
+// Offers
 
 .offer_field {
   margin-bottom: 10px !important;
@@ -108,8 +118,9 @@ body {
   }
 }
 
-#add_quote_btn { // hide the button, click is generated from tab bar
+#add_quote_btn { // hide the button as click is generated from tab bar
   @include hidden;
+  //
 }
 
 .totals {
@@ -133,7 +144,7 @@ body {
   }
 }
 
-.add_variant_btn { // button!
+.add_variant_btn {
   margin-top: 65px;
   margin-left: -10px;
   @include btn-round-right;
@@ -171,12 +182,11 @@ body {
   }
 }
 
-.remove_variant_btn { // button!
+.remove_variant_btn {
   @extend .close;
   font-size: 15px;
   line-height: 10px;
 }
-
 
 .cost_items_table {
   margin-bottom: 0px;
@@ -262,6 +272,7 @@ body {
 
 .new_row_star {
   margin-left: -3px;
+  //
 }
 
 .add_cost_item_btn {
@@ -269,6 +280,36 @@ body {
   margin-left: 20px;
   margin-bottom: 20px;
   border-top: none;
+}
+
+// Events
+
+.event_field {
+  float: left;
+  margin: 10px 10px 10px 0px !important;
+}
+
+.participants_table_wrapper {
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px 4px 4px 4px;
+    margin: 15px 0;
+    padding: 39px 19px 14px;
+    position: relative;
+}
+
+.participants_table_wrapper:after {
+    background-color: #F5F5F5;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px 0 4px 0;
+    color: #9DA0A4;
+    content: "List of participants";
+    font-size: 12px;
+    font-weight: bold;
+    left: -1px;
+    padding: 3px 7px;
+    position: absolute;
+    top: -1px;
 }
 
 
