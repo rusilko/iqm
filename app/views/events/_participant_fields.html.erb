@@ -1,0 +1,18 @@
+<% if f.object.new_record? %>
+<% @participant=Participant.new if new_obj %>
+<% unless !f.object.new_record? && f.object.attributes['participant_id'].nil? %>
+  <tr>
+    <%= f.simple_fields_for :participant, @participant, defaults: { label: false, wrapper_html: { class: '' }, input_html: { class:'' } } do |pf| %>
+      <td class="no"></td>
+      <td class="name">
+        <%= pf.input :name %>
+      </td>
+      <td> <%= pf.input :email %> </td>    
+      <%= pf.hidden_field(:id) %>
+      <%= pf.hidden_field :associated_event_id, value: aev %>
+    <% end -%>
+    <td class="trashbin"><%= f.hidden_field :_destroy %><%= link_to raw('<i class="icon-trash"></i>'), '#', class: "remove_event_participation_btn" %></td>
+    <%= f.hidden_field :id %>
+  </tr>
+<% end -%>
+<% end -%>

@@ -1,0 +1,48 @@
+<%= simple_form_for setup_event(@event), html: { class: 'form-inline'} do |f| %>
+  <%= f.error_messages %>
+  <fieldset>
+    <legend><%= controller.action_name.capitalize %> Event</legend>
+
+    <%= field_with_prepend f, name: :name, wrapper_html_class: "event_field" %>
+
+    <%= field_with_prepend f, name: :event_type_id, prompt: "Type...", wrapper_html_class: "event_field",
+                              input_html_class: "input-small", prepend_text: iconize("list"), collection: EventType.all %>
+
+    <%= field_with_prepend f, name: :date, as: :string, wrapper_html_class: "event_field", 
+                              input_html_class: "input-small", prepend_text: iconize("calendar") %>
+    
+    <%= field_with_prepend f, name: :city, prompt: "City...", wrapper_html_class: "event_field",
+                              input_html_class: "input-medium", prepend_text: iconize("screenshot"), collection: f.object.cities %>    
+    
+    <%= field_with_prepend f, name: :price_per_participant, wrapper_html_class: "event_field", input_html_class: 'input-mini',  
+                              prepend_text: "$ /#{iconize("user")}", type: "number", step: 50 %>
+
+
+    <br class="clearfix" style="float:none; clear: both;" />
+    <div class="participants_table_wrapper">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th class="">#</th>
+            <th class="">Name</th>
+            <th class="">email</th>
+            <th class=""><i class="icon-trash"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% associated_event = f.object.id %>
+          <%= f.simple_fields_for :event_participations do |builder| %>
+            <%= render 'participant_fields', f: builder, aev: associated_event, new_obj: false %>
+          <% end %>
+        </tbody>
+      </table>         
+      <%= link_to_add_participant_row raw('<i class="icon-plus-sign icon-white"></i> Add Participant'), f, :event_participations %>
+    </div>
+    <div class="form-actions">
+      <%= f.submit nil, :class => 'btn btn-primary', id: 'create_or_update_offer_btn' %>
+      <%= link_to 'Cancel', offers_path, :class => 'btn' %>
+    </div>
+
+  </fieldset>
+<% end %>
+

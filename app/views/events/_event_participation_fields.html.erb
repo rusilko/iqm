@@ -1,0 +1,7 @@
+<%= f.simple_fields_for :participant, defaults: { 
+                                              label: false, 
+                                              wrapper_html: { class: '' }, 
+                                              input_html: { class:'' }
+                                            } do |participant_builder| %>
+  <%= render 'participant_fields', f: participant_builder, i: index %>
+<% end %> 

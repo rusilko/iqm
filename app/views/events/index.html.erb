@@ -1,0 +1,36 @@
+<% title "Events" %>
+<h1>Events</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th># of part.</th>
+      <th>Price / part.</th>
+      <th>Event type</th>
+      <th>City</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @events.each do |event| %>      
+       <tr>
+        <td><%= event.id %></td>
+        <td><%= link_to event.name, event_path(event) %></td>
+        <td><%= quotes_number_badge(event.participants.size) %></td>
+        <td><%= event.price_per_participant %></td>
+        <td><%= event.event_type.try(:name) %></td>
+        <td><%= event.city %></td>
+        <td>
+          <%# link_to 'Show', offer , class: 'btn btn-mini' %>
+          <%= link_to 'Edit', edit_event_path(event), class: 'btn btn-mini btn-info' %>
+          <%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?'}, class: 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to '+ New Event', new_event_path, class: 'btn btn-success', id: 'new_event_btn' %>
