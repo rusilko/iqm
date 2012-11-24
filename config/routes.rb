@@ -1,4 +1,6 @@
 Iqm::Application.routes.draw do
+  resources :users
+
   resources :participants
 
   resources :events
