@@ -1,0 +1,12 @@
+<%= form_for @company do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :nip %><br />
+    <%= f.text_field :nip %>
+  </p>
+  <p>
+    <%= f.label :regon %><br />
+    <%= f.text_field :regon %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

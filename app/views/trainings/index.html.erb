@@ -1,0 +1,27 @@
+<% title "Trainings" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>City</th>
+    <th>Price Per Person</th>
+    <th>Training Type</th>
+  </tr>
+  <% for training in @trainings %>
+    <tr>
+      <td><%= training.name %></td>
+      <td><%= training.start_date %></td>
+      <td><%= training.end_date %></td>
+      <td><%= training.city %></td>
+      <td><%= training.price_per_person %></td>
+      <td><%= training.training_type_id %></td>
+      <td><%= link_to "Show", training %></td>
+      <td><%= link_to "Edit", edit_training_path(training) %></td>
+      <td><%= link_to "Destroy", training, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Training", new_training_path %></p>

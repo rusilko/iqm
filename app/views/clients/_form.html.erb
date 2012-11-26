@@ -1,0 +1,24 @@
+<%= form_for @client do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :password_digest %><br />
+    <%= f.text_field :password_digest %>
+  </p>
+  <p>
+    <%= f.label :type %><br />
+    <%= f.text_field :type %>
+  </p>
+  <p>
+    <%= f.label :company_id %><br />
+    <%= f.number_field :company_id %>
+  </p>
+  <p>
+    <%= f.label :company_primary_contact %><br />
+    <%= f.check_box :company_primary_contact %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

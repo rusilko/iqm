@@ -1,6 +1,6 @@
 module Customerable
   def self.included(base)
-    base.has_one :customer, as: :customerable, autosave: true
+    base.has_one :customer, as: :customerable, autosave: true, dependent: :destroy
     base.validate :customer_must_be_valid
     base.alias_method_chain :customer, :autobuild
     base.extend ClassMethods
@@ -51,5 +51,3 @@ module Customerable
     end
 
 end
-
-ActiveRecord::Base.send :extend, Customerable

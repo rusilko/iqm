@@ -1,0 +1,25 @@
+<% title "Clients" %>
+
+<table>
+  <tr>
+    <th>Email</th>
+    <th>Password Digest</th>
+    <th>Type</th>
+    <th>Company</th>
+    <th>Company Primary Contact</th>
+  </tr>
+  <% for client in @clients %>
+    <tr>
+      <td><%= client.email %></td>
+      <td><%= client.password_digest %></td>
+      <td><%= client.type %></td>
+      <td><%= client.company_id %></td>
+      <td><%= client.company_primary_contact %></td>
+      <td><%= link_to "Show", client %></td>
+      <td><%= link_to "Edit", edit_client_path(client) %></td>
+      <td><%= link_to "Destroy", client, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Client", new_client_path %></p>

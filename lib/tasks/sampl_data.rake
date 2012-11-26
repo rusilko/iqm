@@ -5,25 +5,25 @@ namespace :db do
 
       [ Offer, EventType, CostItemType, Event, Participant, EventParticipation, Company, Customer, User, Address, Order, OrderItem, Training, Product, Seat ].each(&:delete_all)
 
-      make_offers
+      # make_offers
       make_event_types
-      make_cost_item_types
+      # make_cost_item_types
       
       # make_events
       # make_participants
       # assign_participants_to_events
 
-      make_companies
-      make_clients
-      assign_client_to_companies
-      make_users
-      make_addresses_and_assign_to_customers
-      make_orders
+      # make_companies
+      # make_clients
+      # assign_client_to_companies
+      # make_users
+      # make_addresses_and_assign_to_customers
+      # make_orders
       make_trainings
-      make_order_items
-      make_products
-      make_products
-      assign_clients_to_order_items
+      # make_order_items
+      # make_products
+      # make_products
+      # assign_clients_to_order_items
 
 
   end

@@ -282,14 +282,14 @@ body {
   border-top: none;
 }
 
-// Events
+// Events and Training registrations
 
 .event_field {
   float: left;
   margin: 10px 10px 10px 0px !important;
 }
 
-.participants_table_wrapper {
+.participants_table_wrapper, .customer_table_wrapper{
     background-color: #FFFFFF;
     border: 1px solid #DDDDDD;
     border-radius: 4px 4px 4px 4px;
@@ -298,12 +298,12 @@ body {
     position: relative;
 }
 
-.participants_table_wrapper:after {
+.participants_table_wrapper:after, .customer_table_wrapper:after {
     background-color: #F5F5F5;
     border: 1px solid #DDDDDD;
     border-radius: 4px 0 4px 0;
     color: #9DA0A4;
-    content: "List of participants";
+    content: "Lista uczestników";
     font-size: 12px;
     font-weight: bold;
     left: -1px;
@@ -311,6 +311,26 @@ body {
     position: absolute;
     top: -1px;
 }
+
+.customer_table_wrapper:after {
+  content: "Dane płatnika";
+}
+
+.address_field {
+  margin-bottom: 10px !important;
+  float: left;
+  margin-right: 10px;
+  .controls {
+    margin-left: 0px;
+  }
+  .add-on {
+    margin-left: 0px;
+  }
+}
+
+
+
+
 
 
 @import "bootstrap-responsive";

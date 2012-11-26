@@ -1,0 +1,69 @@
+<%= simple_form_for setup(@order_item), html: { class: 'form-inline'} do |f| %>
+  <%= f.error_messages %>
+  <fieldset>
+    <legend>Szkolenie: <%= @training.name %>, <%= @training.start_date %> do <%= @training.end_date %>, <%= @training.city %>, <%= @training.price_per_person %>zł</legend>
+    <%= f.hidden_field :productable_id, value: @training.id %>
+    <%= f.hidden_field :productable_type, value: "Training" %>
+
+    <br class="clearfix" style="float:none; clear: both;" />    
+    <div class="participants_table_wrapper">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th class="">#</th>
+            <th class="">Name</th>
+            <th class="">Email</th>
+            <th class="">Tel</th>
+            <th class="">Cena</th>
+            <th class=""><i class="icon-trash"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% index=1 %>
+          <%= f.simple_fields_for :seats do |builder| %>
+            <%= render 'seat_fields', f: builder, t_id: @training.id, index: index %>
+          <% index+=1; end %>
+        </tbody>
+      </table>         
+      <%= link_to_add_participant_row raw('<i class="icon-plus-sign icon-white"></i> Add Participant'), f, :seats, index %>
+    </div>
+    
+    <div class="customer_table_wrapper">
+    <%= f.simple_fields_for :order do |builder| %>
+      <div class="btn-group" data-toggle="buttons-radio" style="display: block; margin-bottom: 10px">
+        <button type="button" class="btn active">Firma</button>
+        <button type="button" class="btn">Osoba</button>
+      </div>
+      <% builder.hidden_field :id %>
+      <%= builder.simple_fields_for :customer, 
+                  html: { class: '' }, 
+                  defaults: { wrapper_html: {class: 'quote_field'}, 
+                  input_html: { class:'input-mini' } } do |cbuilder| %>
+        <%= field_with_prepend cbuilder, name: :name, wrapper_html_class: "address_field", input_html_class: "input-mini", input_html_class: "input-mini" %>
+        <%= cbuilder.simple_fields_for :addresses, 
+                    html: { class: '' }, 
+                    defaults: { wrapper_html: {class: 'quote_field'}, 
+                    input_html: { class:'input-mini' } } do |abuilder| %>
+          <%= field_with_prepend abuilder, name: :line_1, prepend_text: "adres", wrapper_html_class: "address_field", input_html_class: "input-mini" %>
+          <%= field_with_prepend abuilder, name: :line_2, prepend_text: "adres cd.", wrapper_html_class: "address_field", input_html_class: "input-mini" %>
+          <%= field_with_prepend abuilder, name: :city, wrapper_html_class: "address_field", input_html_class: "input-mini" %>
+          <%= field_with_prepend abuilder, name: :postcode, wrapper_html_class: "address_field", input_html_class: "input-mini" %>
+          <%= abuilder.hidden_field :default_billing, value: 1 %>
+        <% end %>
+        <%= field_with_prepend cbuilder, name: :phone_1, prepend_text: "tel", wrapper_html_class: "address_field", input_html_class: "input-mini" %>
+      <% end -%>
+    <% end -%>
+
+    <br style="clear: both" />
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit nil, :class => 'btn btn-primary', id: 'create_or_update_offer_btn' %>
+      <%= link_to 'Cancel', offers_path, :class => 'btn' %>
+    </div>
+
+  </fieldset>
+<% end %>
+
+
+

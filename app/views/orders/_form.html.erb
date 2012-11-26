@@ -1,0 +1,16 @@
+<%= form_for @order do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :status %><br />
+    <%= f.text_field :status %>
+  </p>
+  <p>
+    <%= f.label :date_placed %><br />
+    <%= f.date_select :date_placed %>
+  </p>
+  <p>
+    <%= f.label :customer_id %><br />
+    <%= f.number_field :customer_id %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

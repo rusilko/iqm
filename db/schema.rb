@@ -166,11 +166,13 @@ ActiveRecord::Schema.define(:version => 20121123204301) do
   create_table "seats", :force => true do |t|
     t.integer  "client_id"
     t.integer  "order_item_id"
+    t.integer  "training_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end
 
-  add_index "seats", ["client_id", "order_item_id"], :name => "index_seats_on_client_id_and_order_item_id"
+  add_index "seats", ["client_id", "order_item_id"], :name => "index_seats_on_client_id_and_order_item_id", :unique => true
+  add_index "seats", ["client_id", "training_id"], :name => "index_seats_on_client_id_and_training_id", :unique => true
   add_index "seats", ["client_id"], :name => "index_seats_on_client_id"
   add_index "seats", ["order_item_id"], :name => "index_seats_on_order_item_id"
 

@@ -1,0 +1,25 @@
+<% title "Customers" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Phone 1</th>
+    <th>Phone 2</th>
+    <th>Customerable</th>
+    <th>Customerable Type</th>
+  </tr>
+  <% for customer in @customers %>
+    <tr>
+      <td><%= customer.name %></td>
+      <td><%= customer.phone_1 %></td>
+      <td><%= customer.phone_2 %></td>
+      <td><%= customer.customerable_id %></td>
+      <td><%= customer.customerable_type %></td>
+      <td><%= link_to "Show", customer %></td>
+      <td><%= link_to "Edit", edit_customer_path(customer) %></td>
+      <td><%= link_to "Destroy", customer, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Customer", new_customer_path %></p>

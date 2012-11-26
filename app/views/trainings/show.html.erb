@@ -1,0 +1,32 @@
+<% title "Training" %>
+
+<p>
+  <strong>Name:</strong>
+  <%= @training.name %>
+</p>
+<p>
+  <strong>Start Date:</strong>
+  <%= @training.start_date %>
+</p>
+<p>
+  <strong>End Date:</strong>
+  <%= @training.end_date %>
+</p>
+<p>
+  <strong>City:</strong>
+  <%= @training.city %>
+</p>
+<p>
+  <strong>Price Per Person:</strong>
+  <%= @training.price_per_person %>
+</p>
+<p>
+  <strong>Training Type:</strong>
+  <%= @training.training_type_id %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_training_path(@training) %> |
+  <%= link_to "Destroy", @training, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", trainings_path %>
+</p>

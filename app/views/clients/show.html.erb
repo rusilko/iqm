@@ -1,0 +1,28 @@
+<% title "Client" %>
+
+<p>
+  <strong>Email:</strong>
+  <%= @client.email %>
+</p>
+<p>
+  <strong>Password Digest:</strong>
+  <%= @client.password_digest %>
+</p>
+<p>
+  <strong>Type:</strong>
+  <%= @client.type %>
+</p>
+<p>
+  <strong>Company:</strong>
+  <%= @client.company_id %>
+</p>
+<p>
+  <strong>Company Primary Contact:</strong>
+  <%= @client.company_primary_contact %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_client_path(@client) %> |
+  <%= link_to "Destroy", @client, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", clients_path %>
+</p>
