@@ -1,0 +1,7 @@
+<div class="coordinator clearfix">   
+  <%= field_with_prepend f, name: :name, wrapper_html_class: "address_field", input_html_class: "input-large", input_html_class: "input-large" %>
+  <%= field_with_prepend f, name: :email, wrapper_html_class: "address_field", input_html_class: "input-large" %>
+  <%= field_with_prepend f, name: :phone_1, prepend_text: "tel", wrapper_html_class: "address_field", input_html_class: "input-large" %>
+  <%# f.hidden_field :_destroy %><%= link_to raw('<i class="icon-trash"></i>'), '#', class: "remove_coordinator_btn"  %>
+  <%= link_to_add_address raw('<i class="icon-plus-sign icon-white"></i> Dodaj inny adres koresp.'), f, :addresses, { sending: true, billing: false } %>        
+</div>

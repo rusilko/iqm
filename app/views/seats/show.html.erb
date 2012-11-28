@@ -1,0 +1,20 @@
+<% title "Seat" %>
+
+<p>
+  <strong>Client:</strong>
+  <%= @seat.client_id %>
+</p>
+<p>
+  <strong>Order Item:</strong>
+  <%= @seat.order_item_id %>
+</p>
+<p>
+  <strong>Training:</strong>
+  <%= @seat.training_id %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_seat_path(@seat) %> |
+  <%= link_to "Destroy", @seat, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", seats_path %>
+</p>

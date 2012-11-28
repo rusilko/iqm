@@ -1,0 +1,44 @@
+<%= form_for @address do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :line_1 %><br />
+    <%= f.text_field :line_1 %>
+  </p>
+  <p>
+    <%= f.label :line_2 %><br />
+    <%= f.text_field :line_2 %>
+  </p>
+  <p>
+    <%= f.label :city %><br />
+    <%= f.text_field :city %>
+  </p>
+  <p>
+    <%= f.label :postcode %><br />
+    <%= f.text_field :postcode %>
+  </p>
+  <p>
+    <%= f.label :country %><br />
+    <%= f.text_field :country %>
+  </p>
+  <p>
+    <%= f.label :default_sending %><br />
+    <%= f.check_box :default_sending %>
+  </p>
+  <p>
+    <%= f.label :default_billing %><br />
+    <%= f.check_box :default_billing %>
+  </p>
+  <p>
+    <%= f.label :other_details %><br />
+    <%= f.text_field :other_details %>
+  </p>
+  <p>
+    <%= f.label :addressable_id %><br />
+    <%= f.number_field :addressable_id %>
+  </p>
+  <p>
+    <%= f.label :addressable_type %><br />
+    <%= f.text_field :addressable_type %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

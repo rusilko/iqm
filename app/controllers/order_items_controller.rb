@@ -15,10 +15,32 @@ class OrderItemsController < ApplicationController
 
   def create
     @order_item = OrderItem.new(params[:order_item])
+    
+    # TO DO: this should go to one of the models, need to figure out where and then move it
+    if @order_item.order.customer.is_a?(Client) 
+      nip = @order_item.order.customer.nip
+      addresses = @order_item.order.customer.addresses
+      @order_item.order.customer = @order_item.seats.first.client
+      @order_item.order.customer.nip = nip
+      @order_item.order.customer.addresses = addresses
+      @order_item.order.coordinator = @order_item.seats.first.client
+    elsif @order_item.order.customer.is_a?(Company)      
+      # set coordinator to first client if not set in the form
+      @order_item.order.coordinator = @order_item.seats.first.client if !@order_item.seats.empty? && !@order_item.order.coordinator
+      # set company for coordinator
+      @order_item.order.coordinator.company = @order_item.order.customer if @order_item.order.coordinator
+      # set company for clients
+      @order_item.seats.each do |s|
+        s.client.company = @order_item.order.customer if s.client
+      end
+    end
+
     if @order_item.save
       redirect_to @order_item, :notice => "Successfully created order item."
     else
-      render :action => 'new'
+      # TO DO: this should also be gone, and actually redirect to friendly url not order_item/...
+      @training = Training.find(@order_item.productable_id)
+      render "order_items/new"
     end
   end
 

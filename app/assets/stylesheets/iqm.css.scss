@@ -289,16 +289,17 @@ body {
   margin: 10px 10px 10px 0px !important;
 }
 
-.participants_table_wrapper, .customer_table_wrapper{
+.participants_table_wrapper, .customer_wrapper, .coordinator_wrapper{
     background-color: #FFFFFF;
     border: 1px solid #DDDDDD;
     border-radius: 4px 4px 4px 4px;
     margin: 15px 0;
     padding: 39px 19px 14px;
     position: relative;
+    overflow: auto;
 }
 
-.participants_table_wrapper:after, .customer_table_wrapper:after {
+.participants_table_wrapper:after, .customer_wrapper:after, .coordinator_wrapper:after {
     background-color: #F5F5F5;
     border: 1px solid #DDDDDD;
     border-radius: 4px 0 4px 0;
@@ -312,8 +313,23 @@ body {
     top: -1px;
 }
 
-.customer_table_wrapper:after {
+.customer_wrapper:after {
   content: "Dane płatnika";
+}
+
+.coordinator_wrapper:after {
+  content: "Dane Koordynatora";
+}
+
+.address_name, .customer_name {
+  @extend h5;
+  clear:both;
+}
+
+.customer_name {
+  float: left;
+  margin: 5px 10px 0 0;
+  display: block;
 }
 
 .address_field {
@@ -328,8 +344,11 @@ body {
   }
 }
 
-
-
+.add_address_btn, .add_coordinator_btn {
+  clear: both;
+  float: left;
+  margin-bottom: 10px;
+}
 
 
 

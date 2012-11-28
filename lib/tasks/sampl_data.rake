@@ -3,7 +3,7 @@ namespace :db do
     desc "Fill database with sample data"
     task populate: :environment do
 
-      [ Offer, EventType, CostItemType, Event, Participant, EventParticipation, Company, Customer, User, Address, Order, OrderItem, Training, Product, Seat ].each(&:delete_all)
+      [ Offer, EventType, CostItemType, Event, Participant, EventParticipation, Company, User, Address, Order, OrderItem, Training, Product, Seat ].each(&:delete_all)
 
       # make_offers
       make_event_types

@@ -2,11 +2,19 @@
 
 <table>
   <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Phone 1</th>
+    <th>Phone 2</th>
     <th>Nip</th>
     <th>Regon</th>
   </tr>
   <% for company in @companies %>
     <tr>
+      <td><%= company.name %></td>
+      <td><%= company.email %></td>
+      <td><%= company.phone_1 %></td>
+      <td><%= company.phone_2 %></td>
       <td><%= company.nip %></td>
       <td><%= company.regon %></td>
       <td><%= link_to "Show", company %></td>

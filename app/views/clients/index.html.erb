@@ -2,6 +2,11 @@
 
 <table>
   <tr>
+    <th>Name</th>
+    <th>Phone 1</th>
+    <th>Phone 2</th>
+    <th>Nip</th>
+    <th>Regon</th>
     <th>Email</th>
     <th>Password Digest</th>
     <th>Type</th>
@@ -10,6 +15,11 @@
   </tr>
   <% for client in @clients %>
     <tr>
+      <td><%= client.name %></td>
+      <td><%= client.phone_1 %></td>
+      <td><%= client.phone_2 %></td>
+      <td><%= client.nip %></td>
+      <td><%= client.regon %></td>
       <td><%= client.email %></td>
       <td><%= client.password_digest %></td>
       <td><%= client.type %></td>

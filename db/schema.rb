@@ -29,6 +29,10 @@ ActiveRecord::Schema.define(:version => 20121123204301) do
   end
 
   create_table "companies", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone_1"
+    t.string   "phone_2"
     t.string   "nip"
     t.string   "regon"
     t.datetime "created_at", :null => false
@@ -50,19 +54,6 @@ ActiveRecord::Schema.define(:version => 20121123204301) do
     t.decimal  "single_cost",       :precision => 8, :scale => 2
     t.integer  "cost_item_type_id"
   end
-
-  create_table "customers", :force => true do |t|
-    t.string   "name"
-    t.string   "phone_1"
-    t.string   "phone_2"
-    t.integer  "customerable_id"
-    t.string   "customerable_type"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-  end
-
-  add_index "customers", ["customerable_id", "customerable_type"], :name => "index_customers_on_customerable_id_and_customerable_type"
-  add_index "customers", ["name"], :name => "index_customers_on_name"
 
   create_table "event_participations", :force => true do |t|
     t.integer  "event_id"
@@ -127,11 +118,13 @@ ActiveRecord::Schema.define(:version => 20121123204301) do
     t.string   "status"
     t.date     "date_placed"
     t.integer  "customer_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.string   "customer_type"
+    t.integer  "coordinator_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
-  add_index "orders", ["customer_id"], :name => "index_orders_on_customer_id"
+  add_index "orders", ["customer_id", "customer_type"], :name => "index_orders_on_customer_id_and_customer_type"
   add_index "orders", ["date_placed"], :name => "index_orders_on_date_placed"
   add_index "orders", ["status"], :name => "index_orders_on_status"
 
@@ -193,6 +186,11 @@ ActiveRecord::Schema.define(:version => 20121123204301) do
   add_index "trainings", ["training_type_id"], :name => "index_trainings_on_training_type_id"
 
   create_table "users", :force => true do |t|
+    t.string   "name"
+    t.string   "phone_1"
+    t.string   "phone_2"
+    t.string   "nip"
+    t.string   "regon"
     t.string   "email"
     t.string   "password_digest"
     t.string   "type"

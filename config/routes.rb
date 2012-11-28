@@ -1,16 +1,20 @@
 Iqm::Application.routes.draw do
-  resources :customers
+  
+  resources :trainings do
+    resources :order_items
+  end
+
+  resources :order_items
+
+  resources :addresses
+
+  resources :seats
 
   resources :companies
 
   resources :clients
 
-  match 'zapisz-sie/:training_id', controller: :order_items, action: :new, as: :register
-  resources :trainings
-
-  resources :order_items do
-
-  end
+  
 
   resources :orders
 

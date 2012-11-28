@@ -1,6 +1,22 @@
 <%= form_for @company do |f| %>
   <%= f.error_messages %>
   <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :phone_1 %><br />
+    <%= f.text_field :phone_1 %>
+  </p>
+  <p>
+    <%= f.label :phone_2 %><br />
+    <%= f.text_field :phone_2 %>
+  </p>
+  <p>
     <%= f.label :nip %><br />
     <%= f.text_field :nip %>
   </p>

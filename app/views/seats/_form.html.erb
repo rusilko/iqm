@@ -1,0 +1,16 @@
+<%= form_for @seat do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :client_id %><br />
+    <%= f.number_field :client_id %>
+  </p>
+  <p>
+    <%= f.label :order_item_id %><br />
+    <%= f.number_field :order_item_id %>
+  </p>
+  <p>
+    <%= f.label :training_id %><br />
+    <%= f.number_field :training_id %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

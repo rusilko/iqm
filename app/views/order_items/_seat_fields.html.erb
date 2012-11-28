@@ -1,6 +1,8 @@
 <tr>
 <%= f.hidden_field :training_id, value: t_id %>
-<%= f.simple_fields_for :client, defaults: { label: false, wrapper_html: { class: '' }, input_html: { class:'' } } do |builder| %>
+<%= f.hidden_field :id, value: f.object.id %>
+<%# binding.pry %>
+<%= f.simple_fields_for :client, defaults: { label: false, wrapper_html: { class: '' }, input_html: { class:'' }, error_class: { class: 'help-block'} } do |builder| %>
   <td class="no"><%= index %></td>
   <td class="name"> <%= builder.input :name %></td>
   <td class="email"><%= builder.input :email %></td>
@@ -8,9 +10,8 @@
   <td class="price"></td>
   <td class="trashbin">
     <% unless index==1 %>
-      <%= f.hidden_field :_destroy %><%= link_to raw('<i class="icon-trash"></i>'), '#', class: "remove_event_participation_btn"  %>
+      <%= f.hidden_field :_destroy, value: "" %><%= link_to raw('<i class="icon-trash"></i>'), '#', class: "remove_seat_btn"  %>
     <% end %>
   </td>
 <% end -%>
-<%= f.hidden_field :id %>
 </tr>

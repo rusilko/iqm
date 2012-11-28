@@ -1,3 +1,3 @@
 class User < ActiveRecord::Base
-  attr_accessible :email, :password_digest, :company_id, :company_primary_contact
+  attr_accessible :name, :email, :password_digest
 end

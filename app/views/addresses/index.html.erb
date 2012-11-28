@@ -1,0 +1,35 @@
+<% title "Addresses" %>
+
+<table>
+  <tr>
+    <th>Line 1</th>
+    <th>Line 2</th>
+    <th>City</th>
+    <th>Postcode</th>
+    <th>Country</th>
+    <th>Default Sending</th>
+    <th>Default Billing</th>
+    <th>Other Details</th>
+    <th>Addressable</th>
+    <th>Addressable Type</th>
+  </tr>
+  <% for address in @addresses %>
+    <tr>
+      <td><%= address.line_1 %></td>
+      <td><%= address.line_2 %></td>
+      <td><%= address.city %></td>
+      <td><%= address.postcode %></td>
+      <td><%= address.country %></td>
+      <td><%= address.default_sending %></td>
+      <td><%= address.default_billing %></td>
+      <td><%= address.other_details %></td>
+      <td><%= address.addressable_id %></td>
+      <td><%= address.addressable_type %></td>
+      <td><%= link_to "Show", address %></td>
+      <td><%= link_to "Edit", edit_address_path(address) %></td>
+      <td><%= link_to "Destroy", address, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Address", new_address_path %></p>

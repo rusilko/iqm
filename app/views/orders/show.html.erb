@@ -12,6 +12,14 @@
   <strong>Customer:</strong>
   <%= @order.customer_id %>
 </p>
+<p>
+  <strong>Customer Type:</strong>
+  <%= @order.customer_type %>
+</p>
+<p>
+  <strong>Coordinator:</strong>
+  <%= @order.coordinator_id %>
+</p>
 
 <p>
   <%= link_to "Edit", edit_order_path(@order) %> |
