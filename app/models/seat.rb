@@ -3,7 +3,7 @@ class Seat < ActiveRecord::Base
   validates_associated :client
   #before_validation :set_client_if_exists
   belongs_to  :client, autosave: true
-  accepts_nested_attributes_for :client, reject_if: :all_blank
+  accepts_nested_attributes_for :client#, reject_if: :all_blank
   
   belongs_to  :order_item
 

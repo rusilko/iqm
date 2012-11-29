@@ -1,5 +1,5 @@
 <tr>
-<%= f.hidden_field :training_id, value: t_id %>
+<%= f.hidden_field :training_id, value: t.id %>
 <%= f.hidden_field :id, value: f.object.id %>
 <%# binding.pry %>
 <%= f.simple_fields_for :client, defaults: { label: false, wrapper_html: { class: '' }, input_html: { class:'' }, error_class: { class: 'help-block'} } do |builder| %>
@@ -7,7 +7,7 @@
   <td class="name"> <%= builder.input :name %></td>
   <td class="email"><%= builder.input :email %></td>
   <td class="tel">  <%= builder.input :phone_1 %></td>
-  <td class="price"></td>
+  <td class="price"><%= t.price_per_person %></td>
   <td class="trashbin">
     <% unless index==1 %>
       <%= f.hidden_field :_destroy, value: "" %><%= link_to raw('<i class="icon-trash"></i>'), '#', class: "remove_seat_btn"  %>

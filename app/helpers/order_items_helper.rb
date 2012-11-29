@@ -16,12 +16,12 @@ module OrderItemsHelper
     oi
   end
 
-  def link_to_add_seat_row(name, f, association, index, t_id) 
+  def link_to_add_seat_row(name, f, association, index, t) 
     new_object = f.object.send(association).klass.new
     new_object.build_client
     id = new_object.object_id
     fields = f.simple_fields_for(association, new_object, child_index: id) do |builder|
-      render 'seat_fields', f: builder, t_id: t_id, index: index
+      render 'seat_fields', f: builder, t: t, index: index
     end
     link_to(name, '#', class: "btn btn-success add_seat_btn", data: {id: id, fields: fields.gsub("\n", "")})
   end

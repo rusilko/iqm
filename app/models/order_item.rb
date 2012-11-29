@@ -35,6 +35,6 @@ class OrderItem < ActiveRecord::Base
   def clients_blank(attributes)
     # binding.pry
     return true if attributes["_destroy"]=="1"
-    attributes['client_attributes'].all? { |key, value| key == '_destroy' || value.blank? }
+    #attributes['client_attributes'].all? { |key, value| key == '_destroy' || value.blank? }
   end
 end

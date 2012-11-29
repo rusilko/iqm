@@ -25,11 +25,11 @@
         <tbody>
           <% i = 1 %>
           <%= f.simple_fields_for :seats do |builder| %>
-            <%= render 'seat_fields', f: builder, t_id: @training.id, index: i %>
+            <%= render 'seat_fields', f: builder, t: @training, index: i %>
           <% i+=1; end %>
         </tbody>
       </table>         
-      <%= link_to_add_seat_row raw('<i class="icon-plus-sign icon-white"></i> Dodaj uczestnika'), f, :seats, i+1, @training.id %>
+      <%= link_to_add_seat_row raw('<i class="icon-plus-sign icon-white"></i> Dodaj uczestnika'), f, :seats, i+1, @training %>
     </div>
     
     <div class="customer_wrapper">

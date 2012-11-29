@@ -1,25 +1,30 @@
-<% title "Orders" %>
+<% title "Zamówienia" %>
 
-<table>
-  <tr>
-    <th>Status</th>
-    <th>Date Placed</th>
-    <th>Customer</th>
-    <th>Customer Type</th>
-    <th>Coordinator</th>
-  </tr>
-  <% for order in @orders %>
+<table class="table table-striped table-bordered table-hover">
+  <thead>
     <tr>
-      <td><%= order.status %></td>
-      <td><%= order.date_placed %></td>
-      <td><%= order.customer_id %></td>
-      <td><%= order.customer_type %></td>
-      <td><%= order.coordinator_id %></td>
-      <td><%= link_to "Show", order %></td>
-      <td><%= link_to "Edit", edit_order_path(order) %></td>
-      <td><%= link_to "Destroy", order, :confirm => 'Are you sure?', :method => :delete %></td>
+      <th>ID</th>
+      <th>Klient</th>
+      <th>Koordynator</th>
+      <th>Status</th>
+      <th>Data złożenia</th>
+      <th>Akcje</th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.id %></td>
+        <td><%= order.customer.try(:name) %></td>
+        <td><%= order.coordinator.try(:name) %></td>
+        <td><%= order.status %></td>
+        <td><%= order.date_placed %></td>
+        <td>
+          <%# link_to 'Zobacz pozycję', new_order_order_item_path(order) , class: 'btn btn-mini btn-success' %>
+          <%# link_to 'Edit', edit_order_path(order), class: 'btn btn-mini btn-info' %>
+          <%# link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?'}, class: 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
-
-<p><%= link_to "New Order", new_order_path %></p>

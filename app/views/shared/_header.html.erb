@@ -9,16 +9,16 @@
       <a class="brand" href="#">IQM</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
-          <%= menu_item("Home", root_path) %>
-          <%= menu_item("Offers", offers_path) %>
-          <%= menu_item("Trainings", trainings_path) %>
-          <%= menu_item("Orders", orders_path) %>
-          <%= menu_item("Order Items", order_items_path) %>
-          <%= menu_item("Seats", seats_path) %>
-          <%= menu_item("Clients", clients_path) %>
-          <%= menu_item("Companies", companies_path) %>            
-          <%= menu_item("Addresses", addresses_path) %>            
-          <%= menu_item("Zapisz się", new_training_order_item_path(Training.find(1))) %>
+          <%# menu_item("Home", root_path) %>
+          <%# menu_item("Offers", offers_path) %>
+          <%= menu_item("Szkolenia", trainings_path) %>
+          <%= menu_item("Zamówienia", orders_path) %>
+          <%# menu_item("Order Items", order_items_path) %>
+          <%# menu_item("Seats", seats_path) %>
+          <%= menu_item("Osoby", clients_path) %>
+          <%= menu_item("Firmy", companies_path) %>            
+          <%= menu_item("Adresy", addresses_path) %>            
+          <%# menu_item("Zapisz się", new_training_order_item_path(Training.find(1))) %>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
