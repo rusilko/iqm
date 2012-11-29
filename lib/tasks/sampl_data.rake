@@ -132,7 +132,7 @@ end
 def make_trainings
   5.times do
     name = Faker::Lorem.sentence(1)
-    Training.create!(name: name, start_date: Date.today, end_date: Date.tomorrow, training_type_id: rand(0..3), city: Event.new.cities[rand(4)], price_per_person: 2000 )
+    Training.create!(name: name, start_date: Date.today, end_date: Date.tomorrow, training_type_id: rand(3), city: Event.new.cities[rand(4)], price_per_person: 2000 )
   end
 end
 
