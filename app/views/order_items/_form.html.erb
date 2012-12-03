@@ -34,33 +34,49 @@
     
     <div class="customer_wrapper">
     <%= f.simple_fields_for :order do |builder| %>
+    
       <%= builder.input :customer_type, collection: [["Company", "Firma (faktura)"],["Client", "Osoba (rachunek)"]], label: "Dane płatnika:",
-          label_method: :last, value_method: :first, as: :radio_buttons, :item_wrapper_class => 'inline', label_html: {class: "customer_name" }, :checked => "Company" %>
-      <%= builder.simple_fields_for :customer, 
-                html: { class: '' }, 
-                defaults: { wrapper_html: {class: 'quote_field'}, 
-                input_html: { class:'input-small' } } do |cbuilder| %>
-        <%= field_with_prepend cbuilder, name: :name, wrapper_html_class: "address_field", input_html_class: "input-large", input_html_class: "input-large" %>
-        <%= field_with_prepend cbuilder, name: :email, wrapper_html_class: "address_field", input_html_class: "input-large" %>
-        <%= field_with_prepend cbuilder, name: :phone_1, prepend_text: "tel", wrapper_html_class: "address_field", input_html_class: "input-large" %>
-        <%= field_with_prepend cbuilder, name: :nip, wrapper_html_class: "address_field", input_html_class: "input-large" %>
-        <%= cbuilder.simple_fields_for :addresses, defaults: { wrapper_html: {class: 'address_field'}} do |abuilder| %>
-          <%= render 'address_fields', f: abuilder, defaults: { sending: true, billing: true } %>
-        <% end %>
-        <%= link_to_add_address raw('<i class="icon-plus-sign icon-white"></i> Dodaj inny adres koresp.'), cbuilder, :addresses, { sending: true, billing: false } %>        
+          label_method: :last, value_method: :first, as: :radio_buttons, :item_wrapper_class => 'inline', label_html: {class: "customer_name" }, 
+          checked: builder.object.customer.class.to_s %>
+      
+      <%= builder.simple_fields_for :customer, defaults: { wrapper_html: { class: 'address_field'}, input_html: { class: "input-large" } } do |cbuilder| %>
+        <%= field_with_prepend cbuilder, name: :name %>
+        <%= field_with_prepend cbuilder, name: :email %>
+        <%= field_with_prepend cbuilder, name: :phone_1, prepend_text: "tel." %>
+        <%= field_with_prepend cbuilder, name: :nip %>
+
+        <% two_adrs = true if cbuilder.object.number_of_addresses > 1 %>   
+        <% i = 1 %>
+        <%= cbuilder.simple_fields_for :addresses, defaults: { wrapper_html: {class: 'address_field'}} do |abuilder| %>                 
+          <% unless two_adrs %>
+            <% defaults = {sending: true, billing: true} %>  
+          <% else %>
+            <% defaults = (i==1) ? {sending: false, billing: true} : {sending: true, billing: false} %>
+          <% end %>
+          <%= render 'address_fields', f: abuilder, defaults: defaults %>
+        <% i +=1; end %>
+        <%= link_to_add_address raw('<i class="icon-plus-sign icon-white"></i> Dodaj inny adres koresp.'), cbuilder, :addresses, { sending: true, billing: false }, two_adrs %>        
       <% end -%>
+    
     <% end -%>
     </div>
 
     <div class="coordinator_wrapper">
     <%= f.simple_fields_for :order do |builder| %>
+      <% disabled = false %>
+      <% if builder.object.coordinator %>
+        <%= builder.simple_fields_for :coordinator, defaults: { wrapper_html: {class: 'address_field'} } do |cobuilder| %>
+          <%= render 'coordinator_fields', f: cobuilder %>
+        <% end -%>
+        <% disabled = true %>
+      <% end -%>
+      <%= link_to_add_coordinator raw('<i class="icon-plus-sign icon-white"></i> Dodaj innego koordynatora'), builder, :coordinator, disabled %>        
       <p><small>
         Koordynator to osoba, z którą będziemy się kontkować. Będzie to pierwsza osoba na liście uczestników.<br/>
         Jako adres korespondencyjny przyjmiemy adres korespondencyjny płatnika.<br/>
         Jeśli zamiawiasz szkolenia jako firma, możesz dodać nowego koordynatora i nowy adres.
-      </small></p>
+      </small></p> 
 
-      <%= link_to_add_coordinator raw('<i class="icon-plus-sign icon-white"></i> Dodaj innego koordynatora'), builder, :coordinator %>        
     <% end -%>
     </div>
 

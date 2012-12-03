@@ -1,8 +1,13 @@
 jQuery(function() {
   // globals
   var number_of_clients = parseInt($('.participants_table_wrapper').find('tr:last td.no').html());
-  var customer_type = "Company";
-  // Increment index in add client button
+  var customer_type_radio = $('form input[name*="customer_type"][checked=checked]');
+  var customer_type = customer_type_radio.val();
+
+  // simulate customer type radio click on load in case we are coming back with validation errors
+  $(window).load(function (){
+    if("Client"==customer_type) customer_type_radio.click();
+  });
 
   // Adding and removing Clients
 
@@ -36,7 +41,7 @@ jQuery(function() {
       time = new Date().getTime();
       regexp = new RegExp($(this).data('id'), 'g');
       $(this).before($(this).data('fields').replace(regexp, time));
-      $(this).siblings('.address_box.billing').first().find('p').html("Adres rozliczeniowy: ");
+      $(this).siblings('.address_box.billing').first().find('p.address_name').html("Adres rozliczeniowy: ");
       $(this).siblings('.address_box.billing').first().find('input[name*="default_sending"]').val(false);
       $(this).addClass('disabled');
       //$(this).hide();
@@ -52,7 +57,7 @@ jQuery(function() {
     $(this).closest('div').hide();
     $(this).parent().next('.add_address_btn').removeClass('disabled');
     //$(this).parent().next('.add_address_btn').show();
-    $(this).parent().siblings('.address_box').first().find('p').html("Adres rozliczeniowy i korespondencyjny: ");
+    $(this).parent().siblings('.address_box').first().find('p.address_name').html("Adres rozliczeniowy i korespondencyjny: ");
     $(this).parent().siblings('.address_box').first().find('input[name*="default_sending"]').val(true);
     event.preventDefault();
   });
@@ -65,21 +70,17 @@ jQuery(function() {
       regexp = new RegExp($(this).data('id'), 'g');
       $(this).before($(this).data('fields').replace(regexp, time));
       $(this).addClass('disabled');
-      //$(this).hide();
     }
     event.preventDefault();
   });
 
   // Remove Coordinator box
   $('form').on('click', '.remove_coordinator_btn', function(event) {
-    // mark destroy field as 1
     $(this).prev('input[type=hidden]').val('1');
-    // hide address div
     if(customer_type=="Company"){
       $(this).parent().next('.add_coordinator_btn').removeClass('disabled');
     }
     $(this).closest('div').remove();
-    //$(this).parent().next('.add_coordinator_btn').show();
     event.preventDefault();
   });
 
@@ -108,7 +109,6 @@ jQuery(function() {
     }
   });
 
-
   $('form').on('change keyup', 'input[name*="email"]', function(event){
     if(customer_type=="Client") { // this is order customer_type field
       regexp = /customer/
@@ -124,26 +124,40 @@ jQuery(function() {
   // Toggle Customer type
  $('form').on('click', 'input[name*="customer_type"]', function(event){
     customer_type = $(this).val();
-    if(customer_type == "Client") {
-      //copy client data to customer data
-      // copy_person_name("participants","customer");
-      // copy_person_tel("participants","customer");
+    if("Client" == customer_type) {
+      
+      // copy data from first participant 
       copy_person_attribute("name","participants_table","customer");
       copy_person_attribute("email","participants_table","customer");
       copy_person_attribute("phone_1","participants_table","customer");
-      $('.customer_wrapper').find('input[name*="phone_1"]').prop('disabled', true);
-      $('.customer_wrapper').find('input[name*="name"]').prop('disabled', true);
-      $('.customer_wrapper').find('input[name*="email"]').prop('disabled', true);
 
+      // disable the fields
+      var tel   = $('.customer_wrapper').find('input[name*="phone_1"]');
+      var name  = $('.customer_wrapper').find('input[name*="name"]');
+      var email = $('.customer_wrapper').find('input[name*="email"]');
+      var nip   = $('.customer_wrapper').find('input[name*="nip"]');
+      
+      // hide the fields
+      tel.prop('disabled', true); tel.parents('.control-group').hide();
+      //name.prop('disabled', true); 
+      email.prop('disabled', true); email.parents('.control-group').hide();
+      nip.prop('disabled', true); nip.parents('.control-group').hide();
+
+      // remove coordinator (if added previously) and disable the button
+      console.log($('.coordinator_wrapper').find('.remove_coordinator_btn'));
       $('.coordinator_wrapper').find('.remove_coordinator_btn').click();
       $('.coordinator_wrapper').find('.add_coordinator_btn').addClass('disabled');
 
       //$('.coordinator_wrapper').find('.add_coordinator_btn').hide();
     }
-    else if (customer_type == "Company") {
+    else if ("Company" == customer_type) {
+      // show fields
+       $('.customer_wrapper').find('input').parents('.control-group').show();
+      // enable the fields
       $('.customer_wrapper').find('input').prop('disabled', false);
+
+      // reenable coordinator button 
       $('.coordinator_wrapper').find('.add_coordinator_btn').removeClass('disabled');
-      //$('.coordinator_wrapper').find('.add_coordinator_btn').show();
     }
   });
 
@@ -158,10 +172,8 @@ jQuery(function() {
   function decrement_indexes(removed_row){
     removed_row.nextAll('tr').each( function(){
       var index_cell = $(this).find('td.no');
-      current_value = parseInt(index_cell.html());
+      var current_value = parseInt(index_cell.html());
       index_cell.html(current_value-1);
     });
   }
-
-
 });

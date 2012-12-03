@@ -15,25 +15,45 @@ class OrderItemsController < ApplicationController
 
   def create
     @order_item = OrderItem.new(params[:order_item])
-    
+    o = @order_item.order
     # TO DO: this should go to one of the models, need to figure out where and then move it
-    if @order_item.order.customer.is_a?(Client) 
-      nip = @order_item.order.customer.nip
-      addresses = @order_item.order.customer.addresses
-      @order_item.order.customer = @order_item.seats.first.client
-      @order_item.order.customer.nip = nip
-      @order_item.order.customer.addresses = addresses
-      @order_item.order.coordinator = @order_item.seats.first.client
-    elsif @order_item.order.customer.is_a?(Company)      
+    if o.customer.is_a?(Client) 
+      addresses = o.customer.addresses
+      o.customer = @order_item.seats.first.client
+      o.customer.addresses = addresses
+      o.coordinator = @order_item.seats.first.client
+    elsif o.customer.is_a?(Company)      
       # set coordinator to first client if not set in the form
-      @order_item.order.coordinator = @order_item.seats.first.client if !@order_item.seats.empty? && !@order_item.order.coordinator
+      o.coordinator = @order_item.seats.first.client if (!@order_item.seats.empty? && !o.coordinator && o.customer.valid?)
       # set company for coordinator
-      @order_item.order.coordinator.company = @order_item.order.customer if @order_item.order.coordinator
+      o.coordinator.company = o.customer if o.coordinator
       # set company for clients
       @order_item.seats.each do |s|
-        s.client.company = @order_item.order.customer if s.client
+        s.client.company = o.customer if s.client
       end
     end
+
+
+    # if o.customer.is_a?(Client)
+    #   params_addresses  = o.customer.addresses
+    #   o.customer        = @order_item.seats.first.client
+    #   c.addresses       = params_addresses
+    #   o.coordinator     = @order_item.seats.first.client
+    # elsif c.is_a?(Company)      
+    #   # set coordinator to first client if not set in the form
+    #   if (@order_item.valid?)
+    #     unless o.coordinator || @order_item.seats.empty?
+    #       o.coordinator = @order_item.seats.first.client
+    #     end
+    #   end
+    #   # try set company for coordinator
+    #   o.coordinator.company = c if o.coordinator
+      
+    #   # try to set company for clients
+    #   @order_item.seats.each do |s|
+    #     s.client.company = c if s.client
+    #   end
+    # end
 
     if @order_item.save
       redirect_to @order_item, :notice => "Successfully created order item."

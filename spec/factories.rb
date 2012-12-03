@@ -45,4 +45,13 @@ FactoryGirl.define do
     sequence(:email) { Faker::Internet.email }
   end
 
+  factory :training do
+    sequence(:name) { |n| "Training #{n}" }
+    start_date "12-12-12"
+    end_date   "13-12-12"
+    city "Warszawa"
+    price_per_participant 2000
+    event_type
+  end
+
 end

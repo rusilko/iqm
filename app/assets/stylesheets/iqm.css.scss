@@ -297,6 +297,9 @@ body {
     padding: 39px 19px 14px;
     position: relative;
     overflow: auto;
+    .table {
+      margin-bottom: 10px;
+    }
 }
 
 .participants_table_wrapper:after, .customer_wrapper:after, .coordinator_wrapper:after {
@@ -343,13 +346,19 @@ body {
     margin-left: 0px;
   }
 }
-
+.address_box {
+  clear: both;
+}
 .add_address_btn, .add_coordinator_btn {
   clear: both;
-  float: left;
-  margin-bottom: 10px;
 }
 
+br {
+  clear: both;
+}
 
-
+p.help-block{
+  font-size: $fontSizeMini;
+  margin-bottom: 0px;
+}
 @import "bootstrap-responsive";

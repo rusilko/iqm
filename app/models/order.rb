@@ -3,6 +3,7 @@ class Order < ActiveRecord::Base
   CUSTOMER_TYPES = %w(Client Company)
   attr_accessible :customer_id, :customer_type, :date_placed, :status, :order_items_attributes, :customer_attributes, :coordinator_id, :coordinator_attributes
   
+
   belongs_to :customer, polymorphic: true, autosave: true
   accepts_nested_attributes_for :customer
 
@@ -11,6 +12,8 @@ class Order < ActiveRecord::Base
 
   belongs_to :coordinator, class_name: "Client", autosave: true
   accepts_nested_attributes_for :coordinator
+  validates_associated :coordinator
+
   # def attributes=(attributes)
   #   self.customer_type = attributes[:customer_type]
   #   binding.pry 
@@ -20,6 +23,7 @@ class Order < ActiveRecord::Base
   def customer_attributes=(attributes)
     #self.customer_type = attributes[:customer_type]
     #self.customer = eval(attributes.delete(:customer_type)).where(id: attributes[:customer_id]).first_or_initialize(attributes) if self.valid?
+    #binding.pry
     self.customer = eval(self.customer_type).where(id: attributes[:customer_id]).first_or_initialize(attributes) if self.valid?
   end
 
@@ -31,8 +35,12 @@ class Order < ActiveRecord::Base
   end
 
   def coordinator_attributes=(attributes)
-    self.coordinator = Client.where(id: attributes[:coordinator_id]).first_or_initialize(attributes) if self.valid?
-  end
+    unless attributes[:_destroy]=="1"
+      self.coordinator = Client.where(id: attributes[:coordinator_id]).first_or_initialize(attributes.except(:_destroy))  #if self.valid?
+    else
+      self.coordinator = nil
+    end
+   end
 
   def build_coordinator(params={}, assignment_options={})
     self.coordinator = Client.new(params)

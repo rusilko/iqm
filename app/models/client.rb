@@ -16,22 +16,24 @@ class Client < User
 
   before_validation :strip_phone_number, only: :phone_1
 
-
   validates :name,    presence:    true, 
                       length:      { within: 3..50}
 
   validates :email,   presence:    true,
                       format:      { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
-                      uniqueness:  { case_sensitive: false }
+                      uniqueness:  { case_sensitive: false }                      
 
   validates :phone_1, presence:    true,
-                      format:      { with: /\d{9}/i } 
+                      format:      { with: /\d{9}/i, message: "Nie poprawny format, powinno byc 9 cyfr." } 
+
+  def number_of_addresses
+    self.addresses.size
+  end
 
   private
 
-    def strip_phone_number
-      self.phone_1 = self.phone_1.gsub(/\s+/, "")  
-    end
-
+  def strip_phone_number
+    self.phone_1 = self.phone_1.gsub(/\s+/, "")  
+  end
 
 end

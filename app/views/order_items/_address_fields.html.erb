@@ -1,12 +1,12 @@
 <% s = defaults[:sending] %>
 <% b = defaults[:billing] %>
-<div class="address_box <%= "billing" if b %>">
+<div class="address_box clearfix <%= "billing" if b %>">
   <p class="address_name">
     Adres <%= "rozliczeniowy" if b %><%= " i " if b && s %><%= "korespondencyjny" if s %><%= ":" %>
   </p>
   <%= field_with_prepend f, name: :line_1, prepend_text: "adres", input_html_class: "input-large" %>
   <%= field_with_prepend f, name: :line_2, prepend_text: "adres cd.", input_html_class: "input-large" %>
-  <%= field_with_prepend f, name: :city, input_html_class: "input-small" %>
+  <%= field_with_prepend f, name: :city, input_html_class: "input-small", value: "Polska" %>
   <%= field_with_prepend f, name: :postcode, input_html_class: "input-small" %>
   <%= f.hidden_field :default_billing, value: b %>
   <%= f.hidden_field :default_sending, value: s %>

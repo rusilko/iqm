@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.8'
-gem 'bootstrap-sass', git: 'git://github.com/thomas-mcdonald/bootstrap-sass', branch: '2.1-wip'
+gem 'bootstrap-sass', '~> 2.2.1.1'
+# gem 'bootstrap-sass', git: 'git://github.com/thomas-mcdonald/bootstrap-sass', branch: '2.1-wip'
 # gem 'bootstrap-sass'
 #gem "bootstrap-sass", :git => 'git://github.com/dszczyt/bootstrap-sass.git'
 gem 'bcrypt-ruby', '3.0.1'
@@ -17,6 +18,7 @@ gem 'jquery-rails', '2.0.2'
 gem 'simple_form'
 #gem 'awesome_nested_set'
 gem 'heroku'
+gem 'common_numbers_rails'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -35,7 +37,7 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '3.2.4'
+  gem 'sass-rails', '~> 3.2'
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '1.2.3'
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
