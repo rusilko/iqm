@@ -27,16 +27,13 @@ class Seat < ActiveRecord::Base
     logger.fatal "validating seat"
   end
 
+  def autosave_associated_records_for_client
+    if new_client = Client.find_by_email(client.email)      
+      self.client = new_client
+    else
+      #not quite sure why I need the part before the if, but somehow seat is losing its client_id value
+      self.client = client if self.client.save!
+    end
+  end
+
 end
-
-
-  # def autosave_associated_records_for_client
-  #   #binding.pry
-  #   if new_client = Client.find_by_email(client.email)      
-  #     self.client = new_client
-  #   else
-  #     #not quite sure why I need the part before the if, but somehow seat is losing its client_id value
-  #     #self.client = client if self.client.valid?
-  #   end
-  #   #binding.pry
-  # end

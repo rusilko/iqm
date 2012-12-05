@@ -33,12 +33,11 @@ class OrdersController < ApplicationController
       end     
       # set coordinator to first client if coordinator wasn't set in the form
       unless @order.coordinator
-        @order.coordinator  = _1st_seat.client # if _1st_seat.client.valid?
+        @order.coordinator  = _1st_seat.client #if _1st_seat.client.valid? # we need the if so we don't show coordinator on the page with errors
       # check if coordinators email is not repeated from one of the clients  
       else
         _1st_order_item.seats.each do |s|
           if @order.coordinator.email == s.client.email
-            @order.coordinator = nil
             @order.coordinator = s.client
           end
         end
@@ -47,7 +46,7 @@ class OrdersController < ApplicationController
       end
 
     end
-    binding.pry
+
     if @order.save
       redirect_to @order, :notice => "Successfully created order."
     else

@@ -11,6 +11,7 @@ module OrdersHelper
       # prepare one address for a customer
       co.addresses.build
     else
+      order.coordinator = nil if order.coordinator.email == order.order_items.first.seats.first.client.email
       # # let's just preapre one seat in case it was correct
       # if order.order_items.first.seats.empty?
       #   oi = order.order_items.build

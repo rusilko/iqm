@@ -15,7 +15,7 @@ class Order < ActiveRecord::Base
   validates_associated :coordinator
 
   def customer_attributes=(attributes)
-    self.customer = eval(self.customer_type).where(id: attributes[:customer_id]).first_or_initialize(attributes)
+    self.customer = eval(self.customer_type).where(email: attributes[:email]).first_or_initialize(attributes)
   end
 
   def build_customer(params, assignment_options={})
@@ -27,7 +27,7 @@ class Order < ActiveRecord::Base
 
   def coordinator_attributes=(attributes)
     unless attributes[:_destroy]=="1"
-      self.coordinator = Client.where(id: attributes[:coordinator_id]).first_or_initialize(attributes.except(:_destroy))
+      self.coordinator = Client.where(email: attributes[:email]).first_or_initialize(attributes.except(:_destroy))
     else
       self.coordinator = nil
     end
