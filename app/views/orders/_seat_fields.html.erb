@@ -1,17 +1,17 @@
 <tr>
 <%= f.hidden_field :training_id, value: t.id %>
-<%= f.hidden_field :id, value: f.object.id %>
-<%# binding.pry %>
-<%= f.simple_fields_for :client, defaults: { label: false, wrapper_html: { class: '' }, input_html: { class:'' }, error_class: { class: 'help-block'} } do |builder| %>
+<%# f.hidden_field :id %>
+<%= f.simple_fields_for :client, include_id: false, defaults: { label: false, wrapper_html: { class: '' }, input_html: { class:'' } } do |builder| %>
   <td class="no"><%= index %></td>
-  <td class="name"> <%= builder.input :name %></td>
-  <td class="email"><%= builder.input :email %></td>
+  <td class="name"><%= builder.input :name %></td>
+  <td class="email"><%= builder.input :email  %></td>
   <td class="tel">  <%= builder.input :phone_1 %></td>
   <td class="price"><%= t.price_per_person %></td>
   <td class="trashbin">
-    <% unless index==1 %>
+    <% if index!=1 %>
       <%= f.hidden_field :_destroy, value: "" %><%= link_to raw('<i class="icon-trash"></i>'), '#', class: "remove_seat_btn"  %>
     <% end %>
+    <%# builder.hidden_field :id %>
   </td>
 <% end -%>
 </tr>

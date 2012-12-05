@@ -16,7 +16,7 @@ jQuery(function() {
     number_of_clients += 1;
     time = new Date().getTime();
     regexp1 = new RegExp($(this).data('id'), 'g');
-    regexp2 = new RegExp('<td class="no">.</td>', 'g');
+    regexp2 = new RegExp('<td class="no">[0-9]+</td>', 'g');
     var new_fields = $(this).data('fields').replace(regexp1, time);
     new_fields = new_fields.replace(regexp2, '<td class="no">'+number_of_clients+'</td>');
     $(this).siblings('table:last').find('tbody').append(new_fields);
@@ -33,6 +33,21 @@ jQuery(function() {
     decrement_indexes($(this).parents('tr'));
     event.preventDefault();
   });
+
+  // // Replace bad client row
+  // $('form').on('click', '.replace_bad_seat_btn', function(event) {
+  //   number_of_clients -= 1;
+  //   // mark destroy field as 1
+  //   $(this).prev('input[type=hidden]').val('1');
+  //   // hide client row
+  //   $(this).closest('tr').hide();
+  //   decrement_indexes($(this).parents('tr'));
+  //   if(number_of_clients==0){
+  //     $('form .add_seat_btn').trigger('click');
+  //   }
+  //   $('form .remove_seat_btn').first().remove();
+  //   event.preventDefault();
+  // });
 
   // Add Address box
   $('form').on('click', '.add_address_btn', function(event) {
@@ -88,9 +103,9 @@ jQuery(function() {
   $('form').on('change keyup', 'input[name*="name"]', function(event){
     if(customer_type=="Client") { // this is order customer_type field
       regexp = /customer/
-      current_input_name = $(this).attr("name");
+      var current_input_name = $(this).attr("name");
       if( regexp.test(current_input_name) ){
-        copy_person_attribute("name","customer","participants");
+        copy_person_attribute("name","customer","participants_table");
       }else{
         copy_person_attribute("name","participants_table","customer");
       }
@@ -102,7 +117,7 @@ jQuery(function() {
       regexp = /customer/
       current_input_name = $(this).attr("name");
       if( regexp.test(current_input_name) ){
-        copy_person_attribute("phone_1","customer","participants");
+        copy_person_attribute("phone_1","customer","participants_table");
       }else{
         copy_person_attribute("phone_1","participants_table","customer");
       }
@@ -138,13 +153,11 @@ jQuery(function() {
       var nip   = $('.customer_wrapper').find('input[name*="nip"]');
       
       // hide the fields
-      tel.prop('disabled', true); tel.parents('.control-group').hide();
-      //name.prop('disabled', true); 
-      email.prop('disabled', true); email.parents('.control-group').hide();
-      nip.prop('disabled', true); nip.parents('.control-group').hide();
+      // tel.prop('disabled', true); tel.parents('.control-group').hide();
+      // //name.prop('disabled', true); 
+      // email.prop('disabled', true); email.parents('.control-group').hide();
+      //nip.prop('disabled', true); nip.parents('.control-group').hide();
 
-      // remove coordinator (if added previously) and disable the button
-      console.log($('.coordinator_wrapper').find('.remove_coordinator_btn'));
       $('.coordinator_wrapper').find('.remove_coordinator_btn').click();
       $('.coordinator_wrapper').find('.add_coordinator_btn').addClass('disabled');
 

@@ -3,9 +3,9 @@ class Order < ActiveRecord::Base
   CUSTOMER_TYPES = %w(Client Company)
   attr_accessible :customer_id, :customer_type, :date_placed, :status, :order_items_attributes, :customer_attributes, :coordinator_id, :coordinator_attributes
   
-
   belongs_to :customer, polymorphic: true, autosave: true
   accepts_nested_attributes_for :customer
+  #validates_associated :customer
 
   has_many  :order_items, dependent: :destroy
   accepts_nested_attributes_for :order_items, allow_destroy: true
@@ -14,17 +14,8 @@ class Order < ActiveRecord::Base
   accepts_nested_attributes_for :coordinator
   validates_associated :coordinator
 
-  # def attributes=(attributes)
-  #   self.customer_type = attributes[:customer_type]
-  #   binding.pry 
-  #   super
-  # end
-
   def customer_attributes=(attributes)
-    #self.customer_type = attributes[:customer_type]
-    #self.customer = eval(attributes.delete(:customer_type)).where(id: attributes[:customer_id]).first_or_initialize(attributes) if self.valid?
-    #binding.pry
-    self.customer = eval(self.customer_type).where(id: attributes[:customer_id]).first_or_initialize(attributes) if self.valid?
+    self.customer = eval(self.customer_type).where(id: attributes[:customer_id]).first_or_initialize(attributes)
   end
 
   def build_customer(params, assignment_options={})
@@ -36,7 +27,7 @@ class Order < ActiveRecord::Base
 
   def coordinator_attributes=(attributes)
     unless attributes[:_destroy]=="1"
-      self.coordinator = Client.where(id: attributes[:coordinator_id]).first_or_initialize(attributes.except(:_destroy))  #if self.valid?
+      self.coordinator = Client.where(id: attributes[:coordinator_id]).first_or_initialize(attributes.except(:_destroy))
     else
       self.coordinator = nil
     end
@@ -46,13 +37,8 @@ class Order < ActiveRecord::Base
     self.coordinator = Client.new(params)
   end
 
-  # def autosave_associated_records_for_customer
-  #   c_type = self.customer_type.constantize
-  #   if new_customer = c_type.find_by_email(client.email)      
-  #     self.client = new_customer
-  #   else
-  #     #not quite sure why I need the part before the if, but somehow seat is losing its client_id value
-  #     self.client = client if self.client.save!
-  #   end
-  # end
+  before_validation :validating_order, only: :order_items
+  def validating_order
+    logger.fatal   "validating order"
+  end
 end

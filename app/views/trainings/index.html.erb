@@ -22,7 +22,7 @@
         <td><%= training.city %>     </td>
         <td><%= training.price_per_person %>     </td>
         <td>
-          <%= link_to 'Zapisz się', new_training_order_item_path(training) , class: 'btn btn-mini btn-success' %>
+          <%= link_to 'Zapisz się', new_training_order_path(training) , class: 'btn btn-mini btn-success' %>
           <%# link_to 'Edit', edit_training_path(training), class: 'btn btn-mini btn-info' %>
           <%# link_to 'Destroy', training, method: :delete, data: { confirm: 'Are you sure?'}, class: 'btn btn-mini btn-danger' %>
         </td>

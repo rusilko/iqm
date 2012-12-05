@@ -1,7 +1,7 @@
 Iqm::Application.routes.draw do
   
   resources :trainings do
-    resources :order_items
+    resources :orders
   end
 
   resources :order_items

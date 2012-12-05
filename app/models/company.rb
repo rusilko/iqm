@@ -14,7 +14,7 @@ class Company < ActiveRecord::Base
   validates :phone_1, presence:    true,
                       format:      { with: /\d{9}/i, message: "Nie poprawny format, powinno byc 9 cyfr." }
 
-  validates :nip, :nip => true
+  validates :nip, :nip => true #123-456-32-18
   
   def number_of_addresses
     self.addresses.size

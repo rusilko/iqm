@@ -1,24 +1,88 @@
-<%= form_for @order do |f| %>
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :status %><br />
-    <%= f.text_field :status %>
-  </p>
-  <p>
-    <%= f.label :date_placed %><br />
-    <%= f.date_select :date_placed %>
-  </p>
-  <p>
-    <%= f.label :customer_id %><br />
-    <%= f.number_field :customer_id %>
-  </p>
-  <p>
-    <%= f.label :customer_type %><br />
-    <%= f.text_field :customer_type %>
-  </p>
-  <p>
-    <%= f.label :coordinator_id %><br />
-    <%= f.number_field :coordinator_id %>
-  </p>
-  <p><%= f.submit %></p>
+<%= simple_form_for setup(@order), url: "/trainings/#{@training.id}/orders", html: { class: 'form-inline'} do |f| %>
+  <%# f.error_messages %>
+  <% if f.error_notification %>
+    <div class="alert alert-error fade in">
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+      Wystąpiły błędy w formularzu, zaznaczyliśmy je na czerwono.
+    </div>
+  <% end %>
+  <fieldset>
+    <legend>Szkolenie: <%= @training.name %>, <%= @training.start_date %> do <%= @training.end_date %>, <%= @training.city %>, <%= @training.price_per_person %>zł</legend>
+    
+    <div class="participants_table_wrapper">
+      <%= f.simple_fields_for :order_items do |oibuilder| %>
+        <%= oibuilder.hidden_field :productable_id, value: @training.id %>
+        <%= oibuilder.hidden_field :productable_type, value: "Training" %>      
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th class="">#</th>
+                <th class="">Name</th>
+                <th class="">Email</th>
+                <th class="">Tel</th>
+                <th class="">Cena</th>
+                <th class=""><i class="icon-trash"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% i = 1 %>
+              <%= oibuilder.simple_fields_for :seats do |builder| %>
+                <%= render 'seat_fields', f: builder, t: @training, index: i %>
+              <% i+=1; end %>
+            </tbody>
+          </table>         
+          <%= link_to_add_seat_row raw('<i class="icon-plus-sign icon-white"></i> Dodaj uczestnika'), oibuilder, :seats, i+1, @training %>
+      <% end -%>
+    </div>
+
+    <div class="customer_wrapper">    
+      <%= f.input :customer_type, collection: [["Company", "Firma (faktura)"],["Client", "Osoba (rachunek)"]], label: "Dane płatnika:",
+            label_method: :last, value_method: :first, as: :radio_buttons, :item_wrapper_class => 'inline', label_html: {class: "customer_name" }, 
+            checked: f.object.customer.class.to_s %>      
+      
+      <%= f.simple_fields_for :customer, defaults: { wrapper_html: { class: 'address_field'}, input_html: { class: "input-large" } } do |cbuilder| %>
+        <%= field_with_prepend cbuilder, name: :name %>
+        <%= field_with_prepend cbuilder, name: :email %>
+        <%= field_with_prepend cbuilder, name: :phone_1, prepend_text: "tel." %>
+        <%= field_with_prepend cbuilder, name: :nip %>
+
+        <% two_adrs = true if cbuilder.object.number_of_addresses > 1 %>   
+        <% i = 1 %>
+        <%= cbuilder.simple_fields_for :addresses, defaults: { wrapper_html: {class: 'address_field'}} do |abuilder| %>                 
+          <% unless two_adrs %>
+            <% defaults = {sending: true, billing: true} %>  
+          <% else %>
+            <% defaults = (i==1) ? {sending: false, billing: true} : {sending: true, billing: false} %>
+          <% end %>
+          <%= render 'address_fields', f: abuilder, defaults: defaults %>
+        <% i +=1; end %>
+        <%= link_to_add_address raw('<i class="icon-plus-sign icon-white"></i> Dodaj inny adres koresp.'), cbuilder, :addresses, { sending: true, billing: false }, two_adrs %>        
+      <% end -%>    
+    </div>
+
+    <div class="coordinator_wrapper">
+      <% disabled = false %>
+      <% if f.object.coordinator %>
+        <%= f.simple_fields_for :coordinator, defaults: { wrapper_html: {class: 'address_field'} } do |cobuilder| %>
+          <%= render 'coordinator_fields', f: cobuilder %>
+        <% end -%>
+        <% disabled = true %>
+      <% end -%>
+      <%= link_to_add_coordinator raw('<i class="icon-plus-sign icon-white"></i> Dodaj innego koordynatora'), f, :coordinator, disabled %>        
+      <p><small>
+        Koordynator to osoba, z którą będziemy się kontkować. Będzie to pierwsza osoba na liście uczestników.<br/>
+        Jako adres korespondencyjny przyjmiemy adres korespondencyjny płatnika.<br/>
+        Jeśli zamiawiasz szkolenia jako firma, możesz dodać nowego koordynatora i nowy adres.
+      </small></p> 
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Zapisz na szkolenie", :class => 'btn btn-success btn-large btn-primary', id: 'create_or_update_offer_btn' %>
+      <%= link_to 'Anuluj', trainings_path, :class => 'btn btn-large' %>
+    </div>
+
+  </fieldset>
 <% end %>
+
+
+

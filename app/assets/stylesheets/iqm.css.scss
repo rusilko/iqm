@@ -299,6 +299,9 @@ body {
     overflow: auto;
     .table {
       margin-bottom: 10px;
+      .row_with_error td{
+        background-color: #F2DEDE;
+      }
     }
 }
 
