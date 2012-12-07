@@ -18,15 +18,15 @@ class Client < User
                   :nip, :company_id, :company_primary_contact, 
                   :addresses_attributes, :position
 
-  # validates :name,    presence:    true, 
-  #                     length:      { within: 3..50}
+  validates :name,    presence:    true, 
+                      length:      { within: 3..50}
 
   validates :email,   presence:    true,
                       # format:      { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
                       uniqueness:  { case_sensitive: false }                      
 
-  # validates :phone_1, presence:    true,
-  #                     format:      { with: /^\d{9}$/i, message: "Nie poprawny format, powinno byc 9 cyfr." } 
+  validates :phone_1, presence:    true,
+                      format:      { with: /^\d{9}$/i, message: "Nie poprawny format, powinno byc 9 cyfr." } 
 
   def number_of_addresses
     self.addresses.size
