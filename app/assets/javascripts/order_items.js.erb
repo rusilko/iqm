@@ -1,11 +1,13 @@
 jQuery(function() {
   // globals
-  var number_of_clients = parseInt($('.participants_table_wrapper').find('tr:last td.no').html());
+  var number_of_clients = parseInt($('.participants_table_wrapper').find('tr:last').prev('tr').find('td.no').html());
   var customer_type_radio = $('form input[name*="customer_type"][checked=checked]');
   var customer_type = customer_type_radio.val();
-
+  var total_price = calculate_total_price();
+  
   // simulate customer type radio click on load in case we are coming back with validation errors
   $(window).load(function (){
+    $('.participants_table_wrapper #total_price').html(calculate_total_price());
     if("Client"==customer_type) customer_type_radio.click();
   });
 
@@ -19,7 +21,8 @@ jQuery(function() {
     regexp2 = new RegExp('<td class="no">[0-9]+</td>', 'g');
     var new_fields = $(this).data('fields').replace(regexp1, time);
     new_fields = new_fields.replace(regexp2, '<td class="no">'+number_of_clients+'</td>');
-    $(this).siblings('table:last').find('tbody').append(new_fields);
+    $(this).siblings('table').find('tbody tr:last').before(new_fields);
+    $('.participants_table_wrapper #total_price').html(calculate_total_price());
     event.preventDefault();
   });
 
@@ -31,6 +34,7 @@ jQuery(function() {
     // hide client row
     $(this).closest('tr').hide();
     decrement_indexes($(this).parents('tr'));
+    $('.participants_table_wrapper #total_price').html(calculate_total_price());
     event.preventDefault();
   });
 
@@ -137,7 +141,7 @@ jQuery(function() {
   });
 
   // Toggle Customer type
- $('form').on('click', 'input[name*="customer_type"]', function(event){
+  $('form').on('click', 'input[name*="customer_type"]', function(event){
     customer_type = $(this).val();
     if("Client" == customer_type) {
       
@@ -174,6 +178,24 @@ jQuery(function() {
     }
   });
 
+  // Toggle Book
+  $('form').on('click', ':checkbox[name*="book"]', function(event) {
+    
+    var book_price     = parseInt($(this).parent().next().html()); 
+    var price_cell     = $(this).parents('td').next();
+    var current_price  = parseInt(price_cell.html());
+
+    if($(this).is(':checked')) {
+      price_cell.html(current_price + book_price)
+    }
+    else {
+      price_cell.html(current_price - book_price) 
+    }
+
+    $('.participants_table_wrapper #total_price').html(calculate_total_price());
+
+  });
+
  // Functions
 
   function copy_person_attribute(attr, from,to){
@@ -188,5 +210,14 @@ jQuery(function() {
       var current_value = parseInt(index_cell.html());
       index_cell.html(current_value-1);
     });
+  }
+
+  function calculate_total_price(){
+    var sum = 0;
+    $('.participants_table_wrapper').find('table tr[style!="display: none; "]').each( function(){
+      var td = $(this).find('td.price');
+      if (td.length > 0) sum+= parseFloat(td.html());
+    });
+    return sum;
   }
 });

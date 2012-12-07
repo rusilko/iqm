@@ -1,5 +1,6 @@
 <%= simple_form_for setup(@order), url: "/trainings/#{@training.id}/orders", html: { class: 'form-inline'} do |f| %>
   <%# f.error_messages %>
+  <% t = @training %>
   <% if f.error_notification %>
     <div class="alert alert-error fade in">
       <a class="close" data-dismiss="alert" href="#">&times;</a>
@@ -7,11 +8,14 @@
     </div>
   <% end %>
   <fieldset>
-    <legend>Szkolenie: <%= @training.name %>, <%= @training.start_date %> do <%= @training.end_date %>, <%= @training.city %>, <%= @training.price_per_person %>zł</legend>
-    
+    <legend>Szkolenie: <%= t.name %>, <%= t.start_date %> do <%= t.end_date %>, <%= t.city %>, <%= t.price_per_person + t.book.price.to_i if t.has_book? %>zł</legend>
+
+    <%= f.hidden_field :status, value: "placed" %>
+    <%= f.hidden_field :date_placed, value: Date.today %>
+
     <div class="participants_table_wrapper">
-      <%= f.simple_fields_for :order_items do |oibuilder| %>
-        <%= oibuilder.hidden_field :productable_id, value: @training.id %>
+      <%= f.simple_fields_for :order_items, [@order.order_items.first] do |oibuilder| %>
+        <%= oibuilder.hidden_field :productable_id, value: t.id %>
         <%= oibuilder.hidden_field :productable_type, value: "Training" %>      
           <table class="table table-striped table-hover">
             <thead>
@@ -20,6 +24,8 @@
                 <th class="">Name</th>
                 <th class="">Email</th>
                 <th class="">Tel</th>
+                <th class="">Stanowisko</th>
+                <th class=""><%= "Książka" if t.has_book? %></th>
                 <th class="">Cena</th>
                 <th class=""><i class="icon-trash"></i></th>
               </tr>
@@ -29,11 +35,21 @@
               <%= oibuilder.simple_fields_for :seats do |builder| %>
                 <%= render 'seat_fields', f: builder, t: @training, index: i %>
               <% i+=1; end %>
+              <tr>
+                <td colspan="6" class="totals">Total:</td>
+                <td colspan="2" id="total_price"></td>
+              </tr>
             </tbody>
           </table>         
-          <%= link_to_add_seat_row raw('<i class="icon-plus-sign icon-white"></i> Dodaj uczestnika'), oibuilder, :seats, i+1, @training %>
+          <%= link_to_add_seat_row raw('<i class="icon-plus-sign icon-white"></i> Dodaj uczestnika'), oibuilder, :seats, i+1, t %>
       <% end -%>
     </div>
+    <% if t.has_book? %>
+      <%= f.simple_fields_for :order_items, [@order.order_items[1]] do |oibuilder| %>
+        <%= oibuilder.hidden_field :productable_id, value: t.book.id %>
+        <%= oibuilder.hidden_field :productable_type, value: "Product" %> 
+      <% end -%>
+    <% end -%>
 
     <div class="customer_wrapper">    
       <%= f.input :customer_type, collection: [["Company", "Firma (faktura)"],["Client", "Osoba (rachunek)"]], label: "Dane płatnika:",

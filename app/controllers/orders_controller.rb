@@ -29,13 +29,14 @@ class OrdersController < ApplicationController
 
       # set company for seated clients
       _1st_order_item.seats.each do |s|
-        s.client.company = _customer if s.client
+        s.client.company = @order.customer if s.client
       end     
-      # set coordinator to first client if coordinator wasn't set in the form
+      # set coordinator to first client if coordinator wasn't filled in the form
       unless @order.coordinator
-        @order.coordinator  = _1st_seat.client #if _1st_seat.client.valid? # we need the if so we don't show coordinator on the page with errors
-      # check if coordinators email is not repeated from one of the clients  
-      else
+        # we need the if so we don't show coordinator on the page with errors
+        @order.coordinator  = _1st_seat.client if (_1st_seat.valid? && @order.customer.valid?) 
+      else # if coordinator fields where set in the form
+        # check if coordinators email is not repeated from one of the clients 
         _1st_order_item.seats.each do |s|
           if @order.coordinator.email == s.client.email
             @order.coordinator = s.client
@@ -46,6 +47,9 @@ class OrdersController < ApplicationController
       end
 
     end
+
+    @order.order_items.first.quantity = _1st_order_item.seats.size
+    @order.order_items[1].quantity = _1st_order_item.seats_with_book.size if @order.order_items.size > 1
 
     if @order.save
       redirect_to @order, :notice => "Successfully created order."

@@ -1,5 +1,5 @@
 class Seat < ActiveRecord::Base
-  attr_accessor :double_client_error  
+  attr_accessor :double_client_error, :book
   
   belongs_to  :client, autosave: true
   belongs_to  :order_item
@@ -8,16 +8,17 @@ class Seat < ActiveRecord::Base
    
   before_validation :set_client_if_exists
   before_validation :check_for_double_errors, only: :client
-
-  attr_accessible :client_id, :training_id, :order_item_id, :client_attributes
+  
+  attr_accessible :client_id, :training_id, :order_item_id, :client_attributes, :book
 
   validates :client_id, uniqueness: { scope: :training_id, :message => "Client cannot be added to the same training twice." }  
 
   def set_client_if_exists
     self.client = Client.where(email: self.client.email).first_or_initialize do |c|
-      c.name    = client.name
-      c.email   = client.email
-      c.phone_1 = client.phone_1
+      c.name       = client.name
+      c.email      = client.email
+      c.phone_1    = client.phone_1
+      c.company    = client.company
     end
     logger.fatal "checking client in seat"
   end

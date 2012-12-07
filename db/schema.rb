@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121123204301) do
+ActiveRecord::Schema.define(:version => 20121206183853) do
 
   create_table "addresses", :force => true do |t|
     t.string   "line_1"
@@ -65,6 +65,13 @@ ActiveRecord::Schema.define(:version => 20121123204301) do
   add_index "event_participations", ["event_id", "participant_id"], :name => "index_event_participations_on_event_id_and_participant_id", :unique => true
   add_index "event_participations", ["event_id"], :name => "index_event_participations_on_event_id"
   add_index "event_participations", ["participant_id"], :name => "index_event_participations_on_participant_id"
+
+  create_table "event_type_products", :force => true do |t|
+    t.integer  "event_type_id"
+    t.integer  "product_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
   create_table "event_types", :force => true do |t|
     t.string   "name"
@@ -196,6 +203,7 @@ ActiveRecord::Schema.define(:version => 20121123204301) do
     t.string   "type"
     t.integer  "company_id"
     t.boolean  "company_primary_contact"
+    t.string   "position"
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
   end

@@ -45,6 +45,10 @@ class OrderItem < ActiveRecord::Base
     self.seats = wrong_seats + good_seats
   end
 
+  def seats_with_book
+    self.seats.select { |s| s.book=="1" }
+  end
+
   # validates :seats, length: { minimum: 1 }
   # def autosave_associated_records_for_seats
   #   #binding.pry

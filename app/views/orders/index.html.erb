@@ -14,15 +14,28 @@
   <tbody>
     <% @orders.each do |order| %>
       <tr>
-        <td><%= order.id %></td>
-        <td><%= order.customer.try(:name) %></td>
-        <td><%= order.coordinator.try(:name) %></td>
+        <td rowspan="2"><%= order.id %></td>
+        <td><%= order.customer.try(:email) %></td>
+        <td><%= order.coordinator.try(:email) %></td>
         <td><%= order.status %></td>
         <td><%= order.date_placed %></td>
         <td>
           <%# link_to 'Zobacz pozycję', new_order_order_item_path(order) , class: 'btn btn-mini btn-success' %>
           <%# link_to 'Edit', edit_order_path(order), class: 'btn btn-mini btn-info' %>
           <%# link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?'}, class: 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="5">
+        Pozycje:<br/>
+        <% order.order_items.each_with_index do |oi,index| %>
+          <%= index+1 %>: <%= oi.productable.name %> x <%= oi.quantity %> (<%= oi.productable.price %>)<br/>
+          <% if oi.productable_type = "Training" %>
+            <% oi.clients.each_with_index do |c,i| %>
+              <div style="margin-left: 20px"><%= i+1 %>: <%= c.email %></div>
+            <% end -%>
+          <% end -%>
+        <% end -%>
         </td>
       </tr>
     <% end %>

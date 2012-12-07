@@ -21,9 +21,10 @@ namespace :db do
       # make_orders
       make_trainings
       # make_order_items
-      # make_products
+      make_products
       # make_products
       # assign_clients_to_order_items
+      assign_products_to_event_types
 
 
   end
@@ -132,7 +133,7 @@ end
 def make_trainings
   5.times do
     name = Faker::Lorem.sentence(1)
-    Training.create!(name: name, start_date: Date.today, end_date: Date.tomorrow, training_type_id: rand(3), city: Event.new.cities[rand(4)], price_per_person: 2000 )
+    Training.create!(name: name, start_date: Date.today, end_date: Date.tomorrow, training_type_id: 2, city: Event.new.cities[rand(4)], price_per_person: 2000 )
   end
 end
 
@@ -154,8 +155,7 @@ def make_order_items
 end
 
 def make_products
- #
- #
+  Product.create!(name: "Prince Foundation Book", price: 300)
 end
 
 def assign_clients_to_order_items
@@ -165,6 +165,10 @@ def assign_clients_to_order_items
   oi2.participants << Client.find(1)
   oi2.participants << Client.find(2)
   oi2.participants << Client.find(3)
+end
+
+def assign_products_to_event_types
+  EventType.find_by_name("P2P").products << Product.find(1)
 end
 
 # def make_users

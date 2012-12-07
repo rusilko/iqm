@@ -28,6 +28,10 @@ FactoryGirl.define do
     sequence(:name) { |n| "Event Type #{n}" }
   end
 
+  factory :training_type do
+    sequence(:name) { |n| "Event Type #{n}" }
+  end
+
   factory :cost_item_type do
     sequence(:name) { |n| "Cost Item #{n}" }
   end
@@ -50,8 +54,8 @@ FactoryGirl.define do
     start_date "12-12-12"
     end_date   "13-12-12"
     city "Warszawa"
-    price_per_participant 2000
-    event_type
+    price_per_person 2000
+    training_type
   end
 
 end

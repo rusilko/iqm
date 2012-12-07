@@ -1,19 +1,18 @@
 class Order < ActiveRecord::Base
   STATUSES = %w(placed paid canceled)
   CUSTOMER_TYPES = %w(Client Company)
-  attr_accessible :customer_id, :customer_type, :date_placed, :status, :order_items_attributes, :customer_attributes, :coordinator_id, :coordinator_attributes
-  
+
   belongs_to :customer, polymorphic: true, autosave: true
-  accepts_nested_attributes_for :customer
-  #validates_associated :customer
+  belongs_to :coordinator, class_name: "Client", autosave: true
 
   has_many  :order_items, dependent: :destroy
-  accepts_nested_attributes_for :order_items, allow_destroy: true
 
-  belongs_to :coordinator, class_name: "Client", autosave: true
-  accepts_nested_attributes_for :coordinator
-  validates_associated :coordinator
+  accepts_nested_attributes_for :customer
+  accepts_nested_attributes_for :order_items, allow_destroy: true 
+  accepts_nested_attributes_for :coordinator, allow_destroy: true 
 
+  attr_accessible :customer_id, :customer_type, :date_placed, :status, :order_items_attributes, :customer_attributes, :coordinator_id, :coordinator_attributes
+  
   def customer_attributes=(attributes)
     self.customer = eval(self.customer_type).where(email: attributes[:email]).first_or_initialize(attributes)
   end
@@ -31,7 +30,7 @@ class Order < ActiveRecord::Base
     else
       self.coordinator = nil
     end
-   end
+  end
 
   def build_coordinator(params={}, assignment_options={})
     self.coordinator = Client.new(params)
@@ -41,4 +40,5 @@ class Order < ActiveRecord::Base
   def validating_order
     logger.fatal   "validating order"
   end
+
 end

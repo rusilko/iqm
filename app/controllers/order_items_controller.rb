@@ -17,6 +17,7 @@ class OrderItemsController < ApplicationController
       redirect_to @order_item, :notice => "Successfully created order item."
     else
       render action: 'new'
+    end
   end
 
   def edit

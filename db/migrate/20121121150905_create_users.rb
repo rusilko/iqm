@@ -11,6 +11,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string  :type #, null: false
       t.integer :company_id
       t.boolean :company_primary_contact
+      t.string  :position
       t.timestamps
     end
     add_index :users, :email, unique: true

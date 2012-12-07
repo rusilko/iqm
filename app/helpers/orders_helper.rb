@@ -3,15 +3,20 @@ module OrdersHelper
     @training = Training.find(params[:training_id])
     unless order.errors.any?
       # prepare 1st order item for participants
-      oi = order.order_items.build
+      oi1 = order.order_items.build
+      # prepare second order item for books
+      if @training.has_book?
+        oi2             = order.order_items.build
+        oi2.productable = @training.book
+      end
       # prepare seat and client
-      oi.seats.build.build_client
+      oi1.seats.build.build_client
       # prepare customer (defautls to Company)
       co = order.build_customer(customer_type: "Company")
       # prepare one address for a customer
       co.addresses.build
     else
-      order.coordinator = nil if order.coordinator.email == order.order_items.first.seats.first.client.email
+      # order.coordinator = nil if order.coordinator.email == order.order_items.first.seats.first.client.email
       # # let's just preapre one seat in case it was correct
       # if order.order_items.first.seats.empty?
       #   oi = order.order_items.build
@@ -28,7 +33,7 @@ module OrdersHelper
     fields = f.simple_fields_for(association, new_object, child_index: id) do |builder|
       render 'seat_fields', f: builder, t: t, index: index
     end
-    link_to(name, '#', class: "btn btn-success add_seat_btn", data: {id: id, fields: fields.gsub("\n", "")})
+    link_to(name, '#', id: "add_seat_btn", class: "btn btn-success add_seat_btn", data: {id: id, fields: fields.gsub("\n", "")})
   end
 
   def link_to_add_address(name, f, association, defaults, disabled)
