@@ -22,7 +22,7 @@ class Client < User
                       length:      { within: 3..50}
 
   validates :email,   presence:    true,
-                      # format:      { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
+                      format:      { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
                       uniqueness:  { case_sensitive: false }                      
 
   validates :phone_1, presence:    true,
