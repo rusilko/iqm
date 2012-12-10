@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: order_items
+#
+#  id               :integer         not null, primary key
+#  quantity         :integer
+#  order_id         :integer
+#  productable_id   :integer
+#  productable_type :string(255)
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
+#
+
 class OrderItem < ActiveRecord::Base
   
   belongs_to :order
@@ -8,17 +21,12 @@ class OrderItem < ActiveRecord::Base
 
   accepts_nested_attributes_for :seats, allow_destroy: true#, :reject_if => :clients_blank
 
-  before_validation :validating_oi, only: :seats
   before_validation :check_if_client_exists_or_is_already_participating, only: :seats
 
   attr_accessible :quantity, :productable_id, :productable_type, :order_attributes, :seats_attributes
 
   def clients_blank(attributes)
     return true if attributes["_destroy"]=="1"
-  end
-  
-  def validating_oi
-    logger.fatal   "validating oi"
   end
 
   def check_if_client_exists_or_is_already_participating
@@ -49,19 +57,4 @@ class OrderItem < ActiveRecord::Base
     self.seats.select { |s| s.book=="1" }
   end
 
-  # validates :seats, length: { minimum: 1 }
-  # def autosave_associated_records_for_seats
-  #   #binding.pry
-  #   existing_seats = []
-  #   new_seats = []
-  #   self.seats.each do |seat|
-  #     if existing_seat = Seat.find_by_training_id_and_client_id(seat.training_id, seat.client_id)      
-  #       existing_seats << existing_seat
-  #     else
-  #       new_seats << seat
-  #     end
-  #   end
-  #   self.seats = new_seats + existing_seats
-  #   #binding.pry
-  # end
 end

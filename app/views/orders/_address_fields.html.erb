@@ -4,10 +4,9 @@
   <p class="address_name">
     Adres <%= "rozliczeniowy" if b %><%= " i " if b && s %><%= "korespondencyjny" if s %><%= ":" %>
   </p>
-  <%= field_with_prepend f, name: :line_1, prepend_text: "adres", input_html_class: "input-large" %>
-  <%= field_with_prepend f, name: :line_2, prepend_text: "adres cd.", input_html_class: "input-large" %>
-  <%= field_with_prepend f, name: :city, input_html_class: "input-small", value: "Polska" %>
-  <%= field_with_prepend f, name: :postcode, input_html_class: "input-small" %>
+  <%= field_with_prepend f, name: :line_1, prepend_text: Address.human_attribute_name("line_1"), input_html_class: "input-large" %>
+  <%= field_with_prepend f, name: :postcode, prepend_text: Address.human_attribute_name("postcode"), input_html_class: "input-small" %>
+  <%= field_with_prepend f, name: :city, prepend_text: Address.human_attribute_name("city"), input_html_class: "input-small", value: "Polska" %>
   <%= f.hidden_field :default_billing, value: b %>
   <%= f.hidden_field :default_sending, value: s %>
   <% unless b==true %>

@@ -1,28 +1,18 @@
 Iqm::Application.routes.draw do
-  
+
   resources :trainings do
     resources :orders
   end
-
-  resources :order_items
-
-  resources :addresses
-
-  resources :seats
 
   resources :companies
 
   resources :clients
 
-  
-
   resources :orders
 
   resources :users
 
-  resources :participants
-
-  resources :events
+  resources :trainings
 
   resources :offers, shallow: true do
     resources :quotes do

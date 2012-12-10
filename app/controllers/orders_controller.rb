@@ -76,4 +76,12 @@ class OrdersController < ApplicationController
     @order.destroy
     redirect_to orders_url, :notice => "Successfully destroyed order."
   end
+
+  def training_registration
+
+  end
+
+  def confirm_registration
+    
+  end
 end

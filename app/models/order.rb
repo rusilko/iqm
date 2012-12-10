@@ -1,5 +1,19 @@
+# == Schema Information
+#
+# Table name: orders
+#
+#  id             :integer         not null, primary key
+#  status         :string(255)
+#  date_placed    :date
+#  customer_id    :integer
+#  customer_type  :string(255)
+#  coordinator_id :integer
+#  created_at     :datetime        not null
+#  updated_at     :datetime        not null
+#
+
 class Order < ActiveRecord::Base
-  STATUSES = %w(placed paid canceled)
+  STATUSES = %w(placed paid closed canceled)
   CUSTOMER_TYPES = %w(Client Company)
 
   belongs_to :customer, polymorphic: true, autosave: true
@@ -34,11 +48,6 @@ class Order < ActiveRecord::Base
 
   def build_coordinator(params={}, assignment_options={})
     self.coordinator = Client.new(params)
-  end
-
-  before_validation :validating_order, only: :order_items
-  def validating_order
-    logger.fatal   "validating order"
   end
 
 end

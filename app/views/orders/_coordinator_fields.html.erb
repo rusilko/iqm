@@ -1,6 +1,6 @@
 <div class="clearfix">
-  <%= field_with_prepend f, name: :name, wrapper_html_class: "address_field", input_html_class: "input-large", input_html_class: "input-large" %>
-  <%= field_with_prepend f, name: :email, wrapper_html_class: "address_field", input_html_class: "input-large" %>
-  <%= field_with_prepend f, name: :phone_1, prepend_text: "tel", wrapper_html_class: "address_field", input_html_class: "input-large" %>
+  <%= field_with_prepend f, name: :name, prepend_text: Client.human_attribute_name("name"), wrapper_html_class: "address_field", input_html_class: "input-large", input_html_class: "input-large" %>
+  <%= field_with_prepend f, name: :email, prepend_text: Client.human_attribute_name("email"), wrapper_html_class: "address_field", input_html_class: "input-medium" %>
+  <%= field_with_prepend f, name: :phone_1, prepend_text: Client.human_attribute_name("phone_1"), wrapper_html_class: "address_field", input_html_class: "input-small" %>
   <%= f.hidden_field :_destroy %><%= link_to raw('<i class="icon-trash"></i>'), '#', class: "remove_coordinator_btn"  %>
 </div>

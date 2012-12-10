@@ -1,0 +1,36 @@
+have_library: checking for main() in -lpthread... -------------------- yes
+
+"gcc -o conftest -I/home/tomek/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1/x86_64-linux -I/home/tomek/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1/ruby/backward -I/home/tomek/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1 -I. -I/home/tomek/.rvm/usr/include     -O3 -ggdb -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/home/tomek/.rvm/rubies/ruby-1.9.3-p194/lib -Wl,-R/home/tomek/.rvm/rubies/ruby-1.9.3-p194/lib -L/home/tomek/.rvm/usr/lib -Wl,-R/home/tomek/.rvm/usr/lib -L.  -rdynamic -Wl,-export-dynamic     -Wl,-R -Wl,/home/tomek/.rvm/rubies/ruby-1.9.3-p194/lib -L/home/tomek/.rvm/rubies/ruby-1.9.3-p194/lib -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main() {return 0;}
+/* end */
+
+"gcc -o conftest -I/home/tomek/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1/x86_64-linux -I/home/tomek/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1/ruby/backward -I/home/tomek/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1 -I. -I/home/tomek/.rvm/usr/include     -O3 -ggdb -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/home/tomek/.rvm/rubies/ruby-1.9.3-p194/lib -Wl,-R/home/tomek/.rvm/rubies/ruby-1.9.3-p194/lib -L/home/tomek/.rvm/usr/lib -Wl,-R/home/tomek/.rvm/usr/lib -L.  -rdynamic -Wl,-export-dynamic     -Wl,-R -Wl,/home/tomek/.rvm/rubies/ruby-1.9.3-p194/lib -L/home/tomek/.rvm/rubies/ruby-1.9.3-p194/lib -lruby -lpthread  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: /*top*/
+4: int main() {return 0;}
+5: int t() { void ((*volatile p)()); p = (void ((*)()))main; return 0; }
+/* end */
+
+--------------------
+
+find_header: checking for v8.h... -------------------- no
+
+"gcc -E -I/home/tomek/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1/x86_64-linux -I/home/tomek/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1/ruby/backward -I/home/tomek/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1 -I. -I/home/tomek/.rvm/usr/include    -Wall -g -rdynamic  -O3 -ggdb -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  conftest.c -o conftest.i"
+conftest.c:3:16: fatal error: v8.h: No such file or directory
+compilation terminated.
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <v8.h>
+/* end */
+
+--------------------
+

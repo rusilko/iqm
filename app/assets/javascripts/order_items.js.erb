@@ -214,7 +214,7 @@ jQuery(function() {
 
   function calculate_total_price(){
     var sum = 0;
-    $('.participants_table_wrapper').find('table tr[style!="display: none; "]').each( function(){
+    $('.participants_table_wrapper').find('table tr:visible').each( function(){
       var td = $(this).find('td.price');
       if (td.length > 0) sum+= parseFloat(td.html());
     });

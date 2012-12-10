@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: seats
+#
+#  id            :integer         not null, primary key
+#  client_id     :integer
+#  order_item_id :integer
+#  training_id   :integer
+#  created_at    :datetime        not null
+#  updated_at    :datetime        not null
+#
+
 class Seat < ActiveRecord::Base
   attr_accessor :double_client_error, :book
   
@@ -19,6 +31,7 @@ class Seat < ActiveRecord::Base
       c.email      = client.email
       c.phone_1    = client.phone_1
       c.company    = client.company
+      c.position   = client.position
     end
     logger.fatal "checking client in seat"
   end

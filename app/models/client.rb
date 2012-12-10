@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                      :integer         not null, primary key
+#  name                    :string(255)
+#  phone_1                 :string(255)
+#  phone_2                 :string(255)
+#  nip                     :string(255)
+#  regon                   :string(255)
+#  email                   :string(255)
+#  password_digest         :string(255)
+#  type                    :string(255)
+#  company_id              :integer
+#  company_primary_contact :boolean
+#  position                :string(255)
+#  created_at              :datetime        not null
+#  updated_at              :datetime        not null
+#
+
 class Client < User
   attr_accessor :double_error
   
@@ -19,14 +39,16 @@ class Client < User
                   :addresses_attributes, :position
 
   validates :name,    presence:    true, 
-                      length:      { within: 3..50}
+                      length:      { within: 5..50},
+                      format:      { with: /[a-zA-z]+\s+[a-zA-Z]+/i }
+
 
   validates :email,   presence:    true,
                       format:      { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
                       uniqueness:  { case_sensitive: false }                      
 
   validates :phone_1, presence:    true,
-                      format:      { with: /^\d{9}$/i, message: "Nie poprawny format, powinno byc 9 cyfr." } 
+                      format:      { with: /^\d{9}$/i } 
 
   def number_of_addresses
     self.addresses.size
@@ -34,19 +56,18 @@ class Client < User
 
   private
 
-    def strip_phone_number
-      self.phone_1 = self.phone_1.gsub(/\s+/, "")  
-    end
+  def strip_phone_number
+    self.phone_1 = self.phone_1.gsub(/\s+/, "")  
+  end
 
-    def check_for_double_errors
-      message = case double_error
-        when :same_form
-        "Can't add two identical emails to training"
-        when :same_training
-        "User with this email is already registered for this training"
-      end
-      errors.add(:email, message) if double_error 
-      logger.fatal "validating client"
+  def check_for_double_errors
+    message = case double_error
+      when :same_form
+      "Can't add two identical emails to training"
+      when :same_training
+      "User with this email is already registered for this training"
     end
+    errors.add(:email, message) if double_error 
+  end
 
 end

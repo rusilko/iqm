@@ -8,7 +8,9 @@
     </div>
   <% end %>
   <fieldset>
-    <legend>Szkolenie: <%= t.name %>, <%= t.start_date %> do <%= t.end_date %>, <%= t.city %>, <%= t.price_per_person + t.book.price.to_i if t.has_book? %>zł</legend>
+    <legend class="pull-left">
+      Szkolenie: <%= t.name %>, <%= t.start_date %> do <%= t.end_date %>, <%= t.city %>, <%= t.price_per_person + t.book.price.to_i if t.has_book? %>zł
+    </legend>
 
     <%= f.hidden_field :status, value: "placed" %>
     <%= f.hidden_field :date_placed, value: Date.today %>
@@ -21,13 +23,13 @@
             <thead>
               <tr>
                 <th class="">#</th>
-                <th class="">Name</th>
-                <th class="">Email</th>
-                <th class="">Tel</th>
+                <th class="">Imię i nazwisko</th>
+                <th class="">Adres email</th>
+                <th class="">Telefon</th>
                 <th class="">Stanowisko</th>
-                <th class=""><%= "Książka" if t.has_book? %></th>
+                <th class=""><%= iconize("book") if t.has_book? %></th>
                 <th class="">Cena</th>
-                <th class=""><i class="icon-trash"></i></th>
+                <th class=""></th>
               </tr>
             </thead>
             <tbody>
@@ -52,15 +54,15 @@
     <% end -%>
 
     <div class="customer_wrapper">    
-      <%= f.input :customer_type, collection: [["Company", "Firma (faktura)"],["Client", "Osoba (rachunek)"]], label: "Dane płatnika:",
+      <%= f.input :customer_type, collection: [["Company", "Firma (faktura)"],["Client", "Osoba (rachunek)"]], label: "Rodzaj płatnika:",
             label_method: :last, value_method: :first, as: :radio_buttons, :item_wrapper_class => 'inline', label_html: {class: "customer_name" }, 
             checked: f.object.customer.class.to_s %>      
       
       <%= f.simple_fields_for :customer, defaults: { wrapper_html: { class: 'address_field'}, input_html: { class: "input-large" } } do |cbuilder| %>
-        <%= field_with_prepend cbuilder, name: :name %>
-        <%= field_with_prepend cbuilder, name: :email %>
-        <%= field_with_prepend cbuilder, name: :phone_1, prepend_text: "tel." %>
-        <%= field_with_prepend cbuilder, name: :nip %>
+        <%= field_with_prepend cbuilder, name: :name, prepend_text: Company.human_attribute_name("name") %>
+        <%= field_with_prepend cbuilder, name: :email, input_html_class: "input-medium", prepend_text: Company.human_attribute_name("email") %>
+        <%= field_with_prepend cbuilder, name: :phone_1, hint: "Format: 9 cyfr.", input_html_class: "input-small", prepend_text: Company.human_attribute_name("phone_1") %>
+        <%= field_with_prepend cbuilder, name: :nip, input_html_class: "input-medium", prepend_text: Company.human_attribute_name("nip") %>
 
         <% two_adrs = true if cbuilder.object.number_of_addresses > 1 %>   
         <% i = 1 %>
@@ -87,8 +89,7 @@
       <%= link_to_add_coordinator raw('<i class="icon-plus-sign icon-white"></i> Dodaj innego koordynatora'), f, :coordinator, disabled %>        
       <p><small>
         Koordynator to osoba, z którą będziemy się kontkować. Będzie to pierwsza osoba na liście uczestników.<br/>
-        Jako adres korespondencyjny przyjmiemy adres korespondencyjny płatnika.<br/>
-        Jeśli zamiawiasz szkolenia jako firma, możesz dodać nowego koordynatora i nowy adres.
+        Jeśli zamiawiasz szkolenia jako firma, możesz dodać innego koordynatora.
       </small></p> 
     </div>
 

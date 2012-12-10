@@ -8,12 +8,11 @@
 #  updated_at :datetime        not null
 #
 
-class EventType < ActiveRecord::Base
-  attr_accessible :name
+class EventType < ActiveRecord::Base  
   has_many :quotes
-  has_many :events
   has_many :trainings, foreign_key: "training_type_id"
   has_many :products, through: :event_type_products
   has_many :event_type_products
+  attr_accessible :name
   validates :name, presence: true
 end

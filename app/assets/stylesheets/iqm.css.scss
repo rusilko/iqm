@@ -1,4 +1,7 @@
+$inputBorderRadius: 0px;
+
 @import "bootstrap";
+
 
 // Mixins
 
@@ -61,6 +64,12 @@ body {
 .input-micro {
   width: 50px;
   //
+}
+
+.btn {
+  border-radius:                    0px;
+  -webkit-border-radius:            0px;
+  -moz-border-radius:               0px;
 }
 
 // Offers
@@ -289,10 +298,15 @@ body {
   margin: 10px 10px 10px 0px !important;
 }
 
+.remove_seat_btn, .remove_address_btn, .remove_coordinator_btn {
+  @extend .close;
+  float: none;
+}
+
 .participants_table_wrapper, .customer_wrapper, .coordinator_wrapper{
     background-color: #FFFFFF;
     border: 1px solid #DDDDDD;
-    border-radius: 4px 4px 4px 4px;
+    //border-radius: 4px 4px 4px 4px;
     margin: 15px 0;
     padding: 39px 19px 14px;
     position: relative;
@@ -312,7 +326,7 @@ body {
 .participants_table_wrapper:after, .customer_wrapper:after, .coordinator_wrapper:after {
     background-color: #F5F5F5;
     border: 1px solid #DDDDDD;
-    border-radius: 4px 0 4px 0;
+    //border-radius: 4px 0 4px 0;
     color: #9DA0A4;
     content: "Lista uczestników";
     font-size: 12px;
