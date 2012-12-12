@@ -18,7 +18,7 @@ class Company < ActiveRecord::Base
 
   has_many :employees, :class_name => "Client", conditions: { type: "Client" }
   has_many :orders, as: :customer, include: :order_items, dependent: :destroy
-  has_many :addresses, as: :addressable
+  include AddressableMixin
   
   accepts_nested_attributes_for :addresses
   
@@ -35,9 +35,4 @@ class Company < ActiveRecord::Base
 
   validates :nip,     nip:         true
                            #123-456-32-18
-  
-  def number_of_addresses
-    self.addresses.size
-  end
-
 end

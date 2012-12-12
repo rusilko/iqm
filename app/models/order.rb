@@ -25,8 +25,10 @@ class Order < ActiveRecord::Base
   accepts_nested_attributes_for :order_items, allow_destroy: true 
   accepts_nested_attributes_for :coordinator, allow_destroy: true 
 
-  attr_accessible :customer_id, :customer_type, :date_placed, :status, :order_items_attributes, :customer_attributes, :coordinator_id, :coordinator_attributes
+  attr_accessible :customer_id, :customer_type, :date_placed, :status, :order_items_attributes, :customer_attributes, :coordinator_id, :coordinator_attributes, :terms
   
+  validates :terms, :acceptance => true
+
   def customer_attributes=(attributes)
     self.customer = eval(self.customer_type).where(email: attributes[:email]).first_or_initialize(attributes)
   end
@@ -48,6 +50,12 @@ class Order < ActiveRecord::Base
 
   def build_coordinator(params={}, assignment_options={})
     self.coordinator = Client.new(params)
+  end
+
+  def total
+    self.order_items.inject(0) do |acc, oi|
+      acc + oi.quantity*oi.productable.price
+    end
   end
 
 end

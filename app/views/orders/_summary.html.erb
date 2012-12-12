@@ -1,0 +1,85 @@
+
+<% tr = @order.order_items.first.productable %>
+
+<legend class="pull-left">
+  Zgłoszenie na <br/>
+  Szkolenie: <%= tr.name %>, <%= tr.start_date %> do <%= tr.end_date %>, <%= tr.city %>
+</legend>
+
+<div class="participants_table_wrapper">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th class="">#</th>
+        <th class="">Imię i nazwisko</th>
+        <th class="">Adres email</th>
+        <th class="">Telefon</th>
+        <th class="">Stanowisko</th>
+        <th class=""><%= iconize("book") if tr.has_book? %></th>
+        <th class="">Cena</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @order.order_items.first.seats.each_with_index do |seat,index| %>
+      <tr>
+        <td class="no"><%= index+1 %></td>
+        <td class="name"><%= seat.client.name %></td>
+        <td class="email"><%= seat.client.email %></td>
+        <td class="tel"><%= seat.client.phone_1 %></td>
+        <td class="position"><%= seat.client.position %></td>
+        <td class="book">
+        <% if tr.has_book? %>
+          <%= iconize("ok-sign") if seat.book=="1" %>
+          <%  book_price = (seat.book=="1") ? tr.book.price : 0 %>
+        <% end -%>
+        </td>
+        <td class="price"><%= tr.price_per_person + book_price.to_i %></td>
+      </tr>
+      <% end -%>
+      <tr>
+        <td colspan="6" class="totals">Łącznie:</td>
+        <td colspan="1"><%= @order.total %> netto<br/><%= @order.total*1.23 %> brutto</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="row">
+  <div class="span6 customer_wrapper">
+    <strong><%= @order.customer.name %></strong><br>
+
+      <address class="pull-left">
+        Email: <%= link_to @order.customer.email, "mailto:#{@order.customer.email}" %><br/>
+        Tel: <%= @order.customer.phone_1 %><br/>
+        <% if nip = @order.customer.nip %>
+          NIP: <%= nip %><br/>
+        <% end -%>
+      </address>
+
+      <% if bill_addr = @order.customer.billing_address %>
+        <address class="pull-left"> 
+          <strong>Adres rozliczeniowy</strong><br>
+          <%= bill_addr.line_1 %><br>
+          <%= bill_addr.postcode %>, <%= bill_addr.city %><br>
+        </address>
+      <% end -%>
+
+      <% if send_addr = @order.customer.sending_address %>
+        <address class="pull-left"> 
+          <strong>Adres korespondencyjny</strong><br>
+          <%= send_addr.line_1 %><br>
+          <%= send_addr.postcode %>, <%= send_addr.city %><br>
+        </address>
+      <% end -%>
+    <p><strong>Rodzaj dokumentu:</strong> <%= @order.customer.is_a?(Company) ? "faktura VAT" : "rachunek uproszoczny" %></p>  
+  </div>
+
+  <div class="span5 pull-right coordinator_wrapper">
+    <strong><%= @order.coordinator.name %></strong><br>
+    <address class="pull-left">
+      Email: <%= link_to @order.coordinator.email, "mailto:#{@order.coordinator.email}" %><br/>
+      Tel: <%= @order.coordinator.phone_1 %><br/>
+      <br/>
+    </address>
+  </div>
+</div>

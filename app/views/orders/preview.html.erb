@@ -1,0 +1,17 @@
+<% title "Potwierdzenie zgłoszenia" %>
+
+<%= render 'summary' %>
+
+<%= simple_form_for @order, url: confirm_training_orders_path(@training), html: { class: 'form-inline'} do |f| %>
+  <fieldset>
+    <%= f.hidden_field :id %>
+    <%= f.input :terms, as: :boolean, label: false, inline_label: "Zgoda", hint: "Wyrażam zgodę na umieszczenie moich danych osobowych w bazie danych firmy INPROGRESS Sp. z o.o. z siedzibą w Krakowie, przy ul. G. Zapolskiej 38/303 oraz na ich przetwarzanie przez ww. firmę zgodnie z ustawą z dnia 29.08.1997 r. o ochronie danych osobowych (Dz. U. z 2002r. Nr 101, poz. 926 z póź. zm.)." %>
+    <div class="form-actions">
+      <%= f.submit "Potwierdź zgłoszenie", :class => 'btn btn-success btn-large btn-primary', id: 'create_or_update_offer_btn' %>
+      <%= link_to 'Anuluj', trainings_path, :class => 'btn btn-large' %>
+    </div>
+  </fieldset>
+<% end %>
+
+
+

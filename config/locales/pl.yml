@@ -247,6 +247,10 @@ pl:
               invalid: "Nieprawidłowy format. Spróbuj: XX-XXX." 
             city:
               invalid:
+        order:
+          attributes:
+            terms:
+              accepted: "Zgoda musi zostać wyrażona."
     models:
       client: Uczestnik
       company: Firma

@@ -1,7 +1,17 @@
 Iqm::Application.routes.draw do
+  
+  # match 'szkolenie/:training_id/zapisz-sie'   => 'orders#register', as: 'register'
+  # match 'szkolenie/:training_id/potwierdz'    => 'orders#preview',  as: 'preview'
+  # match 'szkolenie/:training_id/zamowienie-potwierdzone' => 'orders#confirm',  as: 'confirm'
 
   resources :trainings do
-    resources :orders
+    resources :orders do
+      collection do
+        get   'register'
+        post  'preview'
+        post  'confirm'
+      end
+    end
   end
 
   resources :companies

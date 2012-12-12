@@ -1,25 +1,6 @@
 <% title "Order" %>
 
-<p>
-  <strong>Status:</strong>
-  <%= @order.status %>
-</p>
-<p>
-  <strong>Date Placed:</strong>
-  <%= @order.date_placed %>
-</p>
-<p>
-  <strong>Customer:</strong>
-  <%= @order.customer_id %>
-</p>
-<p>
-  <strong>Customer Type:</strong>
-  <%= @order.customer_type %>
-</p>
-<p>
-  <strong>Coordinator:</strong>
-  <%= @order.coordinator_id %>
-</p>
+<%= render 'summary' %>
 
 <p>
   <%= link_to "Edit", edit_order_path(@order) %> |

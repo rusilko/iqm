@@ -1,6 +1,5 @@
 module OrdersHelper
-  def setup(order)
-    @training = Training.find(params[:training_id])
+  def setup(order)    
     unless order.errors.any?
       # prepare 1st order item for participants
       oi1 = order.order_items.build

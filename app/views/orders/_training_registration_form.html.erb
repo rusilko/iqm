@@ -1,4 +1,4 @@
-<%= simple_form_for setup(@order), url: "/trainings/#{@training.id}/orders", html: { class: 'form-inline'} do |f| %>
+<%= simple_form_for setup(@order), url: preview_training_orders_path(@training), html: { class: 'form-inline'} do |f| %>
   <%# f.error_messages %>
   <% t = @training %>
   <% if f.error_notification %>
@@ -7,10 +7,12 @@
       Wystąpiły błędy w formularzu, zaznaczyliśmy je na czerwono.
     </div>
   <% end %>
+
+  <legend class="pull-left">
+    Szkolenie: <%= t.name %>, <%= t.start_date %> do <%= t.end_date %>, <%= t.city %>, <%= t.price_per_person + t.book.price.to_i if t.has_book? %>zł
+  </legend>
+
   <fieldset>
-    <legend class="pull-left">
-      Szkolenie: <%= t.name %>, <%= t.start_date %> do <%= t.end_date %>, <%= t.city %>, <%= t.price_per_person + t.book.price.to_i if t.has_book? %>zł
-    </legend>
 
     <%= f.hidden_field :status, value: "placed" %>
     <%= f.hidden_field :date_placed, value: Date.today %>
@@ -38,7 +40,7 @@
                 <%= render 'seat_fields', f: builder, t: @training, index: i %>
               <% i+=1; end %>
               <tr>
-                <td colspan="6" class="totals">Total:</td>
+                <td colspan="6" class="totals">Łącznie:</td>
                 <td colspan="2" id="total_price"></td>
               </tr>
             </tbody>
@@ -61,7 +63,7 @@
       <%= f.simple_fields_for :customer, defaults: { wrapper_html: { class: 'address_field'}, input_html: { class: "input-large" } } do |cbuilder| %>
         <%= field_with_prepend cbuilder, name: :name, prepend_text: Company.human_attribute_name("name") %>
         <%= field_with_prepend cbuilder, name: :email, input_html_class: "input-medium", prepend_text: Company.human_attribute_name("email") %>
-        <%= field_with_prepend cbuilder, name: :phone_1, hint: "Format: 9 cyfr.", input_html_class: "input-small", prepend_text: Company.human_attribute_name("phone_1") %>
+        <%= field_with_prepend cbuilder, name: :phone_1, input_html_class: "input-small", prepend_text: Company.human_attribute_name("phone_1") %>
         <%= field_with_prepend cbuilder, name: :nip, input_html_class: "input-medium", prepend_text: Company.human_attribute_name("nip") %>
 
         <% two_adrs = true if cbuilder.object.number_of_addresses > 1 %>   

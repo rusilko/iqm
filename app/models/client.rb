@@ -27,7 +27,7 @@ class Client < User
   has_many :coordinated_orders, class_name: "Order", foreign_key: :coordinator_id
   has_many :seats
   has_many :order_items, through: :seats
-  has_many :addresses, as: :addressable
+  include AddressableMixin
 
   accepts_nested_attributes_for :addresses
 
@@ -49,10 +49,6 @@ class Client < User
 
   validates :phone_1, presence:    true,
                       format:      { with: /^\d{9}$/i } 
-
-  def number_of_addresses
-    self.addresses.size
-  end
 
   private
 

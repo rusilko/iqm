@@ -25,4 +25,8 @@ class Address < ActiveRecord::Base
   validates :city,      presence: true
   validates :postcode,  presence: true,
                         format: { with: /\d{2}[\s-]?\d{3}/, message: "Invalid format, please try XX-XXX."}
+
+  scope :billing, where(default_billing: true)
+  scope :sending, where(default_sending: true)
+
 end
