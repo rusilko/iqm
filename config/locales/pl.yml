@@ -250,7 +250,7 @@ pl:
         order:
           attributes:
             terms:
-              accepted: "Zgoda musi zostać wyrażona."
+              accepted: "Proszę, wyraź zgodę."
     models:
       client: Uczestnik
       company: Firma
@@ -263,7 +263,7 @@ pl:
       user: Użytkownik
     attributes:
       client:
-        name: "Imię i Nazwisko"
+        name: Imię i Nazwisko
         email: Email
         phone_1: Telefon
         position: Stanowisko

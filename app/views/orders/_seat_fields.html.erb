@@ -1,10 +1,11 @@
 <tr>
 <%= f.hidden_field :training_id, value: t.id %>
 <%= f.simple_fields_for :client, include_id: false, defaults: { label: false, wrapper_html: { class: '' }, input_html: { class:'' } } do |builder| %>
+  <%= builder.hidden_field :confirmed, value: false %>
   <td class="no"><%= index %></td>
-  <td class="name"><%= builder.input :name%></td>
-  <td class="email"><%= builder.input :email  %></td>
-  <td class="tel">  <%= builder.input :phone_1 %></td>
+  <td class="name">      <%= builder.input :name %></td>
+  <td class="email">     <%= builder.input :email %></td>
+  <td class="tel">       <%= builder.input :phone_1 %></td>
   <td class="position">  <%= builder.input :position %></td>
   <td class="book">
     <% if t.has_book? %>

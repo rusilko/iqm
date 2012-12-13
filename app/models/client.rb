@@ -1,3 +1,4 @@
+# encoding: utf-8 
 # == Schema Information
 #
 # Table name: users
@@ -18,12 +19,12 @@
 #  updated_at              :datetime        not null
 #
 
-class Client < User
-  attr_accessor :double_error
+class Client < ActiveRecord::Base
+  attr_accessor :double_error, :nip
   
   belongs_to :company
 
-  has_many :orders, as: :customer, include: :order_items, dependent: :destroy
+  has_many :orders, as: :customer, include: :order_items
   has_many :coordinated_orders, class_name: "Order", foreign_key: :coordinator_id
   has_many :seats
   has_many :order_items, through: :seats
@@ -34,18 +35,17 @@ class Client < User
   before_validation :check_for_double_errors, only: :email
   before_validation :strip_phone_number, only: :phone_1
 
-  attr_accessible :name, :email, :phone_1, :phone_2, 
-                  :nip, :company_id, :company_primary_contact, 
-                  :addresses_attributes, :position
+  attr_accessible :name, :email, :phone_1, :phone_2, :confirmed,
+                  :company_id, :addresses_attributes, :position, :nip
 
   validates :name,    presence:    true, 
                       length:      { within: 5..50},
-                      format:      { with: /[a-zA-z]+\s+[a-zA-Z]+/i }
+                      format:      { with: /[a-zA-ząęćżźśńłó]+\s+[a-zA-Ząęćżźśńłó]+/i }
 
 
   validates :email,   presence:    true,
                       format:      { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
-                      uniqueness:  { case_sensitive: false }                      
+                      uniqueness:  { scope: :confirmed, :if => Proc.new{ |client| client.confirmed }, case_sensitive: false }                      
 
   validates :phone_1, presence:    true,
                       format:      { with: /^\d{9}$/i } 
@@ -53,15 +53,15 @@ class Client < User
   private
 
   def strip_phone_number
-    self.phone_1 = self.phone_1.gsub(/\s+/, "")  
+    self.phone_1 = self.phone_1.gsub(/\s+/, "") if self.phone_1
   end
 
   def check_for_double_errors
     message = case double_error
       when :same_form
-      "Can't add two identical emails to training"
+      "Taki uczesnitk jest już na liście."
       when :same_training
-      "User with this email is already registered for this training"
+      "Taki uczestnik jest już zapisany na to szkolenie."
     end
     errors.add(:email, message) if double_error 
   end

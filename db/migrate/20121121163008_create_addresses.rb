@@ -6,7 +6,6 @@ class CreateAddresses < ActiveRecord::Migration
       t.string  :city
       t.boolean :default_sending
       t.boolean :default_billing
-      t.string  :other_details
       t.references :addressable, polymorphic: true  
       t.timestamps
     end

@@ -9,7 +9,7 @@
   <% end %>
 
   <legend class="pull-left">
-    Szkolenie: <%= t.name %>, <%= t.start_date %> do <%= t.end_date %>, <%= t.city %>, <%= t.price_per_person + t.book.price.to_i if t.has_book? %>zł
+    Szkolenie: <%= t.name %>, <%= t.start_date %> do <%= t.end_date %>, <%= t.city %>, <%= t.price_per_person + (t.book.price.to_i if t.has_book?).to_i %>zł
   </legend>
 
   <fieldset>
@@ -45,7 +45,7 @@
               </tr>
             </tbody>
           </table>         
-          <%= link_to_add_seat_row raw('<i class="icon-plus-sign icon-white"></i> Dodaj uczestnika'), oibuilder, :seats, i+1, t %>
+          <%= link_to_add_seat_row raw('<i class="icon-plus-sign icon-white"></i> Dodaj uczestnika'), oibuilder, :seats, i, t %>
       <% end -%>
     </div>
     <% if t.has_book? %>
@@ -61,7 +61,8 @@
             checked: f.object.customer.class.to_s %>      
       
       <%= f.simple_fields_for :customer, defaults: { wrapper_html: { class: 'address_field'}, input_html: { class: "input-large" } } do |cbuilder| %>
-        <%= field_with_prepend cbuilder, name: :name, prepend_text: Company.human_attribute_name("name") %>
+        <% name_prepend_text = f.object.customer.is_a?(Company) ? Company.human_attribute_name("name") : Client.human_attribute_name("name") %>
+        <%= field_with_prepend cbuilder, name: :name, prepend_text: name_prepend_text %>
         <%= field_with_prepend cbuilder, name: :email, input_html_class: "input-medium", prepend_text: Company.human_attribute_name("email") %>
         <%= field_with_prepend cbuilder, name: :phone_1, input_html_class: "input-small", prepend_text: Company.human_attribute_name("phone_1") %>
         <%= field_with_prepend cbuilder, name: :nip, input_html_class: "input-medium", prepend_text: Company.human_attribute_name("nip") %>
@@ -90,8 +91,8 @@
       <% end -%>
       <%= link_to_add_coordinator raw('<i class="icon-plus-sign icon-white"></i> Dodaj innego koordynatora'), f, :coordinator, disabled %>        
       <p><small>
-        Koordynator to osoba, z którą będziemy się kontkować. Będzie to pierwsza osoba na liście uczestników.<br/>
-        Jeśli zamiawiasz szkolenia jako firma, możesz dodać innego koordynatora.
+        Koordynator to osoba, z którą będziemy się kontkować. 
+        Jeśli nie dodasz koordynatora - będzie nim pierwsza osoba na liście uczestników.<br/>
       </small></p> 
     </div>
 

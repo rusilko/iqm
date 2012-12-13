@@ -1,13 +1,15 @@
+<%# encoding: utf-8 %>
 jQuery(function() {
   // globals
   var number_of_clients = parseInt($('.participants_table_wrapper').find('tr:last').prev('tr').find('td.no').html());
+  console.log(number_of_clients);
   var customer_type_radio = $('form input[name*="customer_type"][checked=checked]');
   var customer_type = customer_type_radio.val();
-  var total_price = calculate_total_price();
+  var total_price = calculate_total_price();  
   
-  // simulate customer type radio click on load in case we are coming back with validation errors
   $(window).load(function (){
     $('.participants_table_wrapper #total_price').html(calculate_total_price());
+    // simulate customer type radio click on load in case we are coming back with validation errors
     if("Client"==customer_type) customer_type_radio.click();
   });
 
@@ -16,6 +18,7 @@ jQuery(function() {
   // Add Client row
   $('form').on('click', '.add_seat_btn', function(event) {
     number_of_clients += 1;
+    console.log(number_of_clients)
     time = new Date().getTime();
     regexp1 = new RegExp($(this).data('id'), 'g');
     regexp2 = new RegExp('<td class="no">[0-9]+</td>', 'g');
@@ -143,22 +146,21 @@ jQuery(function() {
   // Toggle Customer type
   $('form').on('click', 'input[name*="customer_type"]', function(event){
     customer_type = $(this).val();
+    var tel   = $('.customer_wrapper').find('input[name*="phone_1"]');
+    var name  = $('.customer_wrapper').find('input[name*="name"]');
+    var email = $('.customer_wrapper').find('input[name*="email"]');
+    var nip   = $('.customer_wrapper').find('input[name*="nip"]');
     if("Client" == customer_type) {
       
       // copy data from first participant 
       copy_person_attribute("name","participants_table","customer");
       copy_person_attribute("email","participants_table","customer");
-      copy_person_attribute("phone_1","participants_table","customer");
-
-      // disable the fields
-      var tel   = $('.customer_wrapper').find('input[name*="phone_1"]');
-      var name  = $('.customer_wrapper').find('input[name*="name"]');
-      var email = $('.customer_wrapper').find('input[name*="email"]');
-      var nip   = $('.customer_wrapper').find('input[name*="nip"]');
+      copy_person_attribute("phone_1","participants_table","customer");      
       
-      // hide the fields
+      // isable the fields and hide the fields
       tel.prop('disabled', true); //tel.parents('.control-group').hide();
-      name.prop('disabled', true); 
+      name.prop('disabled', true);
+      name.prev().html('<%= Client.human_attribute_name("name") %>'); 
       email.prop('disabled', true); //email.parents('.control-group').hide();
       nip.prop('disabled', true); nip.parents('.control-group').hide();
 
@@ -169,12 +171,18 @@ jQuery(function() {
     }
     else if ("Company" == customer_type) {
       // show fields
-       $('.customer_wrapper').find('input').parents('.control-group').show();
+      nip.parents('.control-group').show();
       // enable the fields
       $('.customer_wrapper').find('input').prop('disabled', false);
-
+      // clear the fields
+      tel.val('');
+      email.val('');
+      name.val('');
+      name.prev().html('<%= Company.human_attribute_name("name") %>'); 
       // reenable coordinator button 
       $('.coordinator_wrapper').find('.add_coordinator_btn').removeClass('disabled');
+
+
     }
   });
 

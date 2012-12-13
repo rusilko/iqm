@@ -15,29 +15,45 @@ ActiveRecord::Schema.define(:version => 20121206183853) do
 
   create_table "addresses", :force => true do |t|
     t.string   "line_1"
-    t.string   "line_2"
-    t.string   "city"
     t.string   "postcode"
-    t.string   "country"
+    t.string   "city"
     t.boolean  "default_sending"
     t.boolean  "default_billing"
-    t.string   "other_details"
     t.integer  "addressable_id"
     t.string   "addressable_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
   end
 
+  create_table "clients", :force => true do |t|
+    t.string   "name",       :null => false
+    t.string   "email",      :null => false
+    t.string   "phone_1"
+    t.string   "phone_2"
+    t.integer  "company_id"
+    t.string   "position"
+    t.boolean  "confirmed"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "clients", ["email"], :name => "index_clients_on_email"
+  add_index "clients", ["name"], :name => "index_clients_on_name"
+
   create_table "companies", :force => true do |t|
-    t.string   "name"
+    t.string   "name",       :null => false
     t.string   "email"
     t.string   "phone_1"
     t.string   "phone_2"
     t.string   "nip"
     t.string   "regon"
+    t.boolean  "confirmed"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "companies", ["email"], :name => "index_companies_on_email"
+  add_index "companies", ["name"], :name => "index_companies_on_name"
 
   create_table "cost_item_types", :force => true do |t|
     t.string   "name"
@@ -55,17 +71,6 @@ ActiveRecord::Schema.define(:version => 20121206183853) do
     t.integer  "cost_item_type_id"
   end
 
-  create_table "event_participations", :force => true do |t|
-    t.integer  "event_id"
-    t.integer  "participant_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-  end
-
-  add_index "event_participations", ["event_id", "participant_id"], :name => "index_event_participations_on_event_id_and_participant_id", :unique => true
-  add_index "event_participations", ["event_id"], :name => "index_event_participations_on_event_id"
-  add_index "event_participations", ["participant_id"], :name => "index_event_participations_on_participant_id"
-
   create_table "event_type_products", :force => true do |t|
     t.integer  "event_type_id"
     t.integer  "product_id"
@@ -78,20 +83,6 @@ ActiveRecord::Schema.define(:version => 20121206183853) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
-
-  create_table "events", :force => true do |t|
-    t.string   "name"
-    t.date     "date"
-    t.decimal  "price_per_participant", :precision => 8, :scale => 2
-    t.integer  "event_type_id"
-    t.string   "city"
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
-  end
-
-  add_index "events", ["city"], :name => "index_events_on_city"
-  add_index "events", ["date"], :name => "index_events_on_date"
-  add_index "events", ["name"], :name => "index_events_on_name"
 
   create_table "income_variants", :force => true do |t|
     t.integer  "quote_id"
@@ -134,16 +125,6 @@ ActiveRecord::Schema.define(:version => 20121206183853) do
   add_index "orders", ["customer_id", "customer_type"], :name => "index_orders_on_customer_id_and_customer_type"
   add_index "orders", ["date_placed"], :name => "index_orders_on_date_placed"
   add_index "orders", ["status"], :name => "index_orders_on_status"
-
-  create_table "participants", :force => true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "participants", ["email"], :name => "index_participants_on_email", :unique => true
-  add_index "participants", ["name"], :name => "index_participants_on_name"
 
   create_table "products", :force => true do |t|
     t.string   "name"
@@ -191,23 +172,5 @@ ActiveRecord::Schema.define(:version => 20121206183853) do
   add_index "trainings", ["name"], :name => "index_trainings_on_name"
   add_index "trainings", ["start_date"], :name => "index_trainings_on_start_date"
   add_index "trainings", ["training_type_id"], :name => "index_trainings_on_training_type_id"
-
-  create_table "users", :force => true do |t|
-    t.string   "name"
-    t.string   "phone_1"
-    t.string   "phone_2"
-    t.string   "nip"
-    t.string   "regon"
-    t.string   "email"
-    t.string   "password_digest"
-    t.string   "type"
-    t.integer  "company_id"
-    t.boolean  "company_primary_contact"
-    t.string   "position"
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
-  end
-
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
 
 end

@@ -3,7 +3,7 @@ namespace :db do
     desc "Fill database with sample data"
     task populate: :environment do
 
-      [ Offer, EventType, CostItemType, Event, Participant, EventParticipation, Company, User, Address, Order, OrderItem, Training, Product, Seat ].each(&:delete_all)
+      [ Offer, EventType, CostItemType, Company, Client, Address, Order, OrderItem, Training, Product, Seat ].each(&:delete_all)
 
       # make_offers
       make_event_types
@@ -133,7 +133,7 @@ end
 def make_trainings
   5.times do
     name = Faker::Lorem.sentence(1)
-    Training.create!(name: name, start_date: Date.today, end_date: Date.tomorrow, training_type_id: 2, city: Event.new.cities[rand(4)], price_per_person: 2000 )
+    Training.create!(name: name, start_date: Date.today, end_date: Date.tomorrow, training_type_id: 2, city: "Krakow", price_per_person: 2000 )
   end
 end
 

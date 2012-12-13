@@ -17,22 +17,21 @@ class Company < ActiveRecord::Base
 
 
   has_many :employees, :class_name => "Client", conditions: { type: "Client" }
-  has_many :orders, as: :customer, include: :order_items, dependent: :destroy
+  has_many :orders, as: :customer, include: :order_items
   include AddressableMixin
   
   accepts_nested_attributes_for :addresses
   
-  attr_accessible :name, :email, :phone_1, :phone_2, :regon, :nip, :addresses_attributes
+  attr_accessible :name, :email, :phone_1, :phone_2, :regon, :nip, :confirmed, :addresses_attributes
 
   validates :name,    presence:    true
 
   validates :email,   presence:    true,
                       format:      { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
-                      uniqueness:  { case_sensitive: false }                      
+                      uniqueness:  { scope: :confirmed, :if => Proc.new{ |company| company.confirmed }, case_sensitive: false }                      
 
   validates :phone_1, presence:    true,
                       format:      { with: /\d{9}/i }
 
-  validates :nip,     nip:         true
-                           #123-456-32-18
+  validates :nip,     nip:         true #123-456-32-18
 end
