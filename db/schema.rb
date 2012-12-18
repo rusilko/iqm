@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121206183853) do
+ActiveRecord::Schema.define(:version => 20121216171803) do
 
   create_table "addresses", :force => true do |t|
     t.string   "line_1"
@@ -78,11 +78,32 @@ ActiveRecord::Schema.define(:version => 20121206183853) do
     t.datetime "updated_at",    :null => false
   end
 
+  add_index "event_type_products", ["event_type_id", "product_id"], :name => "index_event_type_products_on_event_type_id_and_product_id", :unique => true
+  add_index "event_type_products", ["event_type_id"], :name => "index_event_type_products_on_event_type_id"
+  add_index "event_type_products", ["product_id"], :name => "index_event_type_products_on_product_id"
+
+  create_table "event_type_trainings", :force => true do |t|
+    t.integer  "event_type_id"
+    t.integer  "training_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "event_type_trainings", ["event_type_id", "training_id"], :name => "index_event_type_trainings_on_event_type_id_and_training_id", :unique => true
+  add_index "event_type_trainings", ["event_type_id"], :name => "index_event_type_trainings_on_event_type_id"
+  add_index "event_type_trainings", ["training_id"], :name => "index_event_type_trainings_on_training_id"
+
   create_table "event_types", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.text     "introduction"
+    t.text     "description"
+    t.integer  "default_price_per_person"
+    t.integer  "default_number_of_days"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
   end
+
+  add_index "event_types", ["name"], :name => "index_event_types_on_name"
 
   create_table "income_variants", :force => true do |t|
     t.integer  "quote_id"
@@ -157,20 +178,61 @@ ActiveRecord::Schema.define(:version => 20121206183853) do
   add_index "seats", ["client_id"], :name => "index_seats_on_client_id"
   add_index "seats", ["order_item_id"], :name => "index_seats_on_order_item_id"
 
+  create_table "segments", :force => true do |t|
+    t.string   "name"
+    t.integer  "number_of_hours"
+    t.text     "scenario"
+    t.integer  "event_type_id"
+    t.integer  "default_lineup"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "segments", ["event_type_id"], :name => "index_segments_on_event_type_id"
+
+  create_table "training_products", :force => true do |t|
+    t.integer  "training_id"
+    t.integer  "product_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "training_products", ["product_id"], :name => "index_training_products_on_product_id"
+  add_index "training_products", ["training_id", "product_id"], :name => "index_training_products_on_training_id_and_product_id", :unique => true
+  add_index "training_products", ["training_id"], :name => "index_training_products_on_training_id"
+
+  create_table "training_segments", :force => true do |t|
+    t.integer  "segment_id"
+    t.integer  "training_id"
+    t.string   "name"
+    t.text     "scenario"
+    t.integer  "number_of_hours"
+    t.datetime "start_time"
+    t.integer  "lineup"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "training_segments", ["segment_id", "training_id"], :name => "index_training_segments_on_segment_id_and_training_id", :unique => true
+  add_index "training_segments", ["segment_id"], :name => "index_training_segments_on_segment_id"
+  add_index "training_segments", ["training_id"], :name => "index_training_segments_on_training_id"
+
   create_table "trainings", :force => true do |t|
     t.string   "name"
-    t.date     "start_date"
-    t.date     "end_date"
     t.string   "city"
+    t.text     "introduction"
+    t.text     "description"
     t.integer  "price_per_person"
-    t.integer  "training_type_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "start_time"
+    t.integer  "number_of_days"
+    t.integer  "number_of_hours"
+    t.boolean  "exemplary",        :default => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
   end
 
   add_index "trainings", ["city"], :name => "index_trainings_on_city"
   add_index "trainings", ["name"], :name => "index_trainings_on_name"
-  add_index "trainings", ["start_date"], :name => "index_trainings_on_start_date"
-  add_index "trainings", ["training_type_id"], :name => "index_trainings_on_training_type_id"
+  add_index "trainings", ["start_time"], :name => "index_trainings_on_start_time"
 
 end

@@ -19,6 +19,7 @@ gem 'simple_form'
 #gem 'awesome_nested_set'
 gem 'heroku'
 gem 'common_numbers_rails'
+gem 'amoeba', git: 'git://github.com/rocksolidwebdesign/amoeba.git'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

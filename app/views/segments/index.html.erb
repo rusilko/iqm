@@ -1,0 +1,32 @@
+<% title "Segments" %>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Hours</th>
+      <th>Scenario</th>
+      <th>Event Type</th>
+      <th>Kolejność</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% for segment in @segments %>
+    <tr>
+      <td><%= segment.name %></td>
+      <td><%= segment.number_of_hours %></td>
+      <td><%= raw segment.scenario %></td>
+      <td><%= segment.event_type_id %></td>
+      <td><%= segment.default_lineup %></td>
+      <td>
+      <%= link_to "Show", segment, class: 'btn btn-mini btn-success' %>
+      <%= link_to "Edit", edit_segment_path(segment), class: 'btn btn-mini btn-warning' %>
+      <%= link_to "Destroy", segment, :confirm => 'Are you sure?', :method => :delete, class: 'btn btn-mini btn-danger' %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to "+ Dodaj Segment", new_segment_path %></p>

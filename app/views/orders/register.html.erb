@@ -1,3 +1,12 @@
 <% title "Zapisz się" %>
+<% content_for :menu do %>
+
+  <%= render 'trainings/side_menu' %>
+
+<% end %>
+
+<% content_for :content do %>
 
 <%= render 'training_registration_form' %>
+
+<% end -%>

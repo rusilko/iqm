@@ -1,10 +1,25 @@
 class TrainingsController < ApplicationController
+  
+  def offer
+    @trainings = Training.exemplary
+    @training_months = Training.real.group_by { |t| t.start_time.beginning_of_month }
+  end
+
   def index
-    @trainings = Training.all
+    @trainings = Training.real
+    @training_months = @trainings.group_by { |t| t.start_time.beginning_of_month }
   end
 
   def show
     @training = Training.find(params[:id])
+    @training_months = Training.real.group_by { |t| t.start_time.beginning_of_month }
+  end
+
+  def create_from_exemplary
+    from = Training.find(params[:id])
+    @training = from.amoeba_dup
+    @training.save
+    render 'edit'
   end
 
   def new
@@ -27,6 +42,7 @@ class TrainingsController < ApplicationController
   def update
     @training = Training.find(params[:id])
     if @training.update_attributes(params[:training])
+      @training.set_start_time
       redirect_to @training, :notice  => "Successfully updated training."
     else
       render :action => 'edit'

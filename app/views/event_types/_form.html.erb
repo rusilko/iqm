@@ -1,0 +1,20 @@
+<%= form_for @event_type do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.label :default_price_per_person %><br />
+    <%= f.number_field :default_price_per_person %>
+  </p>
+  <p>
+    <%= f.label :default_number_of_days %><br />
+    <%= f.number_field :default_number_of_days %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

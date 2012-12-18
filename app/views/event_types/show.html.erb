@@ -1,0 +1,24 @@
+<% title "Event Type" %>
+
+<p>
+  <strong>Name:</strong>
+  <%= @event_type.name %>
+</p>
+<p>
+  <strong>Description:</strong>
+  <%= raw @event_type.description %>
+</p>
+<p>
+  <strong>Default Price Per Person:</strong>
+  <%= @event_type.default_price_per_person %>
+</p>
+<p>
+  <strong>Default Number Of Days:</strong>
+  <%= @event_type.default_number_of_days %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_event_type_path(@event_type) %> |
+  <%= link_to "Destroy", @event_type, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", event_types_path %>
+</p>

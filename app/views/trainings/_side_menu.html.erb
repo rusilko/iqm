@@ -1,0 +1,25 @@
+<%= content_tag :h4, (link_to "Nasza oferta:", offer_trainings_path) %>
+<ul class="well nav nav-list">
+  <li class="nav-header">PRINCE 2 FOUNDATION</li>
+  <li><a href="/trainings/1">P2F Standard</a></li>
+  <li><a href="/trainings/3">P2F Weekend</a></li>
+  <li class="nav-header">PRINCE 2 PRACTITIONER</li>
+  <li><a href="/trainings/2">P2P Standard</a></li>
+  <li><a href="/trainings/4">P2P Weekend</a></li>
+  <li class="nav-header">PRINCE 2 COMBO</li>
+  <li><a href="/trainings/5">P2F+P2P Combo</a></li>
+  <li class="nav-header">ITIL</li>
+  <li><a href="/trainings/6">Itil V3</a></li>
+</ul>
+
+<% if @training_months %>
+  <%= content_tag :h4, (link_to "Harmonogram:", trainings_path) %>
+  <ul class="well nav nav-list">
+  <% @training_months.each do |month, trainings| %>
+    <li class="nav-header"><%= month.strftime("%B %Y") %></li>
+    <% trainings.each do |training| %>
+      <li><%= link_to (training.start_time.strftime("%d-%m-%Y")+": "+training.name), training_path(training) %></li>
+    <% end %>
+  <% end %>
+  </ul>
+<% end -%>

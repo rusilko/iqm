@@ -1,0 +1,30 @@
+<% title "Event Types" %>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Default Price Per Person</th>
+      <th>Default Number Of Days</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% for event_type in @event_types %>
+    <tr>
+      <td><%= event_type.name %></td>
+      <td><%= raw event_type.description %></td>
+      <td><%= event_type.default_price_per_person %></td>
+      <td><%= event_type.default_number_of_days %></td>
+      <td>
+      <%= link_to "Show", event_type, class: 'btn btn-mini btn-success' %>
+      <%= link_to "Edit", edit_event_type_path(event_type), class: 'btn btn-mini btn-warning' %>
+      <%= link_to "Destroy", event_type, :confirm => 'Are you sure?', :method => :delete, class: 'btn btn-mini btn-danger' %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to "+ Dodaj Event Type", new_event_type_path %></p>

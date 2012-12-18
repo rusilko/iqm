@@ -1,0 +1,24 @@
+<% title "Oferta" %>
+
+<% content_for :menu do %>
+
+  <%= render 'side_menu' %>
+
+<% end %>
+
+<% content_for :content do %>
+  <%= content_tag :h3, "Zarządzanie Projektami - metodyka PRINCE 2" %>
+  <% @trainings.each do |tr| %>
+    <% next if tr.id == 6 %>
+    <%= link_to "zobacz szczegóły", training_path(tr), class: "pull-right" %>
+    <%= content_tag :h5, tr.name %>
+    <%= content_tag :blockquote, raw(tr.introduction) %>
+  <% end -%>
+
+  <%= content_tag :h3, "Zarządzanie Projektami - narzędzia informatyczne" %>
+  <% @trainings.select { |tr| tr.id == 6 }.each do |tr| %>
+    <%= link_to "zobacz szczegóły", training_path(tr), class: "pull-right" %>
+    <%= content_tag :h5, tr.name %>
+    <%= content_tag :blockquote, raw(tr.introduction) %> 
+  <% end -%>
+<% end %>

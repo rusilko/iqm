@@ -5,6 +5,10 @@
     <%= f.text_field :name %>
   </p>
   <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
     <%= f.label :phone_1 %><br />
     <%= f.text_field :phone_1 %>
   </p>
@@ -13,29 +17,16 @@
     <%= f.text_field :phone_2 %>
   </p>
   <p>
-    <%= f.label :nip %><br />
-    <%= f.text_field :nip %>
-  </p>
-  <p>
-    <%= f.label :regon %><br />
-    <%= f.text_field :regon %>
-  </p>
-  <p>
-    <%= f.label :email %><br />
-    <%= f.text_field :email %>
-  </p>
-  <p>
-    <%= f.label :password_digest %><br />
-    <%= f.text_field :password_digest %>
-  </p>
-
-  <p>
     <%= f.label :company_id %><br />
     <%= f.number_field :company_id %>
   </p>
   <p>
-    <%= f.label :company_primary_contact %><br />
-    <%= f.check_box :company_primary_contact %>
+    <%= f.label :position %><br />
+    <%= f.text_field :position %>
+  </p>
+  <p>
+    <%= f.label :confirmed %><br />
+    <%= f.check_box :confirmed %>
   </p>
   <p><%= f.submit %></p>
 <% end %>

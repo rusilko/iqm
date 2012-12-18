@@ -1,0 +1,28 @@
+<% title "Segment" %>
+
+<p>
+  <strong>Name:</strong>
+  <%= @segment.name %>
+</p>
+<p>
+  <strong>Hours:</strong>
+  <%= @segment.hours %>
+</p>
+<p>
+  <strong>Scenario:</strong>
+  <%= raw @segment.scenario %>
+</p>
+<p>
+  <strong>Event Type:</strong>
+  <%= @segment.event_type.name %>
+</p>
+<p>
+  <strong>Kolejność</strong>
+  <%= @segment.default_lineup %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_segment_path(@segment) %> |
+  <%= link_to "Destroy", @segment, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", segments_path %>
+</p>

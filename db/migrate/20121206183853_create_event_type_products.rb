@@ -6,5 +6,8 @@ class CreateEventTypeProducts < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :event_type_products, :event_type_id
+    add_index :event_type_products, :product_id
+    add_index :event_type_products, [:event_type_id, :product_id], unique: true
   end
 end

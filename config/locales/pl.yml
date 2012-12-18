@@ -131,7 +131,7 @@ pl:
       greater_than_or_equal_to: musi być większe lub równe %{count}
       inclusion: nie znajduje się na liście dopuszczalnych wartości
       invalid: jest nieprawidłowe
-      # invalid_format: jest nieprawidłowe
+      invalid_format: jest nieprawidłowe
       less_than: musi być mniejsze od %{count}
       less_than_or_equal_to: musi być mniejsze lub równe %{count}
       not_a_number: nie jest liczbą
@@ -222,6 +222,7 @@ pl:
       <<: *errors
   activerecord:
     errors:
+      <<: *errors
       models:
         client:
           attributes:
@@ -251,6 +252,10 @@ pl:
           attributes:
             terms:
               accepted: "Proszę, wyraź zgodę."
+        segment:
+          attributes:
+            name:
+              record_invalid: jest nieprawidłowe
     models:
       client: Uczestnik
       company: Firma
@@ -261,6 +266,8 @@ pl:
       product: Produkt
       seat: Miejsce
       user: Użytkownik
+      segment: Segment
+      event_type: Typ szkolenia
     attributes:
       client:
         name: Imię i Nazwisko
@@ -291,5 +298,7 @@ pl:
       product:
         name: Nazwa
         price: Cena
-      seat:
-      user:  
+      segment:
+        name: Nazwa
+        scenario: Plan segmentu
+        hours: Liczba godzin  

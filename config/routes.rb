@@ -1,10 +1,18 @@
 Iqm::Application.routes.draw do
-  
+
+  resources :segments
+
+  resources :event_types do
+    resources :segments, only: :index
+  end
+
   # match 'szkolenie/:training_id/zapisz-sie'   => 'orders#register', as: 'register'
   # match 'szkolenie/:training_id/potwierdz'    => 'orders#preview',  as: 'preview'
   # match 'szkolenie/:training_id/zamowienie-potwierdzone' => 'orders#confirm',  as: 'confirm'
 
   resources :trainings do
+    get 'offer', on: :collection
+    post 'create_from_exemplary', on: :member
     resources :orders do
       collection do
         get   'register'

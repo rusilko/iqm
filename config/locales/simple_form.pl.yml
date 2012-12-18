@@ -12,7 +12,7 @@ pl:
       default_message: "Please review the problems below:"
     labels:
       defaults:
-        name: 'Imię i Nazwisko'
+        # name: 'Imię i Nazwisko'
     # Labels and hints examples
     # labels:
     #   defaults:

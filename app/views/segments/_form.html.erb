@@ -1,0 +1,9 @@
+<%= simple_form_for @segment do |f| %>
+  <%= f.error_messages %>
+  <%= f.input :name %>
+  <%= f.input :hours %>
+  <%= f.input :scenario %>
+  <%= f.association :event_type, label: EventType.model_name.human %>
+  <%= f.input :default_lineup %>
+  <%= f.submit %>
+<% end %>

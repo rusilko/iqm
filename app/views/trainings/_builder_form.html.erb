@@ -1,0 +1,44 @@
+<%= simple_form_for @training do |f1| %>
+  <%= f1.error_notification %>
+
+  <%= f1.input :name %>
+  <%= f1.input :city %>
+  <%= f1.association :training_types, label: "Wybierz rodzaje szkoleń", as: :check_boxes, :label_method => :label, :value_method => :id %>
+
+  <div id="days" class="clearfix">
+    <p>Dni szkoleniowe:</p>
+  </div>
+
+  <%= link_to( raw('<i class="icon-plus-sign icon-white"></i> Dodaj dzień'), '#', 
+               id: "add_day_btn", class: "btn btn-success add_day_btn", 
+               data: {id: "new_id", html: "#{render('day_box')}" } ) %> 
+
+  <ul id="available_segments" class="clearfix connectedSortable">
+    <% Segment.all.each do |s| %>
+      <%= content_tag(:li, s.name, data: { event_type: s.event_type.id, segment: s.id } ) %>
+    <% end -%>
+  </ul>
+
+  <%= f1.simple_fields_for :training_segments do |f2| %><% end -%>
+  <%= link_to_add_training_segment raw('<i class="icon-plus-sign icon-white"></i> Dodaj segment'), f1, :training_segments %>
+
+  <div class="form-actions">
+    <%= f1.button :submit %>
+  </div>
+<% end %>
+
+    <%# f.input :name %>
+    <%# f.input :city %>
+    <%# f.input :price_per_person %>
+    <%# f.input :start_time %>
+    <%# f.input :number_of_days %>
+    <%# f.input :number_of_hours %>
+
+    <!-- 
+    <ul class="day_box">
+      <li class="segment_box">Item 1</li>
+      <li class="segment_box">Item 2</li>
+      <li class="segment_box">Item 3</li>
+      <li class="segment_box">Item 4</li>
+      <li class="segment_box">Item 5</li>
+    </ul> -->

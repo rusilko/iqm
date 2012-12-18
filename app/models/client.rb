@@ -57,7 +57,7 @@ class Client < ActiveRecord::Base
   end
 
   def check_for_double_errors
-    message = case double_error
+    message = case @double_error
       when :same_form
       "Taki uczesnitk jest już na liście."
       when :same_training

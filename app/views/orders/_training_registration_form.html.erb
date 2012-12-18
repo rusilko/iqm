@@ -9,7 +9,7 @@
   <% end %>
 
   <legend class="pull-left">
-    Szkolenie: <%= t.name %>, <%= t.start_date %> do <%= t.end_date %>, <%= t.city %>, <%= t.price_per_person + (t.book.price.to_i if t.has_book?).to_i %>zł
+    Szkolenie: <%= t.name %>, <%= t.start_time.to_date.to_s(:long) %>, <%= t.city %>, <%= t.price_per_person + (t.book.price.to_i if t.has_book?).to_i %>zł
   </legend>
 
   <fieldset>

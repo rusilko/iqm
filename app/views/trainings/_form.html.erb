@@ -1,28 +1,37 @@
-<%= form_for @training do |f| %>
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :start_date %><br />
-    <%= f.date_select :start_date %>
-  </p>
-  <p>
-    <%= f.label :end_date %><br />
-    <%= f.date_select :end_date %>
-  </p>
-  <p>
-    <%= f.label :city %><br />
-    <%= f.text_field :city %>
-  </p>
-  <p>
-    <%= f.label :price_per_person %><br />
-    <%= f.number_field :price_per_person %>
-  </p>
-  <p>
-    <%= f.label :training_type_id %><br />
-    <%= f.number_field :training_type_id %>
-  </p>
-  <p><%= f.submit %></p>
+<%= simple_form_for @training do |f1| %>
+  <%= f1.error_notification %>
+  <h3>Dane ogólne</h4>
+  <%= f1.input :name, input_html: { class: "input-xxlarge"} %>
+  <%= f1.input :city %>
+  <%= f1.input :price_per_person %>
+  <%= f1.input :introduction %>
+  <%= f1.input :description %>
+
+  <h3>Dni szkoleniowe</h4>
+  <%= f1.simple_fields_for :training_segments do |f2| %>
+    <%= content_tag :strong, f2.object.name %>
+    <%= f2.input :number_of_hours %>
+    <%= f2.input :start_time, as: :string %> 
+    <%= f2.input :scenario %>
+  <% end -%>
+
+  <div class="form-actions">
+    <%= f1.button :submit %>
+  </div>
 <% end %>
+
+    <%# f.input :name %>
+    <%# f.input :city %>
+    <%# f.input :price_per_person %>
+    <%# f.input :start_time %>
+    <%# f.input :number_of_days %>
+    <%# f.input :number_of_hours %>
+
+    <!-- 
+    <ul class="day_box">
+      <li class="segment_box">Item 1</li>
+      <li class="segment_box">Item 2</li>
+      <li class="segment_box">Item 3</li>
+      <li class="segment_box">Item 4</li>
+      <li class="segment_box">Item 5</li>
+    </ul> -->

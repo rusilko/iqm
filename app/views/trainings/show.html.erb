@@ -1,32 +1,56 @@
+<% # encoding: utf-8 %>
 <% title "Training" %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @training.name %>
-</p>
-<p>
-  <strong>Start Date:</strong>
-  <%= @training.start_date %>
-</p>
-<p>
-  <strong>End Date:</strong>
-  <%= @training.end_date %>
-</p>
-<p>
-  <strong>City:</strong>
-  <%= @training.city %>
-</p>
-<p>
-  <strong>Price Per Person:</strong>
-  <%= @training.price_per_person %>
-</p>
-<p>
-  <strong>Training Type:</strong>
-  <%= @training.training_type_id %>
-</p>
+<% content_for :menu do %>
 
-<p>
-  <%= link_to "Edit", edit_training_path(@training) %> |
-  <%= link_to "Destroy", @training, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to "View All", trainings_path %>
+  <%= render 'side_menu' %>
+
+<% end %>
+
+<% content_for :content do %>
+  <%= link_to "wróć do oferty", offer_trainings_path %>
+  <%= content_tag :h4, "Cena: #{@training.price_per_person} netto", class: "pull-right" %>
+  <%= content_tag :h3, @training.name %>
+  <%= content_tag :blockquote, raw(@training.introduction) %>
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#opis_szkolenia" data-toggle="tab">Opis szkolenia</a></li>
+    <li><a href="#harmonogram_szkolenia" data-toggle="tab">Harmonogram szkolenia</a></li>
+    <li><a href="#najblisze_terminy" data-toggle="tab">Najbliższe terminy</a></li>
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">Informacje dla klientów <b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li><a href="#">Informacje organizacyjne</a></li>
+        <li><a href="#">Rejestracja - jak zgłosić się na szkolenie</a></li>
+        <li><a href="#">Warunki uczestnictwa</a></li>
+        <li><a href="#">Płatności</a></li>
+        <li><a href="#">Rabaty i promocje</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Formularz zgłoszeniowy on-line</a></li>
+        <li><a href="#">Formularz zgłoszeniowy do pobrania</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin <b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li><%= link_to "Edytuj", edit_training_path(@training) %></li>
+        <li><%= link_to "Kopiuj na nowe", create_from_exemplary_training_path(@training), method: :post %></li>
+      </ul>
+    </li>
+    <%= link_to "Zapisz się", register_training_orders_path(@training), class: 'btn btn-success register_for_training_btn pull-right' %>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="opis_szkolenia"><%= raw @training.description %></div>
+    <div class="tab-pane" id="harmonogram_szkolenia"><%= raw @training.schedule %></div>
+    <div class="tab-pane" id="najblisze_terminy"><%= raw @training.closest_trainings %></div>
+   </div>
+  
+<% end %>
+
+<!-- <p>
+  <%# link_to "Edit", edit_training_path(@training) %> |
+  <%# link_to "Destroy", @training, :confirm => 'Are you sure?', :method => :delete %> |
+  <%#= link_to "View All", trainings_path %>
 </p>
+ -->

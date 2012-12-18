@@ -1,8 +1,7 @@
 <%# encoding: utf-8 %>
-jQuery(function() {
+$(function() {
   // globals
   var number_of_clients = parseInt($('.participants_table_wrapper').find('tr:last').prev('tr').find('td.no').html());
-  console.log(number_of_clients);
   var customer_type_radio = $('form input[name*="customer_type"][checked=checked]');
   var customer_type = customer_type_radio.val();
   var total_price = calculate_total_price();  
