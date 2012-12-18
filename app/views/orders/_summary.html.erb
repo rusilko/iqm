@@ -3,7 +3,7 @@
 
 <legend class="pull-left">
   Zgłoszenie na <br/>
-  Szkolenie: <%= tr.name %>, <%= tr.start_date %> do <%= tr.end_date %>, <%= tr.city %>
+  Szkolenie: <%= tr.name %>, <%= tr.start_time.to_date.to_s(:long) %>, <%= tr.city %>
 </legend>
 
 <div class="participants_table_wrapper">
