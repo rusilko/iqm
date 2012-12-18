@@ -159,7 +159,9 @@ $(function() {
       // isable the fields and hide the fields
       tel.prop('disabled', true); //tel.parents('.control-group').hide();
       name.prop('disabled', true);
-      name.prev().html('<%= Client.human_attribute_name("name") %>'); 
+      // TODO!!
+      // name.prev().html('<%= Client.human_attribute_name("name") %>'); 
+      name.prev().html('Imię i Nazwisko'); 
       email.prop('disabled', true); //email.parents('.control-group').hide();
       nip.prop('disabled', true); nip.parents('.control-group').hide();
 
@@ -177,7 +179,7 @@ $(function() {
       tel.val('');
       email.val('');
       name.val('');
-      name.prev().html('<%= Company.human_attribute_name("name") %>'); 
+      name.prev().html('Nazwa firmy'); 
       // reenable coordinator button 
       $('.coordinator_wrapper').find('.add_coordinator_btn').removeClass('disabled');
 
