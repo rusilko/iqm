@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121216171803) do
+ActiveRecord::Schema.define(:version => 20121220084029) do
 
   create_table "addresses", :force => true do |t|
     t.string   "line_1"
@@ -234,5 +234,12 @@ ActiveRecord::Schema.define(:version => 20121216171803) do
   add_index "trainings", ["city"], :name => "index_trainings_on_city"
   add_index "trainings", ["name"], :name => "index_trainings_on_name"
   add_index "trainings", ["start_time"], :name => "index_trainings_on_start_time"
+
+  create_table "users", :force => true do |t|
+    t.string   "email"
+    t.string   "password_digest"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
 end

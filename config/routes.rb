@@ -1,10 +1,11 @@
 Iqm::Application.routes.draw do
 
-  resources :segments
+  get 'signup', to: 'users#new', as: 'signup'
+  get 'login',  to: 'sessions#new', as: 'login'
+  get 'logout', to: 'sessions#destroy', as: 'logout'
 
-  resources :event_types do
-    resources :segments, only: :index
-  end
+  resources :users
+  resources :sessions
 
   # match 'szkolenie/:training_id/zapisz-sie'   => 'orders#register', as: 'register'
   # match 'szkolenie/:training_id/potwierdz'    => 'orders#preview',  as: 'preview'
@@ -22,15 +23,17 @@ Iqm::Application.routes.draw do
     end
   end
 
+  resources :segments
+
+  resources :event_types do
+    resources :segments, only: :index
+  end
+
   resources :companies
 
   resources :clients
 
   resources :orders
-
-  resources :users
-
-  resources :trainings
 
   resources :offers, shallow: true do
     resources :quotes do

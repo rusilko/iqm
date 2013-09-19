@@ -1,4 +1,6 @@
 class TrainingsController < ApplicationController
+
+  before_filter :authorize, except: [:offer, :index, :show]
   
   def offer
     @trainings = Training.exemplary
